@@ -1,0 +1,7 @@
+{"rule":"ABLE_TO_PASSIVE","sentence":"^\\QAs shown in figures \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q and \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q, the *g*-levels and bandwidth are relatively low and are able to be met by the LSM6DSO.\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qft y\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\QThere are multiple satellite qualification standards, an example is the NASA General Environmental Verification Specification (GEVS) which is a panel of tests including electromagnetic compatibility (EMC), thermal, acoustic and vibration tests that are required for all NASA Goddard Space Flight Center projects \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\QHonours Deliverables 2024-3-7 2024-10-18 Research proposal 2024-3-7 2024-04-19 Research proposal draft 2024-3-7 2024-4-16 Edit 2024-4-16 2024-4-19 [name=propwriting]Proposal Due 2024-04-19\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\QThesis 2024-4-19 2024-10-18 [name=startthesis]Record results, sketch out parts of thesis 2024-04-19 2024-08-07 Write thesis draft 2024-07-21 2024-09-24 [name=feedback]Get feedback, edit second draft 2024-09-25 2024-10-10 Final editing and typesetting 2024-10-10 2024-10-18 Thesis 2024-10-18\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\Q[link bulge=4]propwriting startthesis [link bulge=4]suborbital feedback\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qyear, month=shortname [title height=1.8, title label node/.append style=rotate=90]week [title/.style=opacity=0] 364\\E$"}

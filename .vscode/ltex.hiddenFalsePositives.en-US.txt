@@ -1,0 +1,2 @@
+{"rule":"EN_A_VS_AN","sentence":"^\\QFinally, this is a sentence with an grammar error.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_US","sentence":"^\\QResource Description Use Altium Designer 24 Timeline.\\E$"}
