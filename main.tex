@@ -7,7 +7,7 @@
 \usepackage{pdflscape} % for 'landscape' environment
 \usepackage{rotating}
 \usepackage{tabularx}
-\usepackage{siunitx}
+\usepackage[binary-units]{siunitx}
 \usepackage{pgfgantt}
 \usepackage{float}
 \usepackage{svg}
@@ -15,6 +15,8 @@
 
 \DeclareSIUnit\feet{ft} % Yes I know feet aren't SI unit...
 \DeclareSIUnit\year{y}
+\DeclareSIUnit\gacc{\textit{g}}
+\DeclareSIUnit\baud{bd}
 
 
 \ganttset{calendar week text={\small{\startday/\startmonth}}}
@@ -30,7 +32,7 @@
 % Title
 % \vspace*{3cm}
 % ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING
-{\LARGE\bfseries Evaluation of High-Powered Rockets as a CubeSat Qualification Platform} \\[3cm]
+{\LARGE\bfseries Evaluation of High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
 
 
 
@@ -62,24 +64,44 @@
 
 The CubeSat is a type of small satellite, initially conceived reduce the cost access to space to universities due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cubic form factor. The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}.
 
-Vibration and shock tests are industry standard procedures which aim to emulate launch conditions, however they cannot perfectly replicate them \cite{gordon2015benefits}. Testing of CubeSats on suborbital high-powered rockets (HPR) is a novel qualification method that can potentially replicate launch conditions more accurately than traditional shaker table tests, and therefore better detect issues and improve the likelihood of mission success. While there have been tests of university CubeSats on high-powered rockets \cite{slongo2019pre}, there are no direct comparisons to shaker table tests to evaluate their effectiveness as a qualification method.
+Vibration and shock tests are industry standard procedures which aim to emulate launch conditions, however they cannot perfectly replicate them \cite{gordon2015benefits}. Testing of CubeSats on suborbital high-power rockets (HPR) is a novel qualification method that can potentially replicate launch conditions more accurately than traditional shaker table tests, and therefore better detect issues and improve the likelihood of mission success. While there have been tests of university CubeSats on high-power rockets \cite{slongo2019pre}, there are no direct comparisons to shaker table tests to evaluate their effectiveness as a qualification method.
 
 This paper outlines the construction of a data acquisition system to obtain acceleration data from the HPR launch, the HPR launch and vibration table tests and finally makes a direct comparison of the vibration environment on the HPR launch and vibration table.
 
 
 \section{Acknowledgements}
 
-I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-powered rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). International Space Centre for supporting this project with funding.
+I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). International Space Centre for supporting this project with funding.
 
 
 \newpage
 \tableofcontents
 \newpage
 
+% ask for 2 weeks, 1 before and 1 after exams. put delays, safety, rocket motors, avi. semd to dilusha. maximum results but delayed. new safety.
+
 % TODO: FOR MEETING
-% WHAT WOULD THIS THESIS BE ASSESSED UNDER?
-% IS THERE A LATEX TEMPLATE USED BY MRG?
+% WHAT WOULD THIS THESIS BE ASSESSED UNDER? either would fit. design and build better. TODO: send list of formats.
+% IS THERE A LATEX TEMPLATE USED BY MRG? uwa has a thesis template, if not ask dilusha.
 % I AM WORRIED THIS PROJECT WILL BE ASSESSED TOO MUCH WITH RESULTS AND DISCUSSION WHEN A LOT OF MY CONTENT IS ON THE EXPERIMENTAL DESIGN , IS THIS AN ISSUE?
+% Is it a good idea to break it up into explicitly a methodology section and results section? I am reading this other thesis and they instead broke it up into sections which had results for each, but im not sure how to effectively divide this one since i made two data acquisition systems but only one got thoroughly tested? TODO: one option
+
+%  design of a x to compare a and b would work too. probably the best way. design of an experiment to ... title.
+
+% are schematics useful ? 
+% TODO: QUESTIONS - SHOULD I INCLUDE FREEZER/THERMAL TESTING?
+% TODO: seems like a lot of honors thesis go into way more detail in the headings, what's up with that
+% TODO: is it better to discuss each system as a whole or break it up into subsystems and show the differences as shown above
+% TODO: I am worried this paper will have too much design and not enough data.
+% TODO: How should i include code I used to write data? I noticed other papers broke it off into an algorithms section displaying pseudocode, does it have to be pseudocode?
+% TODO: Is the abstract for the seminar and the thesis the same (in terms of length/content)?
+
+% block diagrams in body, schematics in appendix. put code in git repo, code snippets in body.
+
+% focus on second iteration, but refer to old system top guide new one. or subsystems
+%  systems design what it is wer are doing and what to develop, what criteria
+% experimental design
+% measurements results
 
 % CRITERIA:
 % 10% SCOPE
@@ -110,25 +132,29 @@ I'd like to thank all the people and organisations who have supported me through
 \section{Introduction}
 \subsection{Background}
 % Introduction or Background This provides the reader with the context of the project. For example, what is the application area, why is it important, what (in general terms) has been done before?
-The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a CubeSat with a camera system to obtain plant information. The CubeSat is a type of small satellite, initially conceived reduce the cost access to space to universities due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}. For most single-launch satellites, increased testing is the optimal strategy to minimise failure \cite{bouwmeester2022improving}.
 
-Common CubeSat qualification tests include vibration, shock and thermal vacuum testing \cite{welle2020overview} which are intended to replicate the conditions of launch and space. Vibration and shock tests are an industry standard procedure, however they do not perfectly replicate the conditions at launch \cite{gordon2015benefits}. Testing of CubeSats on suborbital high-powered rockets (HPR) is a novel qualification method that can potentially replicate launch conditions more accurately than established shaker table tests, and therefore better detect issues and improve the likelihood of mission success. This qualification method has only been used on the FloripaSat-I CubeSat on a higher performance suborbital sounding rocket, to complement common qualification tests. MRG will be using standard qualification tests and HPR testing as part of the qualification phase.
+The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a 2U CubeSat to measure the health of vegetation through an infrared camera array. The CubeSat is a type of small satellite designed to reduce the cost of access to space for universities and space startups due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. This CubeSat will launch on an Indian Polar Satellite Launch Vehicle (PSLV) in the PSLV Orbital Experiment module (POEM), which will host multiple CubeSats in orbit and will provide services including power and communications to the CubeSat. 
+
+The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}, which implies a need for novel qualification methods. For most single-launch satellites, increased testing is the optimal strategy to minimise failure \cite{bouwmeester2022improving}. Qualification of the CubeSat is required to maximise mission success and is required by the launch provider to minimise the risk of damage to the launch vehicle or other payloads. The MRG is planning to qualify this CubeSat on a suborbital high-power rocket (HPR) in combination with traditional vibration and shock tests on a single degree of freedom (SDOF) electrodynamic shaker table.
+
+Vibration and shock testing are typical tests for CubeSats which are intended to replicate the conditions of launch \cite{welle2020overview}. Despite their widespread use, SDOF vibration and shock tests do not perfectly replicate the conditions at launch as\cite{gordon2015benefits,nath2022study}:
+\begin{enumerate}
+  \item The peak flight responses are not able to be achieved since a vibration table cannot simulate steady-state thrust forces since they only can simulate dynamic forces \cite{gordon2015benefits}.
+  \item A SDOF test can only excite one axis at a time which is not representative of the launch environment \cite{gordon2015benefits,nath2022study}.
+  \item A vibration table tests a "fixed-base" case which has different modes compared to the case where the satellite is fixed to the launch vehicle \cite{gordon2015benefits}.
+\end{enumerate}
+
+A HPR has a higher total impulse than model rockets but a lower impulse than sounding rockets, with a range of \SI{36}{\newton\second} up to \SI{163840}{\newton\second}, and have a sub-orbital trajectory unlike commercial launch vehicles \cite{pierce2019development}. Suborbital rockets have been used for testing several CubeSats \cite{9316404,minelli2019mobile}, however this qualification method is not in widespread use in the industry.
 
 \subsection{Problem identification}
-% Problem Identification What is the problem that you are trying to solve, or the hypothesis that you are intending 
-% to test? What is your intended contribution to the state of the art?
-Current shock and vibration tests do not perfectly replicate conditions at launch \cite{gordon2015benefits,nath2022study}, which could be one of the factors for high CubeSat mission failure rates. A potential improvement is the use of a high-powered rocket to more accurately emulate launch, which can therefore decrease mission failure rates. However, there are no comparisons between existing shaker table methods and high-powered rocket qualification to properly evaluate whether it will be an improvement over the standard tests.
-
-\subsection{Intended contribution}
 % Problem Identification What is the problem that you are trying to solve, or the hypothesis that you are intending to test? What is your intended contribution to the state of the art?
+For institutions with limited budget, shock and random vibration tests using a SDOF vibration table is the current state of the art (SOTA) method for qualification. HPRs are a potential qualification method which can complement SDOF vibration tests, however there is no prior studies comparing both HPRs and SDOF vibration tests against the qualification level set by the launch provider. If HPRs can produce a vibration environment similar to the qualification level, HPRs may be a useful complement to SDOF vibration tests and may be useful in increasing mission success rates.
 
-This research will achieve two goals. Firstly, it will develop a platform for testing CubeSats on HPRs to identify practical design considerations and issues when developing for HPRs. Secondly, the platform will be also used to measure acceleration data on various parts of the CubeSat during standard testing and during the HPR flight, which will be used to evaluate the effectiveness of the HPR qualification method compared to standard shaker table tests.
-
-% The research will determine if a high-powered rocket is a more accurate representation of the vibration conditions a CubeSat will experience during launch compared to a traditional single-axis vibration and shock testing method.
-
-% TODO: GOAL: 3000 words :((
-
-% This project will design and manufacture a system which provides power and communications to a CubeSat and provides sensors such as accelerometers, temperature and humidity sensors which are required for testing. The system should have the same communication interfaces and power capabilities which the POEM launch platform can provide to a single CubeSat, and should be constructed in a way that it is functionally identical to the POEM launch platform.
+Since HPRs have not been frequently used as a test platform, another issue is the lack of tooling for making HPRs an effective test platform. This research will involve design and evaluation of a combined test and data acquisition platform which:
+\begin{enumerate}
+  \item Measures the vibration response of the rocket on the CubeSat required for evaluating the HPR platform and
+  \item Provides the same power and communications services as the POEM to ensure the payload-under-test has access to the same environment as on launch.
+\end{enumerate}
 
 \section{Literature Review}
 % Literature Review or Previous Work Explain the literature (e.g. refereed research papers) or previous body of work (e.g. previous projects within the research group) on which your investigation is based. This should not simply be a linear account, but rather a synthesis of what is important from what has gone before. It will often be a hierarchical account, moving from a general understanding of the field, to identification and expansion of work that is specifically relevant to your project
@@ -138,34 +164,20 @@ This literature review will cover the current testing methods used in CubeSats, 
 \subsection{Standard satellite qualification methods}
 Satellites undergo a panel of qualification tests to maximise the chance of mission success, and may be required by the launch provider to demonstrate that there is minimal risk of the satellite to the launch vehicle and other payloads which may be present. There are multiple satellite qualification standards, an example is the NASA General Environmental Verification Specification (GEVS) which is a panel of tests including electromagnetic compatibility (EMC), thermal, acoustic and vibration tests that are required for all NASA Goddard Space Flight Center projects \cite{nasa-gevs}. Other standards include ISO-15864, JERG-2-002, NASA-STD-7002A, ECSS-E-ST-10-03C and SMC-S-01 \cite{cho2012overview}. While these standards have flight heritage, being used on many successful payloads, they were designed for medium or large satellites, and therefore fully complying with these standards are out of the budget of most university CubeSat programs \cite{cho2012overview}. While is no widely used test standard for CubeSats currently in use, since most CubeSat projects perform the minimum panel of tests required by the launch provider to minimise cost, there is a de facto minimum series of tests which are random vibration, shock and thermal vacuum testing \cite{welle2020overview}.
 
-% \subsection{Thermal vacuum}
-% Thermal vacuum tests replicate the thermal conditions of space to verify a satellite's operation under these conditions and to check for workmanship issues \cite{brown_elements_2002}.
-
-% A thermal vacuum bakeout creates high temperature, high vacuum conditions which promote outgassing \cite{jiao2019outgassing} - the outgassing products are collected and analysed to ensure it does not damage any payloads or the launch vehicle \cite{nasa-gevs}.
-
-% A thermal vacuum cycle test involves periodically cycling the temperature between low and high to replicate the temperature swings experienced by the satellite as it orbits between the day and night sides \cite{nasa-gevs}. Temperatures may range start between $\SI{-40}{\celsius}$ \cite{bulut2021thermal} and $\SI{-30}{\celsius}$ \cite{mason2018cubesat} and range to up to $\SI{60}{\celsius}$ \cite{mason2018cubesat} to $\SI{80}{\celsius}$ \cite{bulut2021thermal}.
-
-% A thermal vacuum balance test assesses the satellite's thermal performance in thermal equilibrium, in both hot and cold cases \cite{nasa-gevs} and is used to validate the thermal model \cite{bulut2021thermal}.
-
-% % Thermal vacuum tests are routinely performed 
-
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[width=0.75\textwidth]{images/temperature.png}
-%   \caption{Thermal model of a satellite \cite{bulut2021thermal}}
-% \end{figure}
-
-% % TODO: write more shit
 
 \subsection{Vibration}
 Vibrations are experienced by satellites during transportation and loading, and most prominently during launch \cite{brown_elements_2002}. The purpose of vibration testing is to ensure that the satellite will survive transportation and launch conditions, and to find workmanship errors \cite{brown_elements_2002,gordon2015benefits}.
+
+\subsubsection{Welch's method and power spectral density (PSD)}
+
+% TODO:
 
 \subsubsection{Random vibration / sine sweep vibration test}
 In the random vibration test, a uniform vibration spectrum is applied to the satellite which tests all the resonant frequencies of the satellite \cite{nieto2019cubesat}. This range includes frequencies on the magnitude of $\SI{100}{\hertz}$, since higher frequencies couple to the satellite through acoustic means rather than through the structure \cite{gordon2015benefits}. A sine sweep vibration test is similar, but instead of the frequency being randomly sampled it is swept through sequentially from either low to high frequency or vice versa. An example of a random vibration test is shown in figure \ref{fig:random}, where frequencies up to $\SI{100}{\hertz}$ were evaluated, and higher frequencies above $\SI{100}{\hertz}$ were attenuated proportional to frequency.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.75\textwidth]{images/random.png}
+  \includegraphics[width=0.75\textwidth]{images/random-study.png}
   \caption{Random vibration test \cite{nieto2019cubesat}}
   \label{fig:random}
 \end{figure}
@@ -243,8 +255,8 @@ While this study does show the time-domain accelerometer and gyroscope measureme
 
 Another shortcoming of the study is that a shock test using a half-sine pulse was not performed. The use of a sounding rocket is a potential method of qualifying the CubeSat's ability to tolerate shocks since there will be shock events when pyrotechnics are lit to stage the rocket, although the forces will have intensity than on a larger launch vehicle.
 
-\subsubsection{High-powered rockets (HPR)}
-While sounding rockets have a significantly lower cost compared to an orbital-class launch vehicle, they cost \$1 million USD per launch to launch $\SI{200}{\kilo\gram}$ on average \cite{jurist2009commercial}, resulting in a specific cost of \$5000 USD/kg, which is still a large amount for university CubeSat programs. High-powered rockets (HPR) are a lower-performance but cheaper alternative to sounding rockets, which can leverage the design expertise of university rocketry teams while having similar qualification potential as sounding rockets. A single stage level 3 certification rocket can reach altitudes above $\SI{10000}{\feet}$ \cite{canepa2005modern} for a cost of only \$1200 USD \cite{canepa2005modern}. Despite the potential cost benefits, there have not been any published instances of a HPR being used to qualify a CubeSat.
+\subsubsection{High-power rockets (HPR)}
+While sounding rockets have a significantly lower cost compared to an orbital-class launch vehicle, they cost \$1 million USD per launch to launch $\SI{200}{\kilo\gram}$ on average \cite{jurist2009commercial}, resulting in a specific cost of \$5000 USD/kg, which is still a large amount for university CubeSat programs. High-power rockets (HPR) are a lower-performance but cheaper alternative to sounding rockets, which can leverage the design expertise of university rocketry teams while having similar qualification potential as sounding rockets. A single stage level 3 certification rocket can reach altitudes above $\SI{10000}{\feet}$ \cite{canepa2005modern} for a cost of only \$1200 USD \cite{canepa2005modern}. Despite the potential cost benefits, there have not been any published instances of a HPR being used to qualify a CubeSat.
 
 One potential issue with HPRs as a qualification platform for shock is that low explosive black powder is used \cite{canepa2005modern} which has different explosive characteristics, such as a subsonic flame front, compared to the high-explosives used in launch vehicles \cite{bement1995manual} and will therefore produce different shock responses. One study \cite{wang2023numerical} performed finite element analysis of igniters filled with low explosives including aluminium potassium perchlorate and boron potassium nitrate and determined the SRS, shown in figure \ref{fig:lowsrs}. Compared to the SRS of high-explosives in figure \ref{fig:pyroshock}, where at a frequency of 1 kHz the acceleration is over $10^2$ \textit{g} \cite{nasa-pyroshock}, in these low explosive simulations the acceleration at 1 kHz is only $10^1$ \textit{g} \cite{wang2023numerical}. Therefore, it is hypothesised that HPRs will not be useful for shock qualification since the response of low explosives is different from the high explosives used on launch vehicles.
 
@@ -267,9 +279,10 @@ One potential issue with HPRs as a qualification platform for shock is that low 
 %   \item Comparison of the recorded data from the HPR launch and shaker table tests against the parameters given by the launch provider.;
 % \end{enumerate};
 ;
+
 \section{First revision of test and POEM emulation electronics}
 
-The POEM provides services such as tracking, telemetry and command (TT\&C), electrical power system (EPS) and on-board data handling (OBDH) to the CubeSat, therefore these systems are not integrated into the CubeSat under test and must be provided by a separate system on the HPR which emulates the POEM services. The POEM emulator consists of three PCBs: A combined EPS and OBDH board, a tracking board and a telemetry and command board.
+The POEM provides services such as tracking, telemetry and command (TT\&C), electrical power system (EPS) and on-board data handling (OBDH) to the CubeSat, therefore these systems are not integrated into the CubeSat under test and must be provided by a separate system on the HPR which emulates the POEM services. The POEM emulator consists of three PCBs: A combined EPS and OBDH board, a tracking board and a telemetry and command board. This emulation and qualification platform will be referred to as DAQ v1.
 
 \subsection{On-board data handling (OBDH)}
 Two OBDHs are arranged in a dual redundant configuration and are linked to each other via controller area network (CAN) bus. When the hot spare detects that the primary OBDH is outputting bad data or is not responding, the secondary OBDH will take over control of the communications link. This redundancy ensures the likelihood of not obtaining experiment data for this research is minimised. In the best case, this will provide two independent data sources for research. Both OBDHs will still store data to their respective eMMC modules for post-flight analysis.
@@ -298,32 +311,159 @@ The GNSS tracking board contains a standard precision NEO-M9N GNSS receiver and 
 
 The ZED-F9P differential receiver has centimetre-level accuracy and will enable the heading of the rocket to be accurately determined, which is required for this research since the heading may change throughout the flight and this will need to be accounted for when analysing the data since there are 6 DOF, instead of just one in traditional shaker table tests.
 
+\subsection{Drone testing}
+Prior to flight on a HPR the DAQ v1 was tested on a drone. 
+TODO:
+
+\begin{itemize}
+  \item 
+\end{itemize}
+
+\subsection{Results}
+
+One of the objectives of this research is to design a platform for qualification of CubeSats. The first revision of the qualification platform was not used in the final design due to several issues:
+
+\begin{itemize}
+  \item The STM32L476 did not have enough resources to move data from the sensors and camera payload to the payload at an adequate speed. A benchmark using CrystalDiskMark, in figure \ref{tabl:daq-v1-diskmark} shows that the maximum throughput is $\SI{0.84}{\mega\byte\per\second}$, and while only 60\% of the throughput is being used as shown in \ref{tabl:daq-v1-sensor-datarate}, between reading from the data sources and writing to the storage there is not enough resources in practice to do this at an adequate speed, resulting in the maximum sampling rate of the sensors to be limited.
+  \item Due to space limitations on the rocket, it was not possible to have two redundant systems. The next revision would use only one DAQ.
+  \item By the end of this section, it was understood that centimetre level positioning was not required to obtain good results from the camera system.
+  \item At the end of this revision it was concluded that the STM32 platform was not flexible enough to complete the research objectives in time.
+\end{itemize}
+
+\begin{table}[H]
+\centering
+\label{tabl:daq-v1-sensor-datarate}
+\begin{tabular}{|c|c|p{0.6\linewidth}|}
+  Data source & Data rate  & Notes \\ 
+  \hline
+  LSM6DSOX & $\SI{0.41}{\mega\byte\per\second}$ & $16$ byte structs are generated at $\SI{6664}{\hertz}$ for both acceleration and gyroscope data for two sensors.\\
+  ADXL375  & $\SI{0.038}{\mega\byte\per\second}$ & $20$ byte structs generated at $\SI{1}{\kilo\hertz}$ for two sensors.\\
+  Camera  & $\SI{0.054}{\mega\byte\per\second}$ & $\SI{460800}{\baud}$ \\
+  TOTAL   & $\SI{0.502}{\mega\byte\per\second}$ & $60\%$ of maximum sequential write bandwidth.
+\end{tabular}
+\caption{Data sources and their data rates.}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|}
+  Test  & Read [MB/s] & Write [MB/s]\\
+  \hline
+  SEQ1M Q1T1 (1 task, 1 thread)     & 0.84  & 0.84\\
+  % RND4K Q32T1 (32 tasks, 1 thread)  & 0.81  & 0.70\\
+  RND4K Q1T1 (1 task, 1 thread)     & 0.75  & 0.66\\
+\end{tabular}
+\caption{CrystalDiskMark benchmark of DAQ v1.}
+\label{tabl:daq-v1-diskmark}
+\end{table}
+
 \section{Second revision of test and POEM emulation electronics}
+The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.
+
 \subsection{On-board data handling (OBDH)}
+A Raspberry Pi Zero W is used for the OBDH system instead of an eMMC module and STM32L476 since:
+\begin{itemize}
+  \item It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board,
+  \item The Pi Zero W runs an operating system and can be controlled remotely from a PC unlike the STM32, which simplifies development and debugging,
+  \item The write speed of the Pi is larger than the STM32 and eMMC combination. % TODO: benchmark write speed.
+\end{itemize}
+
+While a Raspberry Pi Zero 2W would be preferable due to its multicore design, due to supply chain issues it was only possible to use a Raspberry Pi Zero W.
+
+DAQ v2 does not have two redundant OBDH due to a lack of room.
+
 \subsection{Accelerometers}
+
 \subsection{Electrical power system (EPS)}
+
+DAQ v2 uses a similar EPS design to DAQ v1, 
+
 \subsection{Telemetry and command}
 \subsection{GNSS Tracking}
 
+\section{High-Powered Rocket}
+
+A custom rocket named UNO was designed and built by another project member from scratch, it has a height of 290 cm, diameter of $\SI{16.3}{\centi\meter}$ and a dry mass of $\SI{14.42}{\kilo\gram}$ without a motor. It was designed to fly with an M impulse class motor, however due to changes in United States export regulations it was not possible to obtain this motor in the time of this research, and therefore it was only possible to launch with a K impulse class motor which has about 1/10th of the total impulse of the N motor as shown in table \ref{tabl:impulseclasses}.
+
+\begin{table}[H]
+\centering
+\label{tabl:impulseclasses}
+\begin{tabular}{|c|c|}
+  Total impulse [$\SI{}{\newton\second}$] & Motor impulse class \\
+  \hline
+  160.01 - 320.00         & H \\
+  320.01 - 640.00         & I \\
+  640.01 - 1,280.00       & J \\
+  1,280.01 - 2,560.00     & K \\
+  2,560.01 - 5,120.00     & L \\
+  5,120.01 - 10,240.00    & M \\
+  10,240.01 - 20,560.00   & N \\
+  20,560.01 - 40,960.00   & O \\
+  40,960.01 - 81,920.00   & P \\
+  81,920.01 - 163,840.00  & Q \\
+\end{tabular}
+\caption{Rocket motor impulse classes \cite{nfpa2018}}
+\end{table}
+
+\begin{figure}[H]
+  \includesvg[width=\textwidth]{images/honors-openrocket2.svg}
+  \label{fig:openrocket}
+  \caption{OpenRocket diagram of UNO.}
+\end{figure}
+
+\subsection{Simulation}
+
+The rocket was simulated using OpenRocket \cite{openrocket,niskanen2009}, an open-source simulator which can predict parameters such as stability and acceleration based on empirical methods which use the rocket's shape and basic environment parameters such as constant wind \cite{doi:10.1177/0954410017752730,niskanen2009}. OpenRocket is used to ensure the rocket design is stable throughout launch and flight, which is important to ensuring the CubeSat payload does not become damaged by this qualification method. However, as it uses a simple empirical model of the flight, it was not designed to model the effect of the motor and aerodynamic forces on the vibration environment in the rocket. It also does not simulate pyroshock events, instead modelling parachute deployment events as simple changes in the aerodynamics of the rocket \cite{niskanen2009}.
+
+\subsubsection{Flight profile}
+
+% TODO: Add motot thrust curve or something with more detial.
+As shown in \ref{fig:openrocket-k-launch} the rocket reaches an apogee of \SI{413}{\meter} at \SI{9.74}{\second} and the total flight time is \SI{30}{\second}.
+
+\begin{figure}[H]
+  \includesvg[width=\textwidth]{images/k-ork-vertical.svg}
+  \label{fig:openrocket-k-launch}
+  \caption{Flight profile of UNO using a K1100T motor. Simulated in OpenRocket.}
+\end{figure}
+
+
+\subsubsection{Stability}
+
+As shown in figure \ref{fig:openrocket-k-stability}, the stability is above 2.0 calibres for the coast and launch phase, which is a rule of thumb to ensure the rocket is stable and will not veer off course \cite{canepa2005modern}. The short moment of stability below 2.0 occurs when the rocket reaches apogee, which is not an issue since the parachutes are immediately deployed at this point.
+
+\begin{figure}[H]
+  \includesvg[width=\textwidth]{images/k-ork-stability.svg}
+  \label{fig:openrocket-k-stability}
+  \caption{Stability of UNO using a K1100T motor. Simulated in OpenRocket.}
+\end{figure}
+
+\subsubsection{Acceleration}
+
+As stated, since OpenRocket does not model the vibration environment in the rocket and models the rocket as one solid body, only the acceleration of the whole rocket can be modelled. Pyroshock events are not modelled by OpenRocket. The launch phase lasts only \SI{1.6}{\second} and has a high average acceleration of \SI{5.77}{\gacc}, as shown in \ref{fig:openrocket-k-acceleration}. During the coast phase, the rocket is decelerated by gravity as expected and after parachute deployment the rocket only has a small deceleration force.
+
+\begin{figure}[H]
+  \includesvg[width=\textwidth]{images/k-ork-acceleration.svg}
+  \includesvg[width=\textwidth]{images/k-ork-acceleration-launch.svg}
+  \label{fig:openrocket-k-acceleration}
+  \caption{Acceleration of UNO using a K1100T motor over (top) the whole flight and (bottom) the thrust phase. Simulated in OpenRocket.}
+\end{figure}
+
+
 
 \section{Vibration table testing}
-\subsection{UWA vibration table test setup}
+% \subsection{UWA vibration table test setup}
 \subsection{AVI vibration table test setup}
 
-\section{Rocket tests}
-\subsection{First test with H motor}
-\subsection{Second test with K motor}
+
+
+\section{Rocket test}
+
+% TODO: Put jamir flgiht data here.
 
 \section{Drone tests}
 \subsection{First test}
 \subsection{Second test}
 
-% TODO: QUESTIONS - SHOULD I INCLUDE FREEZER/THERMAL TESTING?
-% TODO: seems like a lot of honors thesis go into way more detail in the headings, what's up with that
-% TODO: is it better to discuss each system as a whole or break it up into subsystems and show the differences as shown above
-% TODO: I am worried this paper will have too much design and not enough data.
-% TODO: How should i include code I used to write data? I noticed other papers broke it off into an algorithms section displaying pseudocode, does it have to be pseudocode?
-% TODO: Is the abstract for the seminar and the thesis the same (in terms of length/content)?
 
 \section{Data collection and analysis}
 
@@ -349,6 +489,12 @@ The boost phase will be compared to the quasi-static acceleration tests on the s
 
 \section{Conclusion}
 \subsection{Future work}
+
+Hardware changes for a future revision of the data acquisition system include:
+
+\begin{itemize}
+  \item Use Raspberry Pi Zero 2W instead of Zero W since it has more cores.
+\end{itemize}
 
 \section{References}
 

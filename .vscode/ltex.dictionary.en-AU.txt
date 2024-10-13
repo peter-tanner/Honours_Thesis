@@ -34,3 +34,10 @@ Ludovico
 Marelich
 Michal
 Zawierta
+SDOF
+SOTA
+Openrocket
+OpenRocket
+pyroshock
+DAQ
+CrystalDiskMark
