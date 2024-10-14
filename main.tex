@@ -7,16 +7,20 @@
 \usepackage{pdflscape} % for 'landscape' environment
 \usepackage{rotating}
 \usepackage{tabularx}
+\usepackage{multirow}
 \usepackage[binary-units]{siunitx}
 \usepackage{pgfgantt}
 \usepackage{float}
 \usepackage{svg}
-\addbibresource{main.bib}
+\bibliography{main.bib,websites.bib} % TODO: MAKE ACCESSED BY note PARAM AND SHIT NORMAL BETWEEN ALL REFERENCES.
 
 \DeclareSIUnit\feet{ft} % Yes I know feet aren't SI unit...
 \DeclareSIUnit\year{y}
 \DeclareSIUnit\gacc{\textit{g}}
+\DeclareSIUnit\siaxis{\text{axis}}
 \DeclareSIUnit\baud{bd}
+\DeclareSIUnit\mmDA{mm\, DA}
+\DeclareSIUnit\octave{oct}
 
 
 \ganttset{calendar week text={\small{\startday/\startmonth}}}
@@ -32,7 +36,7 @@
 % Title
 % \vspace*{3cm}
 % ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING
-{\LARGE\bfseries Evaluation of High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
+{\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
 
 
 
@@ -71,8 +75,9 @@ This paper outlines the construction of a data acquisition system to obtain acce
 
 \section{Acknowledgements}
 
-I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). International Space Centre for supporting this project with funding.
+I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). International Space Centre for supporting this project with funding. 
 
+% TODO: ACKNOWLEDGE ALTIUM DESIGNER?
 
 \newpage
 \tableofcontents
@@ -102,6 +107,10 @@ I'd like to thank all the people and organisations who have supported me through
 %  systems design what it is wer are doing and what to develop, what criteria
 % experimental design
 % measurements results
+
+% TODO: QUESTIONS FOR SECOND MEETING
+% The marking is not based on sections right? Some of my design sections has stuff which is related to results like the actual tests used (modified from the original recommendations due to limitations of our machines), but I did not want to split this to prevent confusion.
+% 
 
 % CRITERIA:
 % 10% SCOPE
@@ -133,7 +142,7 @@ I'd like to thank all the people and organisations who have supported me through
 \subsection{Background}
 % Introduction or Background This provides the reader with the context of the project. For example, what is the application area, why is it important, what (in general terms) has been done before?
 
-The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a 2U CubeSat to measure the health of vegetation through an infrared camera array. The CubeSat is a type of small satellite designed to reduce the cost of access to space for universities and space startups due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. This CubeSat will launch on an Indian Polar Satellite Launch Vehicle (PSLV) in the PSLV Orbital Experiment module (POEM), which will host multiple CubeSats in orbit and will provide services including power and communications to the CubeSat. 
+The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a 2U CubeSat to measure the health of vegetation through an infrared camera array \cite{ludovico2024}. The CubeSat is a type of small satellite designed to reduce the cost of access to space for universities and space startups due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. This CubeSat will launch on an Indian Polar Satellite Launch Vehicle (PSLV) in the PSLV Orbital Experiment module (POEM), which will host multiple CubeSats in orbit and will provide services including power and communications to the CubeSat. 
 
 The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}, which implies a need for novel qualification methods. For most single-launch satellites, increased testing is the optimal strategy to minimise failure \cite{bouwmeester2022improving}. Qualification of the CubeSat is required to maximise mission success and is required by the launch provider to minimise the risk of damage to the launch vehicle or other payloads. The MRG is planning to qualify this CubeSat on a suborbital high-power rocket (HPR) in combination with traditional vibration and shock tests on a single degree of freedom (SDOF) electrodynamic shaker table.
 
@@ -258,6 +267,23 @@ Another shortcoming of the study is that a shock test using a half-sine pulse wa
 \subsubsection{High-power rockets (HPR)}
 While sounding rockets have a significantly lower cost compared to an orbital-class launch vehicle, they cost \$1 million USD per launch to launch $\SI{200}{\kilo\gram}$ on average \cite{jurist2009commercial}, resulting in a specific cost of \$5000 USD/kg, which is still a large amount for university CubeSat programs. High-power rockets (HPR) are a lower-performance but cheaper alternative to sounding rockets, which can leverage the design expertise of university rocketry teams while having similar qualification potential as sounding rockets. A single stage level 3 certification rocket can reach altitudes above $\SI{10000}{\feet}$ \cite{canepa2005modern} for a cost of only \$1200 USD \cite{canepa2005modern}. Despite the potential cost benefits, there have not been any published instances of a HPR being used to qualify a CubeSat.
 
+The typical phases of a HPR launch are
+
+\begin{itemize} % TODO: FIND SOURCES FOR THIS SECTION
+  \item Boost phase: The HPR is being powered by a solid rocket motor. In most HPR launches, this phase only lasts several seconds at maximum.
+  \item Coast phase: After the rocket motor burns out and produces no thrust the rocket coasts up on a ballistic trajectory to the maximum altitude (the apogee).
+  \item Apogee: This is the maximum altitude the rocket will reach. At this point the drogue parachute is deployed, which limits the rocket's descent velocity to a reasonable rate %TODO: WHat?
+  \item Main parachute deployment: At a fixed altitude above ground level the main parachute is deployed. This parachute has a higher surface area than the drogue chute and slows the rocket down to a safe landing velocity. A main parachute should not be deployed at apogee since this would result in the rocket drifting further which complicates recovery efforts.
+  \item Landing: The rocket lands on the ground and is recovered by the rocketry team for safing (disarming of live energetics) and transportation. While the landing occurs minutes after launch, finding the rocket is a harder task and may occur hours after landing.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.75\textwidth]{images/rocket_graphic.svg}
+  \caption{Typical launch of a single stage high-powered rocket}
+  \label{fig:rocket_flight}
+\end{figure}
+
 One potential issue with HPRs as a qualification platform for shock is that low explosive black powder is used \cite{canepa2005modern} which has different explosive characteristics, such as a subsonic flame front, compared to the high-explosives used in launch vehicles \cite{bement1995manual} and will therefore produce different shock responses. One study \cite{wang2023numerical} performed finite element analysis of igniters filled with low explosives including aluminium potassium perchlorate and boron potassium nitrate and determined the SRS, shown in figure \ref{fig:lowsrs}. Compared to the SRS of high-explosives in figure \ref{fig:pyroshock}, where at a frequency of 1 kHz the acceleration is over $10^2$ \textit{g} \cite{nasa-pyroshock}, in these low explosive simulations the acceleration at 1 kHz is only $10^1$ \textit{g} \cite{wang2023numerical}. Therefore, it is hypothesised that HPRs will not be useful for shock qualification since the response of low explosives is different from the high explosives used on launch vehicles.
 
 
@@ -268,17 +294,238 @@ One potential issue with HPRs as a qualification platform for shock is that low 
   \label{fig:lowsrs}
 \end{figure}
 
-;
-% \section{Methodology};
-% % Methodology How you plan to solve the problem or resolve the hypothesis.;
-;
-% The methodology will consist of two phases:;
-;
-% \begin{enumerate};
-%   \item Development and construction of a low-cost POEM emulation system and sensors to measure the vibration and shock on the CubeSat during the HPR launch and shaker table tests, and to ensure recovery of the HPR and CubeSat.;
-%   \item Comparison of the recorded data from the HPR launch and shaker table tests against the parameters given by the launch provider.;
-% \end{enumerate};
-;
+% Project Process – Design Process
+% The design process should be described in sufficient detail to permit readers
+% to understand the approach used to arrive at the final design. This should
+% include;A description of the constraints imposed on the design; Descriptions
+% of any design tools employed; A discussion of the relevant code sections or
+% requirements; A framework for evaluating the success of the resulting design.
+
+\section{Project overview}
+
+
+
+\section{Design constraints}
+The small payload size and recovery sequence of the HPR presents unique constraints for this data acquisition system, which prevented the use of commercial off the shelf (COTS) DAQs and sensors.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|p{0.3\linewidth}|p{0.3\linewidth}|}
+  Constraint &  Definition  & Reason required\\
+  \hline
+  Battery life  & The amount of time (hours) that the DAQ will be active for  & DAQ has to be active through the pre-launch time, launch and for long enough after launch to facilitate tracking of the rocket for recovery. \\
+  Sampling rate & The number of samples the DAQ takes per second of the accelerometer data & Analysis of random vibration and shock data involves constructing a power spectral density plot of the accelerometer data, which requires the DAQ to sample at a frequency greater than twice the plot frequency range. \\
+  Accelerometer range & Accelerometers have a maximum acceleration that can be measured before it saturates at the maximum magnitude. An accelerometer with a high acceleration range is required for high-\textit{g} events such as pyroshock. \\
+  Storage size & The number of bytes available on the DAQ for accelerometer data to be stored. \\
+  Radio link range  & Line-of-sight (LOS) distance in meters that the DAQ must be able to relay data to the ground station  & Drone tests require live image data for positioning purposes. \\
+  Power supply & The amount of voltage and current the DAQ must supply to internal systems and to the camera payload. & The camera payload is built assuming power is provided by the POEM\\
+  Form factor  & Dimensions of the data acquisition system & It must fit inside the CubeSat \\
+  Test Price & The amount of money required to construct the DAQ & \$1500 has been allocated to this part of the project.\\
+  Temperature tolerance & The maximum and minimum temperature the DAQ can operate at & The DAQ will be tested in the same conditions as the camera payload during its temperature tests.\\
+\end{tabular}
+\caption{Design constraints for the DAQ System}
+\label{tabl:design-constraints}
+\end{table}
+
+\section{Design group}
+
+The CubeSat design group was made of Peter Tanner, Jamir Khan and Timothy Ludovico. As shown in figure \ref{fig:cubesat-responsibilities}, each person is working on a unique part of the CubeSat and requires specific information to be communicated.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.75\textwidth]{images/project_hierarchy.svg}
+  \caption{Responsibilities of members on the CubeSat design project and the information required to be communicated between each member.}
+  \label{fig:cubesat-responsibilities}
+\end{figure}
+
+% \begin{table}[H]
+% \centering
+% \begin{tabular}{|c|p|p|}
+%   Person &  Responsibilities & Information required to complete section \\
+%   \hline
+%   Peter Tanner      & Design and build of POEM emulation electronics and data acquisition system  & Jamir: \\
+%   Jamir Khan        & Design and build of HPR and CubeSat body, integration of CubeSat in HPR     & \\
+%   Timothy Ludovico  & Design and build of camera array, integration of optics                     & \\
+% \end{tabular}
+% \caption{Design group responsibilities}
+% \label{tabl:design-group}
+% \end{table}
+
+
+
+\section{Design tools}
+
+\subsection{Altium Designer 24}
+
+Altium Designer is an electronics design automation (EDA) tool which is widely used in industry and has been used for design of CubeSat and space hardware \cite{10061409}. %TODO: wording (personal language?)
+The author chose to use Altium Designer over other EDA tools since they were familiar with this tool having used it in previous projects, which minimises development time.
+
+The design flow in Altium designer is as follows:
+\subsubsection{Schematic editor}
+A circuit is first implemented using schematic symbol representations of components in the schematic editor. In the schematic view the connections between the components are abstracted using net labels and wires. The schematic view does not necessarily represent the physical layout of the PCB but is intended to convey the connections between components in a format that can easily be read.
+
+
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.75\textwidth]{images/altium_schematic_hierarchy_example.svg}
+  \caption{Example of the hierarchical schematic sheet format for the main DAQ PCB.}
+  \label{fig:altium-schematic-hierarchical}
+\end{figure}
+
+A root schematic contains references to other schematics which are abstracted as sheet symbols with ports. Each sheet symbol represents a particular subsystem of the DAQ. The hierarchical sheet symbol representation has several benefits, including that it facilitates reuse of designs and allows larger systems to be decomposed into multiple schematics which are easier to modify and read. This is shown in figure \ref{fig:altium-schematic-hierarchical}.
+
+
+\subsubsection{PCB editor}
+Each schematic symbol is a component which links the symbol to a footprint. The footprint is the physical representation of the component and contains information such as
+\begin{itemize}
+  \item The land pattern, which is the layout of pads or holes required for mounting the component on the PCB,
+  \item The component's 3d model
+\end{itemize}
+
+The PCB editor contains automated design rule check (DRC) tools which is used in the design process to reduce the likelihood of a faulty PCB. The DRC uses rules set in the project and if a rule is violated, it is reported. This feature is used for example to ensure that microwave-frequency tracks have the correct geometry for impedance matching.
+
+\subsubsection{Output jobs}
+Once a PCB is ready to be manufactured, an automated "outjob" ensures that the required design files are automatically generated with the right settings for manufacturing. The files generated include:
+\begin{itemize}
+  \item Bill of materials
+  \item Gerber files
+  \item Drill location files
+  \item Pick-and-place component locations
+\end{itemize}
+
+
+The outjob feature prevents errors such as misconfiguration of output files.
+
+
+\subsection{circuit.js}
+
+Circuit.js is a simple browser-based analog circuit simulator \cite{falstad22falstad}. Circuits in this simulator can be edited and interacted with in real-time, whereas in traditional SPICE simulators the circuit cannot be edited once the simulation starts. Circuit.js uses a numerical method which is prone to error however, therefore this simulator was used for rapid, real-time prototyping of designs. After these designs were finalised they were simulated in traditional SPICE-based simulators.
+
+\subsection{LTspice}
+
+The simulation of components is done using LTspice, a freeware circuit simulator which uses the SPICE method
+
+LTspice was used to the DC-DC boost converter for this project, which was required to power the internal DAQ systems and the payload. A simulation was performed to characterise the ripple voltage and to validate its performance over a range of input voltages. LTspice has been used for simulation of boost converters in the past and is free which makes it a suitable circuit simulator for this project \cite{giesselmann2019modeling}.
+
+Ultimately LTspice was chosen over other freeware SPICE simulators such as PSpice since LTspice contains an "alternate" solver which has less error at the trade-off of simulation time \cite{ltspice2022}. The reduced error results in the solver converging on a solution, whereas in PSpice or in LTspice normal solver mode it was not able to converge on a solution and the simulation could not be completed.
+
+\subsection{SolidWorks 2023}
+SolidWorks is a mechanical CAD software which is used for creating 3d models of the electronics hardware by using the Altium Designer plugin. These 3d models are required for Jamir to complete the mechanical design of the CubeSat and to verify good mounting of the electronic hardware.
+
+\section{Design process}
+
+
+
+\section{Design evaluation framework}
+
+The design evaluation framework will consist of three major types of tests:
+
+\begin{itemize}
+  \item Environmental tests.
+  \subitem Hot and cold temperature testing.
+  \subitem Shaker table.
+  \item Vehicle tests.
+  \subitem Drone.
+  \subitem Rocket.
+  \item Experimental evaluation.
+  \subitem Evaluation of accelerometers.
+\end{itemize}
+
+\subsection{Environmental testing}
+
+%TODO: Make this more obvious earlier on about futrre work
+If this research continues, the DAQ will need to fly with the CubeSat on the PSLV to obtain vibration data that can be directly compared to the rocket and shaker table tests. Therefore, the DAQ will have to go through the same environmental testing campaign as the camera payload. The objective of these tests is to evaluate the resilience of the DAQ in the environment of space and during launch.
+
+\subsubsection{High-temperature test}
+IIST recommends a qualification test where the CubeSat placed in a thermal vacuum chamber for $\SI{2.5}{\hour}$ and is heated to $\SI{70}{\degreeCelsius}$. The CubeSat electronics are turned on and tested during the final $\SI{30}{\minute}$ of the test.
+
+Due to time restrictions it was only possible to do a preliminary high-temperature test with a consumer oven on only the electronics section of the payload (the combined camera and DAQ assembly).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{images/oven_test.jpg}
+  \caption{High-temperature testing setup}
+  \label{fig:temperature-testing-oven}
+\end{figure}
+
+The DAQ was evaluated based on how much time the connection between the DAQ and ground station is lost.
+
+\subsubsection{Low-temperature test}
+IIST recommends a qualification test where the CubeSat is placed into a thermal vacuum chamber for $\SI{2.5}{\hour}$ and is cooled to $\SI{-20}{\degreeCelsius}$. The CubeSat electronics are turned on and tested during the final $\SI{30}{\minute}$ of the test.
+
+Due to time restrictions it was only possible to do a preliminary low-temperature test with a consumer freezer. To prevent condensation from developing on the electronics during the test, which would not occur in the thermal vacuum chamber, the electronics were placed in an airtight bag prior to the test and pressurised with pure nitrogen gas for $\SI{5}{\minute}$ to displace air containing moisture.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.75\textwidth]{images/fridge_test.jpg}
+  \caption{Low-temperature testing setup}
+  \label{fig:temperature-testing-fridge}
+\end{figure}
+
+The DAQ was evaluated based on how much time the connection between the DAQ and ground station is lost.
+
+\subsubsection{Shaker table test}
+IIST recommends that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration, sine-sweep and half-sine shock tests. 
+
+\paragraph{Random vibration}
+
+The IIST recommended qualification level for the random vibration test is specified in table \ref{tabl:random-vibration-profile-iist}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c | c | c | c | c|}
+  \hline
+  \textbf{Frequency ($\si{\hertz}$)} & \textbf{PSD ($\si{\square\gacc\per\hertz}$)} & \textbf{$\si{\gacc}$ (RMS)} & \textbf{Duration ($\si{\second\per\siaxis}$)} & \textbf{Axis} \\ \hline
+  20  & 0.002 & \multirow{5}{*}{13.5} & \multirow{5}{*}{60} & \multirow{5}{*}{Three axes} \\ \cline{1-2}
+  60  & 0.002 &  &  &  \\ \cline{1-2}
+  250 & 0.138 &  &  &  \\ \cline{1-2}
+  1000 & 0.138 &  &  &  \\ \cline{1-2}
+  2000 & 0.034 &  &  &  \\ \hline
+  \end{tabular}
+  \caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM.}
+  \label{tabl:random-vibration-profile-iist}
+\end{table}
+  
+\paragraph{Sine-sweep}
+
+The IIST recommended qualification level for the sine-sweep test is specified in table \ref{tabl:sine-sweep-profile-iist}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|c|}
+  \hline
+  \multicolumn{2}{|c|}{\textbf{Longitudinal}} & \multicolumn{2}{c|}{\textbf{Lateral}} & \multirow{2}{*}{\textbf{Sweep Rate}} & \multirow{2}{*}{\textbf{Axis}} \\ \cline{1-4}
+  \textbf{Frequency} & \textbf{Level} & \textbf{Frequency} & \textbf{Level} &  &  \\ \hline
+  \SIrange{10}{16}{\hertz} & \SI{20}{\mmDA} & \SIrange{10}{16}{\hertz} & \SI{12}{\mmDA} & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+  \SIrange{16}{100}{\hertz} & \SI{10}{\gacc} & \SIrange{16}{100}{\hertz} & \SI{6}{\gacc} & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+  \end{tabular}
+  \caption{Vibration Data: Longitudinal and Lateral Details with Sweep Rate and Axis Merged}
+  \label{tabl:sine-sweep-profile-iist}
+\end{table}
+
+\paragraph{Shock}
+The IIST recommended qualification level for the shock test is specified in table \ref{tabl:shock-test-iist}.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Amplitude} & \textbf{Duration (ms)} & \textbf{Shock profile} & \textbf{Axis} \\ \hline
+\SI{50}{\gacc} & 10 & Half sine & Single-axis shocks, for all three axes \\ \hline
+\end{tabular}
+\caption{IIST recommended shock test profile for qualification of CubeSat for launch on POEM.}
+\label{tabl:shock-test-iist}
+\end{table}
+
+
+
+\subsubsection{Drone test flights}
+\subsubsection{High-powered rocket test flight}
+
+\subsection{Evaluation of accelerometers}
+
+Typical parameters for the evaluation of accelerometers include 
 
 \section{First revision of test and POEM emulation electronics}
 

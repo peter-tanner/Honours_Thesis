@@ -41,3 +41,9 @@ OpenRocket
 pyroshock
 DAQ
 CrystalDiskMark
+Aerotech
+DAQs
+safing
+outjob
+PSpice
+altium

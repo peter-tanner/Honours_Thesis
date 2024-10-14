@@ -7,3 +7,9 @@
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qyear, month=shortname [title height=1.8, title label node/.append style=rotate=90]week [title/.style=opacity=0] 364\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QA HPR has a higher total impulse than model rockets but a lower impulse than sounding rockets, with a range of 36 up to 163840 , and have a sub-orbital trajectory unlike commercial launch vehicles \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"A_INFINITIVE","sentence":"^\\QA Raspberry Pi Zero W is used for the OBDH system instead of an eMMC module and STM32L476 since: It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board, The Pi Zero W runs an operating system unlike the STM32, which simplifies development and debugging, The write speed of the Pi is larger than the STM32 and eMMC combination.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\Qft y g bd\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qft y g bd\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qcircuit.js.\\E$"}
+{"rule":"A_INFINITIVE","sentence":"^\\QA Raspberry Pi Zero W is used for the OBDH system instead of an eMMC module and STM32L476 since: It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board, The Pi Zero W runs an operating system and can be controlled remotely from a PC unlike the STM32, which simplifies development and debugging, The write speed of the Pi is larger than the STM32 and eMMC combination.\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QAs shown in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q the rocket reaches an apogee of 413 at 9.74 and the total flight time is 30 .\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QThe launch phase lasts only 1.6 and has a high average acceleration of 5.77 , as shown in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
