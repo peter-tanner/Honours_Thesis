@@ -38,39 +38,39 @@
 
 \begin{titlepage}
 
-% Center the content
-\begin{center}
+  % Center the content
+  \begin{center}
 
-% Title
-% \vspace*{3cm}
-% ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING
-{\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
+    % Title
+    % \vspace*{3cm}
+    % ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING
+    {\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
 
 
 
-% Author's name
-{\Large Author: Peter Tanner} \\[1cm]
+    % Author's name
+    {\Large Author: Peter Tanner} \\[1cm]
 
-% Supervisor's name
-{\Large Supervisor: Dilusha Silva} \\[2cm] % \\[3cm]
+    % Supervisor's name
+    {\Large Supervisor: Dilusha Silva} \\[2cm] % \\[3cm]
 
-% Degree text
-{\large ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING}
-{\large \textit{This thesis is presented in partial fulfilment of the requirements for the degree of Bachelor of Philosophy
-(Honours) at the University of Western Australia}} \\[1cm]
+    % Degree text
+    {\large ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING}
+    {\large \textit{This thesis is presented in partial fulfilment of the requirements for the degree of Bachelor of Philosophy
+      (Honours) at the University of Western Australia}} \\[1cm]
 
-% Faculty information
-{\large Faculty of Engineering and Mathematical Sciences} \\[3cm]
+    % Faculty information
+    {\large Faculty of Engineering and Mathematical Sciences} \\[3cm]
 
-{\large Word count: TODO:} \\
-{\large Submitted: \today} \\[2cm]
+    {\large Word count: TODO:} \\
+    {\large Submitted: \today} \\[2cm]
 
-\includesvg[width=0.5\textwidth]{images/UWA-logo-dark.svg} \\ 
+    \includesvg[width=0.5\textwidth]{images/UWA-logo-dark.svg} \\
 
-\end{center}
+  \end{center}
 
 \end{titlepage}
-  
+
 \newpage
 \section{Abstract}
 
@@ -83,7 +83,7 @@ This paper outlines the construction of a data acquisition system to obtain acce
 
 \section{Acknowledgements}
 
-I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). Dr. Priyadarshnam Hari and the Indian Institute of Space Science and Technology for providing their launch expertise and opportunity to launch on POEM. International Space Centre for supporting this project with funding. 
+I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). Dr. Priyadarshnam Hari and the Indian Institute of Space Science and Technology for providing their launch expertise and opportunity to launch on POEM. International Space Centre for supporting this project with funding.
 
 % TODO: ACKNOWLEDGE ALTIUM DESIGNER?
 
@@ -150,7 +150,7 @@ I'd like to thank all the people and organisations who have supported me through
 \subsection{Background}
 % Introduction or Background This provides the reader with the context of the project. For example, what is the application area, why is it important, what (in general terms) has been done before?
 
-The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a 2U CubeSat to measure the health of vegetation through an infrared camera array \cite{ludovico2024}. The CubeSat is a type of small satellite designed to reduce the cost of access to space for universities and space startups due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. This CubeSat will launch on an Indian Polar Satellite Launch Vehicle (PSLV) in the PSLV Orbital Experiment module (POEM), which will host multiple CubeSats in orbit and will provide services including power and communications to the CubeSat. 
+The University of Western Australia (UWA) Microelectronics Research Group (MRG) is developing a 2U CubeSat to measure the health of vegetation through an infrared camera array \cite{ludovico2024}. The CubeSat is a type of small satellite designed to reduce the cost of access to space for universities and space startups due to its small and standardised $\SI{10x10x10}{\centi\meter}$ cube form factor. This CubeSat will launch on an Indian Polar Satellite Launch Vehicle (PSLV) in the PSLV Orbital Experiment module (POEM), which will host multiple CubeSats in orbit and will provide services including power and communications to the CubeSat.
 
 The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}, which implies a need for novel qualification methods. For most single-launch satellites, increased testing is the optimal strategy to minimise failure \cite{bouwmeester2022improving}. Qualification of the CubeSat is required to maximise mission success and is required by the launch provider to minimise the risk of damage to the launch vehicle or other payloads. The MRG is planning to qualify this CubeSat on a suborbital high-power rocket (HPR) in combination with traditional vibration and shock tests on a single degree of freedom (SDOF) electrodynamic shaker table.
 
@@ -491,7 +491,7 @@ Commercial off the shelf (COTS) 18650 lithium-ion batteries were chosen due to t
 COTS 18650 lithium-ion batteries were chosen as the energy source for the DAQ. Advantages of this battery format include:
 
 \begin{itemize}
-  \item The 18650 format encases the battery in a rigid metal cylinder which is well-suited for the space environment \cite{knap2020review}. Battery formats which use a flexible pouch, like most lithium-polymer cells, are more prone to outgassing in the vacuum of space \cite{knap2020review}. 
+  \item The 18650 format encases the battery in a rigid metal cylinder which is well-suited for the space environment \cite{knap2020review}. Battery formats which use a flexible pouch, like most lithium-polymer cells, are more prone to outgassing in the vacuum of space \cite{knap2020review}.
   \item Compared to other rechargeable battery solutions such as \ce{Ni}-\ce{Cd} and \ce{Ni}-\ce{H2}, \ce{Li}-ion batteries have improved temperature range, energy density and specific energy and cycle life \cite{pathak2023review}.
   \item COTS \liion batteries are a mature battery format due to widespread use in consumer products \cite{pathak2023review}.
   \item Extensive flight heritage as they have been proven in other CubeSat missions \cite{knap2020review}, and are being used on flagship NASA missions, such as Europa Clipper \cite{krause2021performance}.
@@ -514,26 +514,25 @@ Three batteries were placed in parallel to form a 1S3P battery pack, this config
 \paragraph{Power electronics} Power electronics are used to stabilise the battery voltage, since a \liion battery may have a voltage ranging from \SIrange{4.2}{2.5}{\volt} over one discharge cycle.
 
 \begin{table}[H]
-\centering
-\begin{tabular}{|c|c|c|c|c|}
-  \hline
-  \textbf{Item}  & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
-  \hline
-  Payload-under-test & 5 & 1500 (Max.) & 1 & \\
-  Raspberry Pi Zero W & 5 & & 1 & \\
-  NEO-M9N & 3.3 & & 1 & \\
-  ZED-F9P & 3.3 & & 1 & \\
-  LSM6DSOX & 3.3 & & 2 & \\
-  ADXL375 & 3.3 & & 2 & \\
-  % ADXL375 & 3.3 & & 1 & \\
-  E32-900M30S & 3.3 & & 1 & \\
-  % TODO: RS-485, SC16I750, 
-  \hline
-  % \textbf{Total}  & - & \\
-
-\end{tabular}
-\caption{Operating voltage and current consumption of devices connected to EPC.}
-\label{tabl:epc-power-budget}
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \textbf{Item}       & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
+    \hline
+    Payload-under-test  & 5                             & 1500 (Max.)                                & 1                 &                                       \\
+    Raspberry Pi Zero W & 5                             &                                            & 1                 &                                       \\
+    NEO-M9N             & 3.3                           &                                            & 1                 &                                       \\
+    ZED-F9P             & 3.3                           &                                            & 1                 &                                       \\
+    LSM6DSOX            & 3.3                           &                                            & 2                 &                                       \\
+    ADXL375             & 3.3                           &                                            & 2                 &                                       \\
+    % ADXL375 & 3.3 & & 1 & \\
+    E32-900M30S         & 3.3                           &                                            & 1                 &                                       \\
+    % TODO: RS-485, SC16I750, 
+    \hline
+    % \textbf{Total}  & - & \\
+  \end{tabular}
+  \caption{Operating voltage and current consumption of devices connected to EPC.}
+  \label{tabl:epc-power-budget}
 \end{table}
 
 
@@ -563,13 +562,13 @@ The design evaluation framework will consist of three major types of tests:
 
 \begin{itemize}
   \item Environmental tests.
-  \subitem Hot and cold temperature testing.
-  \subitem Shaker table.
+        \subitem Hot and cold temperature testing.
+        \subitem Shaker table.
   \item Vehicle tests.
-  \subitem Drone.
-  \subitem Rocket.
+        \subitem Drone.
+        \subitem Rocket.
   \item Experimental evaluation.
-  \subitem Evaluation of accelerometers.
+        \subitem Evaluation of accelerometers.
 \end{itemize}
 
 \subsection{Environmental testing}
@@ -609,7 +608,7 @@ The DAQ was evaluated based on how much time the connection between the DAQ and 
 
 \subsubsection{Shaker table test}  \label{sec:shaker-table-test}
 
-IIST recommends that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration, sine-sweep and half-sine shock tests. 
+IIST recommends that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration, sine-sweep and half-sine shock tests.
 
 \paragraph{Random vibration}
 
@@ -618,13 +617,13 @@ The IIST recommended qualification level for the random vibration test is specif
 \begin{table}[t]
   \centering
   \begin{tabular}{|c | c | c | c | c|}
-  \hline
-  \textbf{Frequency ($\si{\hertz}$)} & \textbf{PSD ($\si{\square\gacc\per\hertz}$)} & \textbf{$\si{\gacc}$ (RMS)} & \textbf{Duration ($\si{\second\per\siaxis}$)} & \textbf{Axis} \\ \hline
-  20  & 0.002 & \multirow{5}{*}{13.5} & \multirow{5}{*}{60} & \multirow{5}{*}{Three axes} \\ \cline{1-2}
-  60  & 0.002 &  &  &  \\ \cline{1-2}
-  250 & 0.138 &  &  &  \\ \cline{1-2}
-  1000 & 0.138 &  &  &  \\ \cline{1-2}
-  2000 & 0.034 &  &  &  \\ \hline
+    \hline
+    \textbf{Frequency ($\si{\hertz}$)} & \textbf{PSD ($\si{\square\gacc\per\hertz}$)} & \textbf{$\si{\gacc}$ (RMS)} & \textbf{Duration ($\si{\second\per\siaxis}$)} & \textbf{Axis}               \\ \hline
+    20                                 & 0.002                                        & \multirow{5}{*}{13.5}       & \multirow{5}{*}{60}                           & \multirow{5}{*}{Three axes} \\ \cline{1-2}
+    60                                 & 0.002                                        &                             &                                               &                             \\ \cline{1-2}
+    250                                & 0.138                                        &                             &                                               &                             \\ \cline{1-2}
+    1000                               & 0.138                                        &                             &                                               &                             \\ \cline{1-2}
+    2000                               & 0.034                                        &                             &                                               &                             \\ \hline
   \end{tabular}
   \caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM.}
   \label{tabl:random-vibration-profile-iist}
@@ -632,10 +631,10 @@ The IIST recommended qualification level for the random vibration test is specif
 
 
 \begin{figure}[b]
-\centering
-\includesvg[width=\linewidth]{images/random-qualification-level.svg}
-\label{fig:random-vibration-qualification-level}
-\caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM (profile defined in \ref{tabl:random-vibration-profile-iist}).}
+  \centering
+  \includesvg[width=\linewidth]{images/random-qualification-level.svg}
+  \label{fig:random-vibration-qualification-level}
+  \caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM (profile defined in \ref{tabl:random-vibration-profile-iist}).}
 \end{figure}
 
 This random vibration profile is standard in industry, other launches of satellites on the PSLV use similar vibration profiles.
@@ -643,7 +642,7 @@ This random vibration profile is standard in industry, other launches of satelli
 The IIST recommended random vibration test profile was used without modifications in the final shaker table testing.
 
 % TODO: COMPARE THESE PROFILE TO INDUSTRY STANDARD PROFILES TO BACK THIS UP? SEE EXISTING PAPERS ON PSLV LAUNCH QUALIFICATION
-  
+
 \paragraph{Sine-sweep}
 
 The IIST recommended qualification level for the sine-sweep test is specified in table \ref{tabl:sine-sweep-profile-iist}.
@@ -651,11 +650,11 @@ The IIST recommended qualification level for the sine-sweep test is specified in
 \begin{table}[H]
   \centering
   \begin{tabular}{|c|c|c|c|c|c|}
-  \hline
-  \multicolumn{2}{|c|}{\textbf{Longitudinal}} & \multicolumn{2}{c|}{\textbf{Lateral}} & \multirow{2}{*}{\textbf{Sweep Rate}} & \multirow{2}{*}{\textbf{Axis}} \\ \cline{1-4}
-  \textbf{Frequency} & \textbf{Level} & \textbf{Frequency} & \textbf{Level} &  &  \\ \hline
-  \SIrange{10}{16}{\hertz} & \SI{20}{\mmDA} & \SIrange{10}{16}{\hertz} & \SI{12}{\mmDA} & \SI{4}{\octave\per\minute} & Three axes \\ \hline
-  \SIrange{16}{100}{\hertz} & \SI{10}{\gacc} & \SIrange{16}{100}{\hertz} & \SI{6}{\gacc} & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+    \hline
+    \multicolumn{2}{|c|}{\textbf{Longitudinal}} & \multicolumn{2}{c|}{\textbf{Lateral}} & \multirow{2}{*}{\textbf{Sweep Rate}} & \multirow{2}{*}{\textbf{Axis}}                                           \\ \cline{1-4}
+    \textbf{Frequency}                          & \textbf{Level}                        & \textbf{Frequency}                   & \textbf{Level}                 &                            &            \\ \hline
+    \SIrange{10}{16}{\hertz}                    & \SI{20}{\mmDA}                        & \SIrange{10}{16}{\hertz}             & \SI{12}{\mmDA}                 & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+    \SIrange{16}{100}{\hertz}                   & \SI{10}{\gacc}                        & \SIrange{16}{100}{\hertz}            & \SI{6}{\gacc}                  & \SI{4}{\octave\per\minute} & Three axes \\ \hline
   \end{tabular}
   \caption{Vibration Data: Longitudinal and Lateral Details with Sweep Rate and Axis Merged}
   \label{tabl:sine-sweep-profile-iist}
@@ -665,14 +664,14 @@ The IIST recommended qualification level for the sine-sweep test is specified in
 The IIST recommended qualification level for the shock test is specified in table \ref{tabl:shock-test-iist}.
 
 \begin{table}[H]
-\centering
-\begin{tabular}{|c|c|c|c|}
-\hline
-\textbf{Amplitude} & \textbf{Duration (ms)} & \textbf{Shock profile} & \textbf{Axis} \\ \hline
-\SI{50}{\gacc} & 10 & Half sine & Single-axis shocks, for all three axes \\ \hline
-\end{tabular}
-\caption{IIST recommended shock test profile for qualification of CubeSat for launch on POEM.}
-\label{tabl:shock-test-iist}
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Amplitude} & \textbf{Duration (ms)} & \textbf{Shock profile} & \textbf{Axis}                          \\ \hline
+    \SI{50}{\gacc}     & 10                     & Half sine              & Single-axis shocks, for all three axes \\ \hline
+  \end{tabular}
+  \caption{IIST recommended shock test profile for qualification of CubeSat for launch on POEM.}
+  \label{tabl:shock-test-iist}
 \end{table}
 
 
@@ -695,7 +694,7 @@ The high-power rocket (HPR) test flight is used as an experimental qualification
 
 \subsection{Evaluation of accelerometers}
 
-Typical parameters for the evaluation of accelerometers include 
+Typical parameters for the evaluation of accelerometers include
 
 \section{First revision of test and POEM emulation electronics}
 
@@ -729,11 +728,11 @@ The GNSS tracking board contains a standard precision NEO-M9N GNSS receiver and 
 The ZED-F9P differential receiver has centimetre-level accuracy and will enable the heading of the rocket to be accurately determined, which is required for this research since the heading may change throughout the flight and this will need to be accounted for when analysing the data since there are 6 DOF, instead of just one in traditional shaker table tests.
 
 \subsection{Drone testing}
-Prior to flight on a HPR the DAQ v1 was tested on a drone. 
+Prior to flight on a HPR the DAQ v1 was tested on a drone.
 TODO:
 
 \begin{itemize}
-  \item 
+  \item
 \end{itemize}
 
 \subsection{Results}
@@ -748,30 +747,30 @@ One of the objectives of this research is to design a platform for qualification
 \end{itemize}
 
 \begin{table}[H]
-\centering
-\label{tabl:daq-v1-sensor-datarate}
-\begin{tabular}{|c|c|p{0.6\linewidth}|}
-  Data source & Data rate  & Notes \\ 
-  \hline
-  LSM6DSOX & $\SI{0.41}{\mega\byte\per\second}$ & $16$ byte structs are generated at $\SI{6664}{\hertz}$ for both acceleration and gyroscope data for two sensors.\\
-  ADXL375  & $\SI{0.038}{\mega\byte\per\second}$ & $20$ byte structs generated at $\SI{1}{\kilo\hertz}$ for two sensors.\\
-  Camera  & $\SI{0.054}{\mega\byte\per\second}$ & $\SI{460800}{\baud}$ \\
-  TOTAL   & $\SI{0.502}{\mega\byte\per\second}$ & $60\%$ of maximum sequential write bandwidth.
-\end{tabular}
-\caption{Data sources and their data rates.}
+  \centering
+  \label{tabl:daq-v1-sensor-datarate}
+  \begin{tabular}{|c|c|p{0.6\linewidth}|}
+    Data source & Data rate                           & Notes                                                                                                            \\
+    \hline
+    LSM6DSOX    & $\SI{0.41}{\mega\byte\per\second}$  & $16$ byte structs are generated at $\SI{6664}{\hertz}$ for both acceleration and gyroscope data for two sensors. \\
+    ADXL375     & $\SI{0.038}{\mega\byte\per\second}$ & $20$ byte structs generated at $\SI{1}{\kilo\hertz}$ for two sensors.                                            \\
+    Camera      & $\SI{0.054}{\mega\byte\per\second}$ & $\SI{460800}{\baud}$                                                                                             \\
+    TOTAL       & $\SI{0.502}{\mega\byte\per\second}$ & $60\%$ of maximum sequential write bandwidth.
+  \end{tabular}
+  \caption{Data sources and their data rates.}
 \end{table}
 
 \begin{table}[H]
-\centering
-\begin{tabular}{|c|c|c|}
-  Test  & Read [MB/s] & Write [MB/s]\\
-  \hline
-  SEQ1M Q1T1 (1 task, 1 thread)     & 0.84  & 0.84\\
-  % RND4K Q32T1 (32 tasks, 1 thread)  & 0.81  & 0.70\\
-  RND4K Q1T1 (1 task, 1 thread)     & 0.75  & 0.66\\
-\end{tabular}
-\caption{CrystalDiskMark benchmark of DAQ v1.}
-\label{tabl:daq-v1-diskmark}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    Test                          & Read [MB/s] & Write [MB/s] \\
+    \hline
+    SEQ1M Q1T1 (1 task, 1 thread) & 0.84        & 0.84         \\
+    % RND4K Q32T1 (32 tasks, 1 thread)  & 0.81  & 0.70\\
+    RND4K Q1T1 (1 task, 1 thread) & 0.75        & 0.66         \\
+  \end{tabular}
+  \caption{CrystalDiskMark benchmark of DAQ v1.}
+  \label{tabl:daq-v1-diskmark}
 \end{table}
 
 \section{Second revision of test and POEM emulation electronics}
@@ -793,7 +792,7 @@ DAQ v2 does not have two redundant OBDH due to a lack of room.
 
 \subsection{Electrical power system (EPS)}
 
-DAQ v2 uses a similar EPS design to DAQ v1, 
+DAQ v2 uses a similar EPS design to DAQ v1,
 
 \subsection{Telemetry and command}
 \subsection{GNSS Tracking}
@@ -803,23 +802,23 @@ DAQ v2 uses a similar EPS design to DAQ v1,
 A custom rocket named UNO was designed and built by another project member from scratch, it has a height of 290 cm, diameter of $\SI{16.3}{\centi\meter}$ and a dry mass of $\SI{14.42}{\kilo\gram}$ without a motor. It was designed to fly with an M impulse class motor, however due to changes in United States export regulations it was not possible to obtain this motor in the time of this research, and therefore it was only possible to launch with a K impulse class motor which has about 1/10th of the total impulse of the N motor as shown in table \ref{tabl:impulseclasses}.
 
 \begin{table}[H]
-\centering
-\label{tabl:impulseclasses}
-\begin{tabular}{|c|c|}
-  Total impulse [$\SI{}{\newton\second}$] & Motor impulse class \\
-  \hline
-  160.01 - 320.00         & H \\
-  320.01 - 640.00         & I \\
-  640.01 - 1,280.00       & J \\
-  1,280.01 - 2,560.00     & K \\
-  2,560.01 - 5,120.00     & L \\
-  5,120.01 - 10,240.00    & M \\
-  10,240.01 - 20,560.00   & N \\
-  20,560.01 - 40,960.00   & O \\
-  40,960.01 - 81,920.00   & P \\
-  81,920.01 - 163,840.00  & Q \\
-\end{tabular}
-\caption{Rocket motor impulse classes \cite{nfpa2018}}
+  \centering
+  \label{tabl:impulseclasses}
+  \begin{tabular}{|c|c|}
+    Total impulse [$\SI{}{\newton\second}$] & Motor impulse class \\
+    \hline
+    160.01 - 320.00                         & H                   \\
+    320.01 - 640.00                         & I                   \\
+    640.01 - 1,280.00                       & J                   \\
+    1,280.01 - 2,560.00                     & K                   \\
+    2,560.01 - 5,120.00                     & L                   \\
+    5,120.01 - 10,240.00                    & M                   \\
+    10,240.01 - 20,560.00                   & N                   \\
+    20,560.01 - 40,960.00                   & O                   \\
+    40,960.01 - 81,920.00                   & P                   \\
+    81,920.01 - 163,840.00                  & Q                   \\
+  \end{tabular}
+  \caption{Rocket motor impulse classes \cite{nfpa2018}}
 \end{table}
 
 \begin{figure}[H]
