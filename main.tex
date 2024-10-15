@@ -12,8 +12,12 @@
 \usepackage{pgfgantt}
 \usepackage{float}
 \usepackage{svg}
-\bibliography{main.bib,websites.bib} % TODO: MAKE ACCESSED BY note PARAM AND SHIT NORMAL BETWEEN ALL REFERENCES.
+\usepackage{hyperref}
+\usepackage[version=4]{mhchem}
 
+\bibliography{main.bib,websites.bib,datasheets.bib} % TODO: MAKE ACCESSED BY note PARAM AND SHIT NORMAL BETWEEN ALL REFERENCES.
+
+% Declare custom (Non-si) units
 \DeclareSIUnit\feet{ft} % Yes I know feet aren't SI unit...
 \DeclareSIUnit\year{y}
 \DeclareSIUnit\gacc{\textit{g}}
@@ -22,6 +26,10 @@
 \DeclareSIUnit\mmDA{mm\, DA}
 \DeclareSIUnit\octave{oct}
 
+% https://tex.stackexchange.com/a/121871
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
+
+\newcommand{\liion}{\ce{Li}-ion}
 
 \ganttset{calendar week text={\small{\startday/\startmonth}}}
 
@@ -75,7 +83,7 @@ This paper outlines the construction of a data acquisition system to obtain acce
 
 \section{Acknowledgements}
 
-I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). International Space Centre for supporting this project with funding. 
+I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). Dr. Priyadarshnam Hari and the Indian Institute of Space Science and Technology for providing their launch expertise and opportunity to launch on POEM. International Space Centre for supporting this project with funding. 
 
 % TODO: ACKNOWLEDGE ALTIUM DESIGNER?
 
@@ -153,7 +161,7 @@ Vibration and shock testing are typical tests for CubeSats which are intended to
   \item A vibration table tests a "fixed-base" case which has different modes compared to the case where the satellite is fixed to the launch vehicle \cite{gordon2015benefits}.
 \end{enumerate}
 
-A HPR has a higher total impulse than model rockets but a lower impulse than sounding rockets, with a range of \SI{36}{\newton\second} up to \SI{163840}{\newton\second}, and have a sub-orbital trajectory unlike commercial launch vehicles \cite{pierce2019development}. Suborbital rockets have been used for testing several CubeSats \cite{9316404,minelli2019mobile}, however this qualification method is not in widespread use in the industry.
+A HPR has a higher total impulse than model rockets but a lower impulse than sounding rockets, with a range of \SI{36}{\newton\second} up to \SI{163840}{\newton\second}, and have a sub-orbital trajectory unlike COTS launch vehicles \cite{pierce2019development}. Suborbital rockets have been used for testing several CubeSats \cite{9316404,minelli2019mobile}, however this qualification method is not in widespread use in the industry.
 
 \subsection{Problem identification}
 % Problem Identification What is the problem that you are trying to solve, or the hypothesis that you are intending to test? What is your intended contribution to the state of the art?
@@ -265,7 +273,7 @@ While this study does show the time-domain accelerometer and gyroscope measureme
 Another shortcoming of the study is that a shock test using a half-sine pulse was not performed. The use of a sounding rocket is a potential method of qualifying the CubeSat's ability to tolerate shocks since there will be shock events when pyrotechnics are lit to stage the rocket, although the forces will have intensity than on a larger launch vehicle.
 
 \subsubsection{High-power rockets (HPR)}
-While sounding rockets have a significantly lower cost compared to an orbital-class launch vehicle, they cost \$1 million USD per launch to launch $\SI{200}{\kilo\gram}$ on average \cite{jurist2009commercial}, resulting in a specific cost of \$5000 USD/kg, which is still a large amount for university CubeSat programs. High-power rockets (HPR) are a lower-performance but cheaper alternative to sounding rockets, which can leverage the design expertise of university rocketry teams while having similar qualification potential as sounding rockets. A single stage level 3 certification rocket can reach altitudes above $\SI{10000}{\feet}$ \cite{canepa2005modern} for a cost of only \$1200 USD \cite{canepa2005modern}. Despite the potential cost benefits, there have not been any published instances of a HPR being used to qualify a CubeSat.
+While sounding rockets have a significantly lower cost compared to an orbital-class launch vehicle, they cost \$1 million USD per launch to launch $\SI{200}{\kilo\gram}$ on average \cite{jurist2009COTS}, resulting in a specific cost of \$5000 USD/kg, which is still a large amount for university CubeSat programs. High-power rockets (HPR) are a lower-performance but cheaper alternative to sounding rockets, which can leverage the design expertise of university rocketry teams while having similar qualification potential as sounding rockets. A single stage level 3 certification rocket can reach altitudes above $\SI{10000}{\feet}$ \cite{canepa2005modern} for a cost of only \$1200 USD \cite{canepa2005modern}. Despite the potential cost benefits, there have not been any published instances of a HPR being used to qualify a CubeSat.
 
 The typical phases of a HPR launch are
 
@@ -280,7 +288,7 @@ The typical phases of a HPR launch are
 \begin{figure}[H]
   \centering
   \includesvg[width=0.75\textwidth]{images/rocket_graphic.svg}
-  \caption{Typical launch of a single stage high-powered rocket}
+  \caption{Typical launch of a single stage high-power rocket}
   \label{fig:rocket_flight}
 \end{figure}
 
@@ -305,28 +313,7 @@ One potential issue with HPRs as a qualification platform for shock is that low 
 
 
 
-\section{Design constraints}
-The small payload size and recovery sequence of the HPR presents unique constraints for this data acquisition system, which prevented the use of commercial off the shelf (COTS) DAQs and sensors.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{|c|p{0.3\linewidth}|p{0.3\linewidth}|}
-  Constraint &  Definition  & Reason required\\
-  \hline
-  Battery life  & The amount of time (hours) that the DAQ will be active for  & DAQ has to be active through the pre-launch time, launch and for long enough after launch to facilitate tracking of the rocket for recovery. \\
-  Sampling rate & The number of samples the DAQ takes per second of the accelerometer data & Analysis of random vibration and shock data involves constructing a power spectral density plot of the accelerometer data, which requires the DAQ to sample at a frequency greater than twice the plot frequency range. \\
-  Accelerometer range & Accelerometers have a maximum acceleration that can be measured before it saturates at the maximum magnitude. An accelerometer with a high acceleration range is required for high-\textit{g} events such as pyroshock. \\
-  Storage size & The number of bytes available on the DAQ for accelerometer data to be stored. \\
-  Radio link range  & Line-of-sight (LOS) distance in meters that the DAQ must be able to relay data to the ground station  & Drone tests require live image data for positioning purposes. \\
-  Power supply & The amount of voltage and current the DAQ must supply to internal systems and to the camera payload. & The camera payload is built assuming power is provided by the POEM\\
-  Form factor  & Dimensions of the data acquisition system & It must fit inside the CubeSat \\
-  Test Price & The amount of money required to construct the DAQ & \$1500 has been allocated to this part of the project.\\
-  Temperature tolerance & The maximum and minimum temperature the DAQ can operate at & The DAQ will be tested in the same conditions as the camera payload during its temperature tests.\\
-\end{tabular}
-\caption{Design constraints for the DAQ System}
-\label{tabl:design-constraints}
-\end{table}
-
+% \section{Design constraints}
 \section{Design group}
 
 The CubeSat design group was made of Peter Tanner, Jamir Khan and Timothy Ludovico. As shown in figure \ref{fig:cubesat-responsibilities}, each person is working on a unique part of the CubeSat and requires specific information to be communicated.
@@ -415,7 +402,160 @@ SolidWorks is a mechanical CAD software which is used for creating 3d models of 
 
 \section{Design process}
 
+\subsection{Identification of constraints and requirements}
+\label{sec:constraints-and-requirements}
 
+The beginning of the design process involves identification of constraints and requirements.
+
+The ultimate goal of this testing campaign is to receive at least one image from the camera payload from a drone or HPR flight, and launch on the POEM and receive at least one image from orbit. The POEM will remain in low Earth orbit (LEO) for 6 months \cite{jagdale2023sanket}.
+
+\subsubsection{Electrical power system (EPC) requirements and constraints}
+\paragraph{Battery life} POEM outputs a consistent amount of power to each CubeSat while on orbit due to its solar panels and battery system, however in the tests it will not be possible to deploy a solar panel therefore the DAQ system must have adequate battery life to power the camera payload throughout the length of the test.
+\paragraph{Voltage and current} A requirement of the EPC on the DAQ is to emulate the voltage and current provided by the POEM to one CubeSat to facilitate testing of the camera payload's power electronics. POEM contains a \SI{28}{\volt} and \SI{42}{\volt} bus, however IIST has informed the design team that a \SI{5}{\volt} connection with a maximum current of \SI{1.5}{\ampere} is provided to CubeSats. The EPC will have to emulate at least one of these power busses.
+
+\subsubsection{Environmental requirements}
+It is possible a future version of this payload will fly with the camera payload on POEM to make a direct comparison between the vibration environment on POEM to the conditions on both a HPR and the shaker table tests. Therefore, the DAQ must go through the same qualification campaign as the camera payload.
+
+\paragraph{Shock, random vibration, sine-sweep test pass} The DAQ must remain functional during the vibration environment of the rocket. This means it must pass the IIST recommended qualification procedure, which involves shock, random vibration and sine-sweep tests. These tests are described in more detail in section \fullref{sec:shaker-table-test}.
+
+\paragraph{Cold and hot temperature test pass} The DAQ must be able to survive at temperatures of \SIrange{-20}{80}{\degreeCelsius} as described in section \fullref{sec:htemp-test-framework} and section \fullref{sec:ltemp-test-framework}. This will influence the components that can be used.
+\subsubsection{Physical requirements}
+
+\paragraph{Physical dimensions} The DAQ must have physical dimensions that allow it to fit within the inside space of a 1U CubeSat.
+
+\subsubsection{HPR test requirements}
+
+\paragraph{GNSS tracking} In the original plan, the HPR will launch to a high altitude and may drift away from the launch site. Tracking of the CubeSat will be required to ensure recovery.
+
+\paragraph{Radio link range} One of the key requirements stated was receiving one image from a drone or HPR flight. This requires a stable radio link with a protocol that allows the received image to be recognisable even if the link degrades.
+
+
+\subsection{Parts selection and constraints}
+
+The first part of the design process is to obtain a list of constraints and requirements for the DAQ system, and from these constraints choose appropriate components to achieve the requirements.
+
+The small payload size and recovery sequence of the HPR presents unique constraints for this data acquisition system, which prevented the use of COTS off the shelf (COTS) DAQs and sensors.
+
+\subsubsection{Experimental requirements}
+
+This project in addition to design of a DAQ involves design of an experiment to evaluate both HPR launches and shaker tables as comparable qualification platforms to the IIST recommended qualification level.
+
+\paragraph{Sampling rate} The accelerometers used must be able to sample at twice the frequency bandwidth of the tests. This is to avoid sampling according to the Nyquist criterion.
+
+\paragraph{Maximum measurable acceleration} Pyroshock events and motor launch are high-\textit{g} events that require accelerometers with measurement scales above these events, otherwise they will saturate at the maximum scale.
+
+\subsubsection{Other requirements}
+
+\paragraph{2024 Australian Universities Rocket Competition (AURC) regulations} This payload was intended to fly on the UWA Aerospace rocket \textit{Svengeance} in the AURC 2024 competition, as part of a collaboration with UWA Aerospace. AURC has additional rules for electronics systems, relevant rules include (but not limited to) \cite{ayaa2023specifications}:
+\begin{itemize}
+  \item Lithium-polymer batteries are not allowed (unless using COTS equipment)
+  \item Connectors must have a positive locking mechanism
+  \item Electronics must be mounted using rigid fixing methods
+\end{itemize}
+
+\paragraph{Budget} The cost of the DAQ system must not exceed \$AU 1500.
+
+% \begin{table}[H]
+% \centering
+% \begin{tabular}{|c|p{0.3\linewidth}|p{0.3\linewidth}|}
+%   Constraint &  Definition  & Reason required\\
+%   \hline
+%   Battery life  & The amount of time (hours) that the DAQ will be active for  & DAQ has to be active through the pre-launch time, launch and for long enough after launch to facilitate tracking of the rocket for recovery. \\
+%   Sampling rate & The number of samples the DAQ takes per second of the accelerometer data & Analysis of random vibration and shock data involves constructing a power spectral density plot of the accelerometer data, which requires the DAQ to sample at a frequency greater than twice the plot frequency range. \\
+%   Accelerometer range & Accelerometers have a maximum acceleration that can be measured before it saturates at the maximum magnitude. An accelerometer with a high acceleration range is required for high-\textit{g} events such as pyroshock. \\
+%   Storage size & The number of bytes available on the DAQ for accelerometer data to be stored. \\
+%   Radio link range  & Line-of-sight (LOS) distance in meters that the DAQ must be able to relay data to the ground station  & Drone tests require live image data for positioning purposes. \\
+%   Power supply & The DAQ must be able to provide the same voltage and current as POEM (). & The camera payload is built assuming power is provided by the POEM\\
+%   Form factor  & Dimensions of the data acquisition system & It must fit inside the CubeSat \\
+%   Temperature ruggedness & The DAQ must survive temperatures ranging from \SIrange{-20}{80}{\degreeCelsius} & 
+%   % Test Price & The amount of money required to construct the DAQ & \$1500 has been allocated to this part of the project.\\
+%   % Temperature tolerance & The maximum and minimum temperature the DAQ can operate at & The DAQ will be tested in the same conditions as the camera payload during its temperature tests.\\
+% \end{tabular}
+% \caption{Design constraints for the DAQ System}
+% \label{tabl:design-constraints}
+% \end{table}
+
+\subsection{Selection of components}
+
+The constraints in section \fullref{sec:constraints-and-requirements} will determine the parts that are appropriate for the design.
+
+\paragraph{Battery selection}
+
+Commercial off the shelf (COTS) 18650 lithium-ion batteries were chosen due to the following features:
+
+\begin{itemize}
+  \item H
+  \item High specific energy \cite{krause2021performance}.
+\end{itemize}
+
+COTS 18650 lithium-ion batteries were chosen as the energy source for the DAQ. Advantages of this battery format include:
+
+\begin{itemize}
+  \item The 18650 format encases the battery in a rigid metal cylinder which is well-suited for the space environment \cite{knap2020review}. Battery formats which use a flexible pouch, like most lithium-polymer cells, are more prone to outgassing in the vacuum of space \cite{knap2020review}. 
+  \item Compared to other rechargeable battery solutions such as \ce{Ni}-\ce{Cd} and \ce{Ni}-\ce{H2}, \ce{Li}-ion batteries have improved temperature range, energy density and specific energy and cycle life \cite{pathak2023review}.
+  \item COTS \liion batteries are a mature battery format due to widespread use in consumer products \cite{pathak2023review}.
+  \item Extensive flight heritage as they have been proven in other CubeSat missions \cite{knap2020review}, and are being used on flagship NASA missions, such as Europa Clipper \cite{krause2021performance}.
+  \item Low cost as they are COTS grade and are already produced at scale. % TODO: Citation
+\end{itemize}
+
+% TODO: MOVE TO FINAL DESIGN SECTION
+Manufacturers produce a variety of types of \liion batteries with different chemistries, which affect parameters including internal resistance, discharge and charging temperature range and capacity.
+
+The Samsung INR18650-25R \liion battery was chosen for the DAQ platform due to
+\begin{itemize}
+  \item Previous flight heritage on CubeSats \cite{marcelino2021orbit}.
+  \item Operation over a large temperature range of \SIrange{-20}{75}{\degreeCelsius} and has been proven to be stable at \SI{130}{\degreeCelsius} \cite{samsung2014}.
+  \item Good capacity of \SI{2500}{\milli\ampere\hour} and high maximum discharge rate of \SI{20}{\ampere}.
+\end{itemize}
+
+Three batteries were placed in parallel to form a 1S3P battery pack, this configuration was chosen as it simplifies the charging circuitry by removing the need for cell balancing circuitry that is required for series battery packs, which reduces cost and simplifies the design. Three cells were selected since this %TODO: justify 1S3P capcity.
+% TODO: MOVE TO FINAL DESIGN SECTION
+
+\paragraph{Power electronics} Power electronics are used to stabilise the battery voltage, since a \liion battery may have a voltage ranging from \SIrange{4.2}{2.5}{\volt} over one discharge cycle.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  \textbf{Item}  & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
+  \hline
+  Payload-under-test & 5 & 1500 (Max.) & 1 & \\
+  Raspberry Pi Zero W & 5 & & 1 & \\
+  NEO-M9N & 3.3 & & 1 & \\
+  ZED-F9P & 3.3 & & 1 & \\
+  LSM6DSOX & 3.3 & & 2 & \\
+  ADXL375 & 3.3 & & 2 & \\
+  % ADXL375 & 3.3 & & 1 & \\
+  E32-900M30S & 3.3 & & 1 & \\
+  % TODO: RS-485, SC16I750, 
+  \hline
+  % \textbf{Total}  & - & \\
+
+\end{tabular}
+\caption{Operating voltage and current consumption of devices connected to EPC.}
+\label{tabl:epc-power-budget}
+\end{table}
+
+
+\subsection{Implementation of parts into design}
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.9\textwidth]{images/ecad_workflow.svg}
+  \caption{Workflow for integrating a design into a PCB.}
+  \label{fig:ecad-workflow}
+\end{figure}
+
+% \subsection{Integration testing}
+
+\subsection{Preliminary testing}
+
+These tests were conducted prior to main tests to reduce the risk of failure in main tests and to make a judgement about whether the main test should be conducted or be called off.
+
+\begin{itemize}
+  \item Integration testing with camera system % EXample: Found bugs with communications
+  \item Ground distance testing % Example: resulted in the development of the block-based transmission protocol
+\end{itemize}
 
 \section{Design evaluation framework}
 
@@ -438,6 +578,7 @@ The design evaluation framework will consist of three major types of tests:
 If this research continues, the DAQ will need to fly with the CubeSat on the PSLV to obtain vibration data that can be directly compared to the rocket and shaker table tests. Therefore, the DAQ will have to go through the same environmental testing campaign as the camera payload. The objective of these tests is to evaluate the resilience of the DAQ in the environment of space and during launch.
 
 \subsubsection{High-temperature test}
+\label{sec:htemp-test-framework}
 IIST recommends a qualification test where the CubeSat placed in a thermal vacuum chamber for $\SI{2.5}{\hour}$ and is heated to $\SI{70}{\degreeCelsius}$. The CubeSat electronics are turned on and tested during the final $\SI{30}{\minute}$ of the test.
 
 Due to time restrictions it was only possible to do a preliminary high-temperature test with a consumer oven on only the electronics section of the payload (the combined camera and DAQ assembly).
@@ -452,6 +593,7 @@ Due to time restrictions it was only possible to do a preliminary high-temperatu
 The DAQ was evaluated based on how much time the connection between the DAQ and ground station is lost.
 
 \subsubsection{Low-temperature test}
+\label{sec:ltemp-test-framework}
 IIST recommends a qualification test where the CubeSat is placed into a thermal vacuum chamber for $\SI{2.5}{\hour}$ and is cooled to $\SI{-20}{\degreeCelsius}$. The CubeSat electronics are turned on and tested during the final $\SI{30}{\minute}$ of the test.
 
 Due to time restrictions it was only possible to do a preliminary low-temperature test with a consumer freezer. To prevent condensation from developing on the electronics during the test, which would not occur in the thermal vacuum chamber, the electronics were placed in an airtight bag prior to the test and pressurised with pure nitrogen gas for $\SI{5}{\minute}$ to displace air containing moisture.
@@ -465,14 +607,15 @@ Due to time restrictions it was only possible to do a preliminary low-temperatur
 
 The DAQ was evaluated based on how much time the connection between the DAQ and ground station is lost.
 
-\subsubsection{Shaker table test}
+\subsubsection{Shaker table test}  \label{sec:shaker-table-test}
+
 IIST recommends that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration, sine-sweep and half-sine shock tests. 
 
 \paragraph{Random vibration}
 
 The IIST recommended qualification level for the random vibration test is specified in table \ref{tabl:random-vibration-profile-iist}.
 
-\begin{table}[H]
+\begin{table}[t]
   \centering
   \begin{tabular}{|c | c | c | c | c|}
   \hline
@@ -486,6 +629,20 @@ The IIST recommended qualification level for the random vibration test is specif
   \caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM.}
   \label{tabl:random-vibration-profile-iist}
 \end{table}
+
+
+\begin{figure}[b]
+\centering
+\includesvg[width=\linewidth]{images/random-qualification-level.svg}
+\label{fig:random-vibration-qualification-level}
+\caption{IIST recommended random vibration test profile for qualification of CubeSat for launch on POEM (profile defined in \ref{tabl:random-vibration-profile-iist}).}
+\end{figure}
+
+This random vibration profile is standard in industry, other launches of satellites on the PSLV use similar vibration profiles.
+
+The IIST recommended random vibration test profile was used without modifications in the final shaker table testing.
+
+% TODO: COMPARE THESE PROFILE TO INDUSTRY STANDARD PROFILES TO BACK THIS UP? SEE EXISTING PAPERS ON PSLV LAUNCH QUALIFICATION
   
 \paragraph{Sine-sweep}
 
@@ -521,7 +678,20 @@ The IIST recommended qualification level for the shock test is specified in tabl
 
 
 \subsubsection{Drone test flights}
-\subsubsection{High-powered rocket test flight}
+
+Drone tests were used as a qualification platform for the HPR launch since drone tests:
+
+\begin{enumerate}
+  \item Use the expertise of the UWA Aviation Laboratory, which is participating in the project.
+  \item Are repeatable, whereas the rocket test can only feasibly be done once per launch season.
+  \item Have greater control over the position compared to the suborbital rocket launch and will better qualify the machine vision algorithms.
+\end{enumerate}
+
+The drone test evaluates the communications between the camera payload and the communications downlink stability in real time. A successful test involves receiving at least one frame from the camera payload at a reasonable quality.
+
+\subsubsection{High-power rocket test flight}
+
+The high-power rocket (HPR) test flight is used as an experimental qualification method for the CubeSat. This DAQ system is used to evaluate the effectiveness of the HPR flight by using accelerometers, but the HPR flight also serves as a milestone for evaluating the effectiveness of this DAQ for this type of application.
 
 \subsection{Evaluation of accelerometers}
 
@@ -628,7 +798,7 @@ DAQ v2 uses a similar EPS design to DAQ v1,
 \subsection{Telemetry and command}
 \subsection{GNSS Tracking}
 
-\section{High-Powered Rocket}
+\section{High-Power Rocket}
 
 A custom rocket named UNO was designed and built by another project member from scratch, it has a height of 290 cm, diameter of $\SI{16.3}{\centi\meter}$ and a dry mass of $\SI{14.42}{\kilo\gram}$ without a motor. It was designed to fly with an M impulse class motor, however due to changes in United States export regulations it was not possible to obtain this motor in the time of this research, and therefore it was only possible to launch with a K impulse class motor which has about 1/10th of the total impulse of the N motor as shown in table \ref{tabl:impulseclasses}.
 
