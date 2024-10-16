@@ -3,6 +3,7 @@
 \usepackage{amsmath,amsfonts}
 \usepackage{geometry}
 \usepackage{bm}
+\usepackage{bytefield}
 \usepackage{longtable} % for 'longtable' environment
 \usepackage{pdflscape} % for 'landscape' environment
 \usepackage{rotating}
@@ -12,6 +13,7 @@
 \usepackage{pgfgantt}
 \usepackage{float}
 \usepackage{svg}
+\usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage[version=4]{mhchem}
 
@@ -127,6 +129,8 @@ I'd like to thank all the people and organisations who have supported me through
 
 % TODO: QUESTIONS FOR SECOND MEETING
 % The marking is not based on sections right? Some of my design sections has stuff which is related to results like the actual tests used (modified from the original recommendations due to limitations of our machines), but I did not want to split this to prevent confusion.
+% It might be better to ask for two weeks in a row, i doubt they would give basically 4 weeks. not sure if i can take the risk this close to the due date.
+% What would be the best time or way to get some feedback, is it possible to have two meetings next week since it will probably be the last before submitting?
 % 
 
 % CRITERIA:
@@ -737,11 +741,13 @@ After the PCB design is finished, an automatic design rule check (DRC) is run to
 
 After receiving the boards from JLCPCB, some basic tests are conducted (such as ensuring that voltage domains and ground are not short-circuited). After this, additional components are manually assembled either using hot-air or a soldering iron. After soldering, the manual solder joints are inspected to ensure they are not cold joints, and the boards are again tested for short-circuits.
 
-\paragraph{Programming}
+\paragraph{Software development process}
 
 The Raspbian OS is flashed on to an SD card with settings to allow the Pi Zero to connect to a local Wi-Fi network. An external computer is used to connect to the Pi's secure shell (\ssh) server and log into the Pi. After this, the USB Ethernet gadget is configured on the Pi and host computer sides which allows the host computer to \ssh into Pi without needing a Wi-Fi network, which will be useful for field debugging.
 
 A combination of Python scripts and C programs were used for different parts of the DAQ. Python is used for tasks which do not require many system calls and do not require high optimisation, such as transferring data from the payload to the radio. The advantage of Python for these tasks is speed of development.  Some tasks, such as reading data from the accelerometers, require many system calls and has considerable performance impact when using Python. For these tasks, a program is written in C and compiled on the Pi Zero. C has less overhead compared to Python as it is a compiled directly to ARM assembly, whereas Python is interpreted to an intermediate representation which is executed by the Python virtual machine which adds overhead.
+
+A Samba server was set up on the Pi Zero to allow code developed from a PC to be copied over to the Pi, and to allow an integrated development environment on the PC to access libraries and headers present on the Pi Zero.
 
 \subsection{Preliminary testing}
 
@@ -749,7 +755,7 @@ Several preliminary tests were conducted to test the
 
 \begin{itemize}
   \item Integration testing with camera system % EXample: Found bugs with communications
-  \item Ground distance testing % Example: resulted in the development of the block-based transmission protocol
+  \item Ground distance testing % Example: resulted in the development of the chunk transmission protocol
 \end{itemize}
 
 \section{Design evaluation framework}
@@ -969,29 +975,215 @@ One of the objectives of this research is to design a platform for qualification
   \label{tabl:daq-v1-diskmark}
 \end{table}
 
-\section{Second revision of test and POEM emulation electronics}
-The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.
+\section{Final design of DAQ system}
 
-\subsection{On-board data handling (OBDH)}
-A Pi Zero is used for the OBDH system instead of an eMMC module and STM32L476 since:
-\begin{itemize}
-  \item It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board,
-  \item The Pi Zero W runs an operating system and can be controlled remotely from a PC unlike the STM32, which simplifies development and debugging,
-  \item The write speed of the Pi is larger than the STM32 and eMMC combination. % TODO: benchmark write speed.
-\end{itemize}
+\subsection{Power electronics}
 
-While a Raspberry Pi Zero 2W would be preferable due to its multicore design, due to supply chain issues it was only possible to use a Pi Zero.
+\paragraph{Subsystem design and simulation}
 
-DAQ v2 does not have two redundant OBDH due to a lack of room.
+The TPS61022 boost converter is used in the final design to convert the battery voltage to a stable \SI{5}{\volt} output. The datasheet contains a reference design (Figure 8-1) which is specified for an input voltage of \SIrange{2.7}{4.35}{\volt}, output voltage of \SI{5}{\volt} and output current of \SI{3}{\ampere}, which matches the operating conditions of this subsystem \cite{ti2021tps61022}.
 
-\subsection{Accelerometers}
+The inductor selected for the converter subsystem is the ASPI-0630HI-1R0M-T15, which is a \SI{1}{\micro\henry} coil with a low DC resistance of \SI{10}{\milli\ohm}. The coil has a saturation current of \SI{20.5}{\ampere} which is above the \SI{8}{\ampere} maximum switching current. To make manufacturing simpler, the voltage divider was changed from $R_1=\SI{732}{\kilo\ohm}$ and $R_2=\SI{100}{\kilo\ohm}$ to use $R_1=\SI{750}{\kilo\ohm}$ and $R_2=\SI{100}{\kilo\ohm}+\SI{2}{\kilo\ohm}$ since these resistor values are available on JLCPCB.  A \SI{1}{\pico\farad} compensation capacitor was also added. To evaluate the effects of these choices, the converter was simulated in LTspice with a single fully charged lithium-ion battery as the input.
 
-\subsection{Electrical power system (EPS)}
+\begin{figure}[H]
+  \centering
+  \includegraphics[trim=0 8.5cm 0 8cm, clip, width=\linewidth]{images/TPS61022-simulation.pdf}
+  \caption{LTspice schematic representation of TPS61022.}
+  \label{fig:TPS61022-schematic-ltspice}
+\end{figure}
 
-DAQ v2 uses a similar EPS design to DAQ v1,
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[trim=0 0.5cm 0 0, clip, width=\linewidth]{images/TPS61022-simulation-plot.pdf}
+    \caption{Startup and steady-state behaviour.}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[trim=0 0.5cm 0 0, clip, width=\linewidth]{images/TPS61022-simulation-plot-overshoot.pdf}
+    \caption{Close-up of startup transient and steady-state behaviour.}
+  \end{subfigure}
+  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.)}
+  \label{fig:TPS61022-simulation-ltspice}
+\end{figure}
 
-\subsection{Telemetry and command}
-\subsection{GNSS Tracking}
+As shown in figure \ref{fig:TPS61022-simulation-ltspice}, during startup there is a small voltage overshoot of \SI{0.06}{\volt} but this is negligible and well within the tolerance of the components. The steady-state output voltage has a mean of \SI{5.006}{\volt} and a peak to peak ripple voltage of \SI{7}{\milli\volt}, or a ripple of 0.15\%, which is more than adequate for this application since it is mainly digital logic.
+
+The simulation also shows that the power system will work up to \SI{3}{\ampere}, which is the output current required to emulate the power capabilities of POEM. Two TPS61022 boost converters will be used in the final design: one will be dedicated for the payload-under-test, and the other will power the DAQ system. This allows the payload to be able to receive the maximum current able to be provided by POEM, and also isolates failures in either system from affecting the other.
+
+The 1S3P battery pack was mounted on the reverse side of the PCB due to the amount of space it consumes, as shown in figure \ref{fig:batteries-pcb}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{images/batteries_PCB.png}
+  \label{fig:batteries-pcb}
+  \caption{Battery mounting on reverse side of DAQ PCB.}
+\end{figure}
+
+The battery pack can be charged by connecting \SI{5}{\volt} power to a charging terminal block. Two \SI{1}{\ampere} TP4056 linear \liion battery chargers were connected in parallel to the battery pack to allow a maximum charging current of \SI{2}{\ampere}.
+
+\paragraph{Integration into DAQ system}
+
+A single schematic was created for the TPS61022 based off the successful LTspice simulation and instantiated twice in the root schematic. A PCB layout based on Figure 10-1 from the datasheet was used and is shown in figure \ref{fig:TPS61022-layout} \cite{ti2021tps61022}.
+
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includesvg[width=\linewidth]{images/TPS61022-reference-layout.svg}
+    \caption{Reference PCB layout \cite{ti2021tps61022}.}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/TPS61022-pcb-layout.svg.png}
+    \caption{PCB layout implemented in DAQ system.}
+  \end{subfigure}
+  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.)}
+  \label{fig:TPS61022-layout}
+\end{figure}
+
+A schematic was also created for the TP4056 linear charger, and instantiated twice.
+
+\subsection{Camera communications interface and camera data downlink}
+
+\paragraph{Connector}
+The final design of the camera payload interface uses a DE-9 connector. This was chosen due to its low cost and ability to be secured using bolts instead of by friction alone. The pinout of the connector is shown in figure \ref{fig:de-9-connector}. The RS-485, power and ground lines are duplicated for redundancy.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{images/de-9-connector.pdf}
+  \label{fig:de-9-connector}
+  \caption{Pinout of DE-9 connector.}
+\end{figure}
+
+A female DE-9 connector is soldered to the DAQ, a male solder cup DE-9 terminal is soldered to 22 AWG copper cable to form the wire harness to the camera payload.
+
+\paragraph{RS-485 receiver}
+The SP3485EN-L/TR RS-485 transceiver is used to convert the RS-485 signalling to single-ended UART. The transceiver is fixed in receive mode since there is no way for the POEM to send data to the payload. The transceiver contains a \SI{120}{\ohm} d.c. termination as this is the end of the RS-485 bus, the resistor is sized to handle the power dissipation of a \SI{5}{\volt} RS-485 bus. The receiver contains a PSM712-LF-T7 transient voltage suppressor (TVS) diode array, which is designed to prevent the transceiver from being damaged by electrostatic discharge (ESD) due to manual handling of the connector.
+
+\paragraph{Transport layer}
+The camera payload communicates with the DAQ through UART at the transport layer. The settings in table \ref{tabl:uart-settings} were agreed upon and are used on both the payload and DAQ sides:
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|p{0.6\linewidth}|}
+    \hline
+    \textbf{Attribute} & \textbf{Value}    & \textbf{Note}                                                                                                                                                                                           \\
+    \hline
+    Speed              & \SI{57600}{\baud} & This is significantly more than the \SI{5000}{\baud} connection provided by POEM, but the drone and HPR tests have limited time and require faster transmission to receive any picture during the test. \\
+    Data bits          & 8                 &                                                                                                                                                                                                         \\
+    Stop bits          & 1                 &                                                                                                                                                                                                         \\
+    Parity             & None              &                                                                                                                                                                                                         \\
+    Flow control       & None              & This is a one-way connection, so software flow control is not possible.                                                                                                                                 \\
+    \hline
+  \end{tabular}
+  \caption{UART settings.}
+  \label{tabl:uart-settings}
+\end{table}
+
+
+\paragraph{Presentation layer}
+
+Several simple formats are used in the presentation layer for this project. The data stream may contain either messages or image data.
+
+Messages consist of a header, the message data of a variable length and an end of message marker as shown in figure \ref{fig:message-bytefield}. The header is sufficiently long and unique that it should not appear in the image data stream. Since messages are not often transmitted, this overhead is acceptable.
+
+\begin{figure}[H]
+  \centering
+  \begin{bytefield}[bitwidth=0.4em]{80}
+    \bitheader{0,79} \\
+    \wordbox[lrt]{2}{Start of message: \texttt{\{0x59,0x43,0x05,0x94,0x30,0x59,0x43,0x05,0x94,0x30\}}} \\
+    \wordbox[lrt]{1}{Message data, variable length} \\
+    \skippedwords \\
+    \wordbox[lrb]{1}{} \\
+    \wordbox[lrb]{2}{End of message: \texttt{\{0x59,0x43,0x05,0x94,0x30,0x59,0x43,0x05,0x94,0x30\}}}
+  \end{bytefield}
+  \caption{Message structure.}
+  \label{fig:message-bytefield}
+\end{figure}
+
+A chunk protocol is used for the transmission of images in the final design. A preliminary design simply sequentially transmitted each byte of the image, which was adequate when the radio was placed close to each other ($>\SI{10}{\meter}$). However, when testing past this range and at any significant distance, the errors caused the received image to become unrecognisable. The type of error observed consists of contiguous bytes being lost occasionally, rather than frequent corruption of individual bytes.
+
+A chunk protocol was effective against this type of error while being simple to implement. It involves adding a header to signify the start of a chunk, followed by the chunk number and 400 bytes of pixel data as shown in \ref{fig:image-chunk-bytefield}. A \SI{1600x1200}{} pixel image where each pixel is repesented by one byte requires 4800 chunks to be sent in this implementation. The number of bytes per chunk is a tradeoff between pixels lost per error and effective data rate.
+
+A start of chunk marker of \texttt{\{0x00, 0xFF, 0x00, 0xFF\}} was chosen since the image data being transmitted are raw pixels, and it is unlikely for the image to contain pixels that are full or zero intensity, and even more unlikely for them to be adjacent to each other.
+
+When an error occurs causing a string of bytes to be dropped, it causes the next chunk to not be encountered after 400 bytes. When this error occurs, the receiver searches for the next occurrence of the header and restarts receiving from that point. The chunks which were skipped have their pixels filled in the received image to prevent the error causing the image to become unrecognisable.
+
+
+\begin{figure}[H]
+  \centering
+  \begin{bytefield}[bitwidth=0.4em]{64}
+    \bitheader{0,31,47} \\
+    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 0} & \bitbox[tr]{16}{}\\
+    \wordbox[lr]{1}{Greyscale pixel data, 400 bytes, 1 byte per pixel.} \\
+    \skippedwords \\
+    \wordbox[lrb]{1}{} \\
+    \wordbox[]{1}{$\vdots$} \\[1ex]
+    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 4799} & \bitbox[tr]{16}{}\\
+    \wordbox[lr]{1}{Greyscale pixel data, 400 bytes, 1 byte per pixel.} \\
+    \skippedwords \\
+    \wordbox[lrb]{1}{} \\
+  \end{bytefield}
+  \caption{Image chunk protocol.}
+  \label{fig:image-chunk-bytefield}
+\end{figure}
+
+\paragraph{Software}
+
+A Python script was created which:
+
+\begin{enumerate}
+  \item Opens the serial port \texttt{/dev/serial0} with the settings described in table \ref{tabl:uart-settings}.
+  \item Create and open a log file with a unique filename to dump the received bytes from the camera payload.
+  \item Periodically read a block of 2048 from the UART receive buffer and write the block to the file and UART output.
+  \item Every 3 seconds write a message to the UART output containing the current system time, the script's uptime and the number of UART errors.
+\end{enumerate}
+
+This Python script is managed by a \texttt{systemd} service which reboots the script if it crashes.
+
+\subsubsection{Accelerometers}
+
+\paragraph{Accelerometer PCB}
+
+The accelerometer PCB (shown in figure \ref{fig:accelerometers-pcb}) will contain both the ADXL375 and LSM6DSOX accelerometers and mount them to the chassis.
+
+To maximise the resonant frequency of the assembly, the PCB is mounted on its flat side to the chassis and is fixed with four bolts on each corner. Additionally, the dimensions of the PCB was minimised to \SI{22x22}{\milli\metre}, which is the minimum dimension that can fit all components. Maximising the resonant frequency past the sampling frequency will minimise distortion of the response.
+
+The PCB exposes one interrupt and chip select pin for each accelerometer, an SPI connection and \SI{3.3}{\volt} power bus.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{images/Accelerometers_PCB.png}
+  \caption{Accelerometer PCB.}
+  \label{fig:accelerometers-pcb}
+\end{figure}
+
+\subsubsection{LSM6DSOX DAQ}
+\subsubsection{ADXL375 DAQ}
+\subsubsection{}
+\subsubsection{Downlink}
+
+% The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.
+
+% \subsection{On-board data handling (OBDH)}
+% A Pi Zero is used for the OBDH system instead of an eMMC module and STM32L476 since:
+% \begin{itemize}
+%   \item It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board,
+%   \item The Pi Zero W runs an operating system and can be controlled remotely from a PC unlike the STM32, which simplifies development and debugging,
+%   \item The write speed of the Pi is larger than the STM32 and eMMC combination. % TODO: benchmark write speed.
+% \end{itemize}
+
+% While a Raspberry Pi Zero 2W would be preferable due to its multicore design, due to supply chain issues it was only possible to use a Pi Zero.
+
+% DAQ v2 does not have two redundant OBDH due to a lack of room.
+
+% \subsection{Accelerometers}
+
+% \subsection{Electrical power system (EPS)}
+
+% DAQ v2 uses a similar EPS design to DAQ v1,
+
+% \subsection{Telemetry and command}
+% \subsection{GNSS Tracking}
 
 \section{High-Power Rocket}
 
@@ -1107,6 +1299,9 @@ Hardware changes for a future revision of the data acquisition system include:
 \begin{itemize}
   \item Use Raspberry Pi Zero 2W instead of Zero W since it has more cores.
   \item Machine a heatsink to connect all chips on the Pi Zero module to the chassis or heatsink to ensure better thermal performance \cite{guertin2022raspberry}.
+  \item Power switch should be through a resistor to prevent case where battery short circuit causes wire fire.
+  \item Batteries should be spot welded to tabs that are soldered fixed to the PCB to make pack resistant to random vibration.
+  \item Investigate the use of fault-tolerant compression algorithms for the downlink. % TODO: is this in my scope or the camera scope???
 \end{itemize}
 
 \section{References}
