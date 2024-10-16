@@ -58,3 +58,8 @@ LIPD
 JLCPCB
 DigiKey
 realtime
+STMicroelectronics
+u-blox
+ICs
+stackup
+stackups

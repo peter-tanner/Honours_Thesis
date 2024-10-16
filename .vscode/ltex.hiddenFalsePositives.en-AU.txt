@@ -15,3 +15,5 @@
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QThe launch phase lasts only 1.6 and has a high average acceleration of 5.77 , as shown in \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"POSSESSIVE_APOSTROPHE","sentence":"^\\QThe use of the FHSS allows the RFD900x to transmit at the maximum power of 1 that is allowable by the class license under the frequency hopping transmitters section \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q.\\E$"}
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QThe modem also contains a temperature range of -40 85 , which satisfies the range of temperatures required to pass the temperature testing.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_AU","sentence":"^\\QThe DAQ system must be able to track the HPR throughout the full launch to enable recovery as stated in section sec:hpr-test-req.\\E$"}
+{"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QAfter soldering, the manual solder joints are inspected to ensure they are not cold joints, and the boards are again tested for short-circuits.\\E$"}
