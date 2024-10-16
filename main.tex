@@ -30,6 +30,7 @@
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
 
 \newcommand{\liion}{\ce{Li}-ion}
+\newcommand{\aud}{A\$}
 
 \ganttset{calendar week text={\small{\startday/\startmonth}}}
 
@@ -154,7 +155,7 @@ The University of Western Australia (UWA) Microelectronics Research Group (MRG) 
 
 The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has not increased significantly since 2018, levelling off at 75\% \cite{welle2020overview,bouwmeester2022improving}, which implies a need for novel qualification methods. For most single-launch satellites, increased testing is the optimal strategy to minimise failure \cite{bouwmeester2022improving}. Qualification of the CubeSat is required to maximise mission success and is required by the launch provider to minimise the risk of damage to the launch vehicle or other payloads. The MRG is planning to qualify this CubeSat on a suborbital high-power rocket (HPR) in combination with traditional vibration and shock tests on a single degree of freedom (SDOF) electrodynamic shaker table.
 
-Vibration and shock testing are typical tests for CubeSats which are intended to replicate the conditions of launch \cite{welle2020overview}. Despite their widespread use, SDOF vibration and shock tests do not perfectly replicate the conditions at launch as\cite{gordon2015benefits,nath2022study}:
+Vibration and shock testing are typical tests for CubeSats which are intended to replicate the conditions of launch \cite{welle2020overview}. Despite their widespread use, SDOF vibration and shock tests do not perfectly replicate the conditions at launch as \cite{gordon2015benefits,nath2022study}:
 \begin{enumerate}
   \item The peak flight responses are not able to be achieved since a vibration table cannot simulate steady-state thrust forces since they only can simulate dynamic forces \cite{gordon2015benefits}.
   \item A SDOF test can only excite one axis at a time which is not representative of the launch environment \cite{gordon2015benefits,nath2022study}.
@@ -411,7 +412,7 @@ The ultimate goal of this testing campaign is to receive at least one image from
 
 \subsubsection{Electrical power system (EPC) requirements and constraints}
 \paragraph{Battery life} POEM outputs a consistent amount of power to each CubeSat while on orbit due to its solar panels and battery system, however in the tests it will not be possible to deploy a solar panel therefore the DAQ system must have adequate battery life to power the camera payload throughout the length of the test.
-\paragraph{Voltage and current} A requirement of the EPC on the DAQ is to emulate the voltage and current provided by the POEM to one CubeSat to facilitate testing of the camera payload's power electronics. POEM contains a \SI{28}{\volt} and \SI{42}{\volt} bus, however IIST has informed the design team that a \SI{5}{\volt} connection with a maximum current of \SI{1.5}{\ampere} is provided to CubeSats. The EPC will have to emulate at least one of these power busses.
+\paragraph{Voltage and current} A requirement of the EPC on the DAQ is to emulate the voltage and current provided by the POEM to one CubeSat to facilitate testing of the camera payload's power electronics. POEM contains a \SI{28}{\volt} and \SI{42}{\volt} bus, however IIST has informed the design team that a \SI{5}{\volt} connection with a maximum current of \SI{1.5}{\ampere} is provided to CubeSats, with the option to expand to \SI{3}{\ampere}. The EPC will have to emulate at least one of these power busses.
 
 \subsubsection{Environmental requirements}
 It is possible a future version of this payload will fly with the camera payload on POEM to make a direct comparison between the vibration environment on POEM to the conditions on both a HPR and the shaker table tests. Therefore, the DAQ must go through the same qualification campaign as the camera payload.
@@ -424,6 +425,7 @@ It is possible a future version of this payload will fly with the camera payload
 \paragraph{Physical dimensions} The DAQ must have physical dimensions that allow it to fit within the inside space of a 1U CubeSat.
 
 \subsubsection{HPR test requirements}
+\label{sec:hpr-test-req}
 
 \paragraph{GNSS tracking} In the original plan, the HPR will launch to a high altitude and may drift away from the launch site. Tracking of the CubeSat will be required to ensure recovery.
 
@@ -453,7 +455,9 @@ This project in addition to design of a DAQ involves design of an experiment to 
   \item Electronics must be mounted using rigid fixing methods
 \end{itemize}
 
-\paragraph{Budget} The cost of the DAQ system must not exceed \$AU 1500.
+\paragraph{Budget} The cost of the DAQ system must not exceed \aud 1500.
+
+\paragraph{Time} The project must be completed before the end of semester 2 2024 (October 18, 2024)
 
 % \begin{table}[H]
 % \centering
@@ -475,18 +479,36 @@ This project in addition to design of a DAQ involves design of an experiment to 
 % \label{tabl:design-constraints}
 % \end{table}
 
-\subsection{Selection of components}
+\subsection{Selection of components and basic system design}
 
-The constraints in section \fullref{sec:constraints-and-requirements} will determine the parts that are appropriate for the design.
+The constraints in section \fullref{sec:constraints-and-requirements} will determine the parts that are appropriate for the design. A basic system design was created, since some components depend on how others are configured: for example, using the batteries in parallel requires additional balancing components to be selected in this stage.
+
+Selection of electronic parts must also account for availability at the following suppliers. Parts will not be sourced from other suppliers for reasons including high minimum order quantities or counterfeit components.
+
+\begin{enumerate}
+  \item JLCPCB
+  \item Mouser
+  \item DigiKey
+\end{enumerate}
+
+JLCPCB is a PCB manufacturing service that will be used to manufacture the PCBs  for this project. In addition to manufacturing they provide a service to automatically place and solder components to the PCBs. This component source has advantages over component distributors as they:
+\begin{itemize}
+  \item automatically place components, which reduces assembly time and reduces risk of poor soldering compared to manual assembly
+  \item price components at a lower cost that is closer to the wholesale price compared to component distributors
+\end{itemize}
+
+JLCPCB cannot be used for expensive components that need fine control over the amount being purchased, since JLCPCB can only provide component assembly for either two full board or five full boards. Additionally, some components cannot be sourced on JLCPCB. This is the case with the chosen GNSS receiver, which has a very high unit price and should not be assembled on all five boards, and is not available in the JLCPCB catalogue.
+
+Mouser and DigiKey are component distributors which allow the purchasing of individual components, with a higher markup compared to JLCPCB. If a part cannot be purchased from JLCPCB for any reason, it will be purchased from Mouser or DigiKey and manually assembled.
 
 \paragraph{Battery selection}
 
-Commercial off the shelf (COTS) 18650 lithium-ion batteries were chosen due to the following features:
+% Commercial off the shelf (COTS) 18650 lithium-ion batteries were chosen due to the following features:
 
-\begin{itemize}
-  \item H
-  \item High specific energy \cite{krause2021performance}.
-\end{itemize}
+% \begin{itemize}
+%   \item H
+%   \item High specific energy \cite{krause2021performance}.
+% \end{itemize}
 
 COTS 18650 lithium-ion batteries were chosen as the energy source for the DAQ. Advantages of this battery format include:
 
@@ -508,33 +530,116 @@ The Samsung INR18650-25R \liion battery was chosen for the DAQ platform due to
   \item Good capacity of \SI{2500}{\milli\ampere\hour} and high maximum discharge rate of \SI{20}{\ampere}.
 \end{itemize}
 
-Three batteries were placed in parallel to form a 1S3P battery pack, this configuration was chosen as it simplifies the charging circuitry by removing the need for cell balancing circuitry that is required for series battery packs, which reduces cost and simplifies the design. Three cells were selected since this %TODO: justify 1S3P capcity.
 % TODO: MOVE TO FINAL DESIGN SECTION
 
-\paragraph{Power electronics} Power electronics are used to stabilise the battery voltage, since a \liion battery may have a voltage ranging from \SIrange{4.2}{2.5}{\volt} over one discharge cycle.
+\paragraph{Power electronics} Power electronics are used to stabilise the battery voltage, since each series \liion battery may have a voltage ranging from \SIrange{2.5}{4.2}{\volt} over one discharge cycle.
+
+Two cell configurations were considered for this project:
+\begin{itemize}
+  \item 1S3P (one set of 3 batteries in parallel).
+  \item 2S2P (two sets of 2 batteries in parallel, each set connected in series).
+\end{itemize}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
+    \hline
+    \textbf{Category}                            & \textbf{1S}                    & \textbf{2S}                            \\
+    \hline
+    Nominal voltage                              & \SI{3.6}{\volt}                & \SI{7.2}{\volt}                        \\
+    Power loss                                   & Higher $I^2R$ losses           & Lower $I^2R$ losses                    \\
+    Components required for \SI{5}{\volt} output & Boost converter                & Buck converter and balancing circuitry \\
+    Cost of system                               & Lower due to lack of balancing & Higher due to balancing circuitry      \\
+    \hline
+  \end{tabular}
+  \caption{Comparison of 1S and 2S battery packs.}
+  \label{tabl:battery-1s2s-comparison}
+\end{table}
+
+A series battery pack would make sense if the electronics operate on a higher voltage (for example, if there are motors or high-power radios). However, in this application the highest voltage used is \SI{5}{\volt} and the $I^2R$ losses between the battery and the power converters is low since they are integrated on the same board. A power system using 2S batteries results in a cost of \aud 10 for power electronics whereas a 1S system only requires \aud 2 in power electronics.
+
+
+Three batteries were placed in parallel to form a 1S3P battery pack, this configuration was chosen as it simplifies the charging circuitry by removing the need for cell balancing circuitry that is required for series battery packs, which reduces cost and simplifies the design. Three cells were selected since this %TODO: justify 1S3P capcity.
 
 \begin{table}[H]
   \centering
   \begin{tabular}{|c|c|c|c|c|}
     \hline
-    \textbf{Item}       & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
+    \textbf{Item}                    & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
     \hline
-    Payload-under-test  & 5                             & 1500 (Max.)                                & 1                 &                                       \\
-    Raspberry Pi Zero W & 5                             &                                            & 1                 &                                       \\
-    NEO-M9N             & 3.3                           &                                            & 1                 &                                       \\
-    ZED-F9P             & 3.3                           &                                            & 1                 &                                       \\
-    LSM6DSOX            & 3.3                           &                                            & 2                 &                                       \\
-    ADXL375             & 3.3                           &                                            & 2                 &                                       \\
+    Payload-under-test               & 5                             & 3000 (Max.)                                & 1                 & 3000 (Max.)                           \\
+    Pi Zero                          & 5                             &                                            & 1                 &                                       \\
+    NEO-M9N                          & 3.3                           &                                            & 1                 &                                       \\
+    ZED-F9P                          & 3.3                           &                                            & 1                 &                                       \\
+    LSM6DSOX                         & 3.3                           &                                            & 2                 &                                       \\
+    ADXL375                          & 3.3                           &                                            & 2                 &                                       \\
     % ADXL375 & 3.3 & & 1 & \\
-    E32-900M30S         & 3.3                           &                                            & 1                 &                                       \\
+    E32-900M30S                      & 3.3                           &                                            & 1                 &                                       \\
     % TODO: RS-485, SC16I750, 
     \hline
-    % \textbf{Total}  & - & \\
+    \textbf{Total (\SI{5}{\volt})}   & -                             & -                                          & -                 &                                       \\
+    \textbf{Total (\SI{3.3}{\volt})} & -                             & -                                          & -                 &                                       \\
+    \hline
   \end{tabular}
   \caption{Operating voltage and current consumption of devices connected to EPC.}
   \label{tabl:epc-power-budget}
 \end{table}
 
+The Texas Instruments TPS61022 boost converter was selected for this 1S system. It has a working voltage range of \SIrange{1.8}{5.5}{\volt} which is suitable for a 1S3P \liion battery pack with a working voltage range of \SIrange{2.5}{4.2}{\volt}, a maximum output current of over \SI{3}{\ampere} and can be configured to have an output voltage of \SI{5}{\volt} which is ideal for the DAQ and the camera payload \cite{ti2021tps61022}.
+
+As the current used by the \SI{3.3}{\volt} system is only \SI{00000}{\milli\ampere} a linear regulator was chosen. This solution results in a small power loss of \SI{0000}{\milli\watt} of power loss. %TODO:
+An Advanced Monolithic Systems AMS1117-3.3 linear regulator was chosen due to its cheap pricing on JLCPCB of only \aud 0.20 and since it has been used in past designs with success. It has a high dropout voltage of \SI{1.1}{\volt}, which is acceptable for the \SI{5}{\volt} input \cite{ams2007ams1117}.
+
+\paragraph{Onboard data handling unit (OBDH)}
+
+The OBDH unit acquires data from sensors and the payload and saves it to a storage device and relays relevant data to the ground station through the radio. The two main requirements of the OBDH is that it has enough resources to be able to process and save the sensor and payload data without losing data, and that it has adequate storage to hold sensor data from one HPR flight.
+
+A first revision of the DAQ used an STM32L476 microcontroller, which had similar peripherals, including UART, I\textsuperscript{2}C and SPI, however as a microcontroller it does not have an operating system and does not have significant storage. Storage was provided in the form of a \SI{4}{\giga\byte} embedded multimedia card (eMMC) chip, which was chosen since it is directly soldered to the PCB and should be more resistant to vibration than a micro SD card connector.
+% TODO: talk about other cubesats using the stm32 platform?
+
+Due to the issues encountered with the first revision and due to the time constraints, the second revision uses a Raspberry Pi Zero W v1.3 (referred to as "Pi Zero"). This is a development board which integrates the BCM2835 Broadcom system on chip (SoC), \SI{512}{\mega\byte} of RAM and contains a micro-SD card slot, USB interface and peripherals such as UART, I\textsuperscript{2}C and SPI \cite{upton2016raspberry}. This board was chosen due to its small form-factor compared to larger Raspberry Pis, simplicity of integration compared to the Raspberry Pi compute modules and low cost. The Raspberry Pi platform has been used in low-cost low Earth orbit (LEO) CubeSat applications \cite{guertin2022raspberry}. It is predicted that in polar orbits that the Pi Zero has a lifespan of 5 years \cite{guertin2022raspberry}, which is adequate for this project since the POEM will cease to maintain its orbit after  months. The thermal performance of a Raspberry Pi Zero W is adequate for space applications \cite{guertin2022raspberry}. While a Raspberry Pi Zero 2W was initially selected, which would have had higher performance compared to the Zero v1.3, it was not possible to acquire one due to supply chain issues.
+
+Typically, a Raspberry Pi runs the Raspbian operating system (OS), which is a Debian fork \cite{upton2016raspberry}. Compared to developing for a microcontroller, an OS is easier to develop for as it allows the use of standard Linux utilities for interacting with the system, including \texttt{ssh} for remote control, and having each DAQ task in a separate process with separated memory makes debugging easier. This ease of development was required to meet the time constraint of the project. %TODO: Citation`'
+
+Due to limitations of the BCM2835 SoC only one hardware UART is available \cite{upton2016raspberry}, but more are required for receiving data from GNSS receivers. Receiving data through a software implementation of UART is not ideal since it uses a large amount of CPU resources and is prone to missing bits especially on the non realtime OS of the Raspberry Pi which severely limits its usable baud rate. The XR20M1172 dual hardware UART to add more UART ports to the Raspberry Pi through the SPI bus. This UART has a 64-byte first-in first-out (FIFO) buffer and interrupts, which eliminates the need for expensive polling, and has a maximum data rate of \SI{16}{\mega\bit\per\second}, which is more than adequate for GNSS data \cite{maxlinear2022xr20m1172} which has a maximum baud rate of only \SI{38400}{\baud}. This UART has a temperature range of \SIrange{-40}{85}{\degreeCelsius}, allowing it to survive temperature testing.
+
+\paragraph{Radio downlink}
+
+The POEM contains a radio downlink which allows experiments to transmit data to the ground at a speed of \SI{5}{\kilo\bit\per\second}. The radio cannot be used to control the CubeSats from the ground.
+
+The RFD900x radio transceiver was used to emulate this POEM service. This transceiver uses the 915 MHz industrial, scientific and medical (ISM) band and transmits with a maximum power of \SI{1}{\watt} using a frequency hopping spread spectrum (FHSS) technique \cite{rfdesign2020rfd900x}. Data rates from \SI{12}{\kilo\bit\per\second} to \SI{224}{\kilo\bit\per\second} are available with the default firmware \cite{rfdesign2020rfd900x}.
+
+The RFD900x satisfies several constraints. It reduces the time to test since it uses the ISM band, which can be used by anyone provided they follow the  Low Interference Potential Devices (LIPD) Class License legislation. The use of the FHSS allows the RFD900x to transmit at the maximum power of \SI{1}{\watt} that is allowable by the class license under the frequency hopping transmitters section \cite{australia2015radiocommunications}.
+
+Distances of \SI{40}{\kilo\meter} line-of-sight is possible using the RFD900x \cite{rfdesign2020rfd900x}, which is far greater than the maximum distance achievable with the rocket and drone tests. The maximum drone test scheduled had a altitude of \SI{500}{\meter}, and the rocket was intended to fly to \SI{10000}{\feet} (\SI{3}{\kilo\meter}).
+
+This modem will not be used on the space launch, since POEM will provide a radio downlink, but it must pass environmental testing. The modem has a temperature range of \SIrange{-40}{85}{\degreeCelsius}, which satisfies the range of temperatures required to pass the temperature testing \cite{rfdesign2020rfd900x}.
+
+\paragraph{Payload communications}
+For the payload communications, a physical layer and data layer need to be specified. The physical layer determines the representation of data as (in this case) electric signals. The data layer determines how data is transmitted and received as frames.
+
+CubeSats use the RS-485 physical layer specification and UART data layer specification to transmit data to POEM. RS-485 was chosen since it is a differential bus which increases immunity to electromagnetic interference from other elements on the launch vehicle, therefore reducing the bit error rate \cite{cratere2024board}. A combination of RS-485 and UART allows large amounts of data to be transferred since the UART data link specification is simple, especially compared to other protocols such as CAN bus \cite{cratere2024board}.
+
+Since the DAQ needs to emulate POEM services as a constraint, payload communications had to use the combination of RS-485 and UART. The Pi Zero has one hardware UART, this single-ended UART signal needs to be converted to the differential RS-485 signal using an RS-485 transceiver. The SP3485 transceiver was chosen due its low unit cost of \aud 0.32 and high availability on JLCPCB. The transceiver supports data rates up to \SI{10}{\mega\bit\per\second}, which is more than adequate for the \SI{5}{\kilo\bit\per\second} downlink speed. It uses a \SI{3.3}{\volt} logic level on the single-ended side, which is required to interface with the Pi Zero without level shifting \cite{maxlinear2021sp3485}. The EN-L variant was chosen due to its extended temperature range of \SIrange{-40}{85}{\degreeCelsius} required to pass environmental testing \cite{maxlinear2021sp3485}.
+
+\paragraph{GNSS tracking}
+
+The DAQ system must be able to track the HPR throughout the full launch to enable recovery as stated in section \fullref{sec:hpr-test-req}. This will be achieved through a Global Navigation Satellite System (GNSS) receiver, which receives signals from GNSS satellites and determines the position and altitude of the receiver. The u-blox NEO-M9N will be used for tracking \cite{ublox2023neo_m9n_datasheet}. This is a multi-GNSS receiver which is able to receive from multiple GNSS constellations simultaneously, which results in a faster acquisition time and greater interference immunity \cite{ublox2023neo_m9n_datasheet}. The receiver can report position with an accuracy of \SI{2.0}{\meter} (circular error probable), which is adequate for a HPR tracking application \cite{ublox2023neo_m9n_datasheet}. The NEO-M9N was used instead of other u-blox receivers due to its high navigation update rate of \SI{25}{\hertz} which is useful due to the high speed of a HPR flight \cite{ublox2023neo_m9n_datasheet}.
+
+Since POEM provides the location of the CubeSat and due to the speed and altitude restriction of the NEO-M9N of \SI{500}{\meter\per\second} and \SI{80}{\kilo\meter} respectively, this receiver will not be present on the space launch and is only required for the HPR launch.
+
+\paragraph{Accelerometers}
+
+\paragraph{System block diagram}
+
+A block diagram of the system using the parts chosen is shown in figure \ref{fig:system-block-diagram}.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/System_block_diagram.svg}
+  \label{fig:system-block-diagram}
+  \caption{Block diagram of the CubeSat, including connections to the camera payload and ground station over radio downlink.}
+\end{figure}
 
 \subsection{Implementation of parts into design}
 
@@ -777,14 +882,14 @@ One of the objectives of this research is to design a platform for qualification
 The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.
 
 \subsection{On-board data handling (OBDH)}
-A Raspberry Pi Zero W is used for the OBDH system instead of an eMMC module and STM32L476 since:
+A Pi Zero is used for the OBDH system instead of an eMMC module and STM32L476 since:
 \begin{itemize}
   \item It reduces the cost of the PCB as the assembly of BGA packages such as eMMC adds significant cost per board,
   \item The Pi Zero W runs an operating system and can be controlled remotely from a PC unlike the STM32, which simplifies development and debugging,
   \item The write speed of the Pi is larger than the STM32 and eMMC combination. % TODO: benchmark write speed.
 \end{itemize}
 
-While a Raspberry Pi Zero 2W would be preferable due to its multicore design, due to supply chain issues it was only possible to use a Raspberry Pi Zero W.
+While a Raspberry Pi Zero 2W would be preferable due to its multicore design, due to supply chain issues it was only possible to use a Pi Zero.
 
 DAQ v2 does not have two redundant OBDH due to a lack of room.
 
@@ -910,6 +1015,7 @@ Hardware changes for a future revision of the data acquisition system include:
 
 \begin{itemize}
   \item Use Raspberry Pi Zero 2W instead of Zero W since it has more cores.
+  \item Machine a heatsink to connect all chips on the Pi Zero module to the chassis or heatsink to ensure better thermal performance \cite{guertin2022raspberry}.
 \end{itemize}
 
 \section{References}

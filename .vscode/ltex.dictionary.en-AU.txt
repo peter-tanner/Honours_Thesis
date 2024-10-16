@@ -52,3 +52,9 @@ Priyadarshnam
 Hari
 AURC
 Svengeance
+A$
+UART
+LIPD
+JLCPCB
+DigiKey
+realtime
