@@ -65,3 +65,9 @@ stackup
 stackups
 datasheet
 systemd
+TODO
+bd
+oct
+EOFEOFEOFEOF
+bytearray
+GPIOs

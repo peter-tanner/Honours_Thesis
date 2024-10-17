@@ -17,14 +17,7 @@
 \usepackage{hyperref}
 \usepackage[version=4]{mhchem}
 
-\bibliography{main.bib,websites.bib,datasheets.bib} % TODO: MAKE ACCESSED BY note PARAM AND SHIT NORMAL BETWEEN ALL REFERENCES.
-
-% TODO: CHECKLIST
-% TODO: CHECKLIST
-% TODO: CHECKLIST
-% - CHECK GRAMMAR AND SPELLING
-% - RESOLVE ALL % TODO: COMMENTS
-% - CHECK TYPESETTING AND LAYOUT IN A **NON-INVERTED** PDF VIEWER
+\bibliography{main.bib,websites.bib,datasheets.bib} 
 
 % Declare custom (Non-si) units
 \DeclareSIUnit\feet{ft} % Yes I know feet aren't SI unit...
@@ -38,9 +31,13 @@
 % https://tex.stackexchange.com/a/121871
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
 
+% https://tex.stackexchange.com/a/24133
+\newcommand{\textoverline}[1]{$\overline{\mbox{#1}}$}
+
 \newcommand{\liion}{\ce{Li}-ion}
 \newcommand{\aud}{A\$}
 \newcommand{\ssh}{\texttt{ssh}}
+\newcommand{\iic}{{I\textsuperscript{2}C}}
 
 \ganttset{calendar week text={\small{\startday/\startmonth}}}
 
@@ -54,7 +51,6 @@
 
     % Title
     % \vspace*{3cm}
-    % ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK GRAMMAR AND PRESENTATION BEFORE SUBMITTING
     {\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
 
 
@@ -82,6 +78,47 @@
 
 \end{titlepage}
 
+% TODOLIST
+%TC:ignore
+\newpage
+\section{TODO: (!! REMOVE BEFORE FINAL RELEASE !!)}
+\begin{itemize}
+  \item \texttt{[ ]} Add schematics and PCB gerbers to appendix using \texttt{pdfpages}
+  \item \texttt{[ ]} Add links to source repository \url{https://git.petertanner.dev/hpr-evaluation/}
+  \item \texttt{[ ]} Use \LaTeX template for Honours papers
+  \item \texttt{[ ]} Resolve all warnings except badness warnings because I don't know how to control that
+  \item \texttt{[ ]} Make BibTeX consistent
+  \item \texttt{[ ]} Check grammar and spelling
+  \item \texttt{[ ]} Check presentation/typesetting
+  \item \texttt{[ ]} Resolve all \texttt{TODO:} comments
+  \item \texttt{[ ]} Finish all items on this checklist
+\end{itemize}
+
+
+\paragraph{Wts}
+\begin{itemize}
+  \item PROJECT BODY (ASSUME EXPERIMENTAL PROJECT)
+        \subitem 20\% INTRODUCTION AND LITERATURE REVIEW
+        \subitem 15\% EXPERIMENTAL DESIGN
+        \subitem 35\% RESULTS AND DISCUSSION
+  \item 10\% CONCLUSION AND FUTURE WORK
+  \item 10\% SCOPE
+  \item 10\% PRESENTATION (SHOULD BE GUARANTEED...)
+\end{itemize}
+
+\paragraph{USING FORMULA \texttt{WC * \$SECTION/80\%}}
+\begin{itemize}
+  \item INTRODUCTION AND LITERATURE REVIEW: 3000 TO 4500 WORDS
+  \item EXPERIMENTAL DESIGN: 2250 TO 3375
+  \item RESULTS AND DISCUSSION: 5250 TO 7875
+  \item CONCLUSION AND FUTURE WORK: 1500 TO 2250
+\end{itemize}
+
+
+%TC:endignore
+% END TODOLIST
+
+
 \newpage
 \section{Abstract}
 
@@ -102,51 +139,14 @@ I'd like to thank all the people and organisations who have supported me through
 \tableofcontents
 \newpage
 
-% ask for 2 weeks, 1 before and 1 after exams. put delays, safety, rocket motors, avi. semd to dilusha. maximum results but delayed. new safety.
-
-% TODO: FOR MEETING
-% WHAT WOULD THIS THESIS BE ASSESSED UNDER? either would fit. design and build better. TODO: send list of formats.
-% IS THERE A LATEX TEMPLATE USED BY MRG? uwa has a thesis template, if not ask dilusha.
-% I AM WORRIED THIS PROJECT WILL BE ASSESSED TOO MUCH WITH RESULTS AND DISCUSSION WHEN A LOT OF MY CONTENT IS ON THE EXPERIMENTAL DESIGN , IS THIS AN ISSUE?
-% Is it a good idea to break it up into explicitly a methodology section and results section? I am reading this other thesis and they instead broke it up into sections which had results for each, but im not sure how to effectively divide this one since i made two data acquisition systems but only one got thoroughly tested? TODO: one option
-
-%  design of a x to compare a and b would work too. probably the best way. design of an experiment to ... title.
-
-% are schematics useful ? 
-% TODO: QUESTIONS - SHOULD I INCLUDE FREEZER/THERMAL TESTING?
-% TODO: seems like a lot of honors thesis go into way more detail in the headings, what's up with that
-% TODO: is it better to discuss each system as a whole or break it up into subsystems and show the differences as shown above
-% TODO: I am worried this paper will have too much design and not enough data.
-% TODO: How should i include code I used to write data? I noticed other papers broke it off into an algorithms section displaying pseudocode, does it have to be pseudocode?
-% TODO: Is the abstract for the seminar and the thesis the same (in terms of length/content)?
-
-% block diagrams in body, schematics in appendix. put code in git repo, code snippets in body.
-
-% focus on second iteration, but refer to old system top guide new one. or subsystems
-%  systems design what it is wer are doing and what to develop, what criteria
-% experimental design
-% measurements results
-
 % TODO: QUESTIONS FOR SECOND MEETING
 % The marking is not based on sections right? Some of my design sections has stuff which is related to results like the actual tests used (modified from the original recommendations due to limitations of our machines), but I did not want to split this to prevent confusion.
 % It might be better to ask for two weeks in a row, i doubt they would give basically 4 weeks. not sure if i can take the risk this close to the due date.
 % What would be the best time or way to get some feedback, is it possible to have two meetings next week since it will probably be the last before submitting?
-% 
+% -> Tuesday 9, Thursday 1:30
+% -> Apart from wednesday. send a draft
+% -> list of heading right now.
 
-% CRITERIA:
-% 10% SCOPE
-% PROJECT BODY (ASSUME EXPERIMENTAL PROJECT):
-%   20% INTRODUCTION AND LITERATURE REVIEW
-%   15% EXPERIMENTAL DESIGN
-%   35% RESULTS AND DISCUSSION
-% 10% CONCLUSION AND FUTURE WORK
-% 10% PRESENTATION (SHOULD BE GUARANTEED...)
-
-% USING FORMULA $SECTION/80%
-% INTRODUCTION AND LITERATURE REVIEW: 3000 TO 4500 WORDS
-% EXPERIMENTAL DESIGN: 2250 TO 3375
-% RESULTS AND DISCUSSION: 5250 TO 7875
-% CONCLUSION AND FUTURE WORK: 1500 TO 2250
 
 \renewcommand{\listfigurename}{
   \section{List of figures}
@@ -606,10 +606,10 @@ An Advanced Monolithic Systems AMS1117-3.3 linear regulator was chosen due to it
 
 The OBDH unit acquires data from sensors and the payload and saves it to a storage device and relays relevant data to the ground station through the radio. The two main requirements of the OBDH is that it has enough resources to be able to process and save the sensor and payload data without losing data, and that it has adequate storage to hold sensor data from one HPR flight.
 
-A first revision of the DAQ used an STM32L476 microcontroller, which had similar peripherals, including UART, I\textsuperscript{2}C and SPI, however as a microcontroller it does not have an operating system and does not have significant storage. Storage was provided in the form of a \SI{4}{\giga\byte} embedded multimedia card (eMMC) chip, which was chosen since it is directly soldered to the PCB and should be more resistant to vibration than a micro SD card connector.
+A first revision of the DAQ used an STM32L476 microcontroller, which had similar peripherals, including UART, {\iic} and SPI, however as a microcontroller it does not have an operating system and does not have significant storage. Storage was provided in the form of a \SI{4}{\giga\byte} embedded multimedia card (eMMC) chip, which was chosen since it is directly soldered to the PCB and should be more resistant to vibration than a micro SD card connector.
 % TODO: talk about other cubesats using the stm32 platform?
 
-Due to the issues encountered with the first revision and due to the time constraints, the second revision uses a Raspberry Pi Zero W v1.3 (referred to as "Pi Zero"). This is a development board which integrates the BCM2835 Broadcom system on chip (SoC), \SI{512}{\mega\byte} of RAM and contains a micro-SD card slot, USB interface and peripherals such as UART, I\textsuperscript{2}C and SPI \cite{upton2016raspberry}. This board was chosen due to its small form-factor compared to larger Raspberry Pis, simplicity of integration compared to the Raspberry Pi compute modules and low cost. The Raspberry Pi platform has been used in low-cost low Earth orbit (LEO) CubeSat applications \cite{guertin2022raspberry}. It is predicted that in polar orbits that the Pi Zero has a lifespan of 5 years \cite{guertin2022raspberry}, which is adequate for this project since the POEM will cease to maintain its orbit after  months. The thermal performance of a Raspberry Pi Zero W is adequate for space applications \cite{guertin2022raspberry}. While a Raspberry Pi Zero 2W was initially selected, which would have had higher performance compared to the Zero v1.3, it was not possible to acquire one due to supply chain issues.
+Due to the issues encountered with the first revision and due to the time constraints, the second revision uses a Raspberry Pi Zero W v1.3 (referred to as "Pi Zero"). This is a development board which integrates the BCM2835 Broadcom system on chip (SoC), \SI{512}{\mega\byte} of RAM and contains a micro-SD card slot, USB interface and peripherals such as UART, {\iic} and SPI \cite{upton2016raspberry}. This board was chosen due to its small form-factor compared to larger Raspberry Pis, simplicity of integration compared to the Raspberry Pi compute modules and low cost. The Raspberry Pi platform has been used in low-cost low Earth orbit (LEO) CubeSat applications \cite{guertin2022raspberry}. It is predicted that in polar orbits that the Pi Zero has a lifespan of 5 years \cite{guertin2022raspberry}, which is adequate for this project since the POEM will cease to maintain its orbit after  months. The thermal performance of a Raspberry Pi Zero W is adequate for space applications \cite{guertin2022raspberry}. While a Raspberry Pi Zero 2W was initially selected, which would have had higher performance compared to the Zero v1.3, it was not possible to acquire one due to supply chain issues.
 
 Typically, a Raspberry Pi runs the Raspbian operating system (OS), which is a Debian fork \cite{upton2016raspberry}. Compared to developing for a microcontroller, an OS is easier to develop for as it allows the use of standard Linux utilities for interacting with the system, including \texttt{ssh} for remote control, and having each DAQ task in a separate process with separated memory makes debugging easier. This ease of development was required to meet the time constraint of the project. %TODO: Citation`'
 
@@ -995,12 +995,12 @@ The inductor selected for the converter subsystem is the ASPI-0630HI-1R0M-T15, w
 \begin{figure}[H]
   \begin{subfigure}{.5\textwidth}
     \centering
-    \includegraphics[trim=0 0.5cm 0 0, clip, width=\linewidth]{images/TPS61022-simulation-plot.pdf}
+    \includegraphics[width=\linewidth]{images/TPS61022-simulation-plot.pdf}
     \caption{Startup and steady-state behaviour.}
   \end{subfigure}
   \begin{subfigure}{.5\textwidth}
     \centering
-    \includegraphics[trim=0 0.5cm 0 0, clip, width=\linewidth]{images/TPS61022-simulation-plot-overshoot.pdf}
+    \includegraphics[width=\linewidth]{images/TPS61022-simulation-plot-overshoot.pdf}
     \caption{Close-up of startup transient and steady-state behaviour.}
   \end{subfigure}
   \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.)}
@@ -1100,7 +1100,14 @@ Messages consist of a header, the message data of a variable length and an end o
   \label{fig:message-bytefield}
 \end{figure}
 
-A chunk protocol is used for the transmission of images in the final design. A preliminary design simply sequentially transmitted each byte of the image, which was adequate when the radio was placed close to each other ($>\SI{10}{\meter}$). However, when testing past this range and at any significant distance, the errors caused the received image to become unrecognisable. The type of error observed consists of contiguous bytes being lost occasionally, rather than frequent corruption of individual bytes.
+A chunk protocol is used for the transmission of images in the final design. A preliminary design simply sequentially transmitted each byte of the image, which was adequate when the radio was placed close to each other ($>\SI{10}{\meter}$). However, when testing past this range and at any significant distance, the errors caused the received image to become unrecognisable. The type of error observed consists of contiguous bytes being lost occasionally, rather than frequent corruption of individual bytes as shown in \ref{fig:image-sheds-error-demo}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{images/results/sheds_naive.png}
+  \caption{Example of an image received with errors resulting in an unrecognisable image due to dropped bytes causing the image to shift at each error. Only a small proportion of the image is lost ($>2\%$), represented by red pixels at the bottom and contiguous sections of the received image are error-free.}
+  \label{fig:image-sheds-error-demo}
+\end{figure}
 
 A chunk protocol was effective against this type of error while being simple to implement. It involves adding a header to signify the start of a chunk, followed by the chunk number and 400 bytes of pixel data as shown in \ref{fig:image-chunk-bytefield}. A \SI{1600x1200}{} pixel image where each pixel is repesented by one byte requires 4800 chunks to be sent in this implementation. The number of bytes per chunk is a tradeoff between pixels lost per error and effective data rate.
 
@@ -1108,20 +1115,22 @@ A start of chunk marker of \texttt{\{0x00, 0xFF, 0x00, 0xFF\}} was chosen since 
 
 When an error occurs causing a string of bytes to be dropped, it causes the next chunk to not be encountered after 400 bytes. When this error occurs, the receiver searches for the next occurrence of the header and restarts receiving from that point. The chunks which were skipped have their pixels filled in the received image to prevent the error causing the image to become unrecognisable.
 
+The end of an image is signified by the ASCII string "EOFEOFEOFEOF". The start of chunk of the next image immediately starts after this string.
 
 \begin{figure}[H]
   \centering
-  \begin{bytefield}[bitwidth=0.4em]{64}
-    \bitheader{0,31,47} \\
-    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 0} & \bitbox[tr]{16}{}\\
+  \begin{bytefield}[bitwidth=0.33em]{112}
+    \bitheader{0,31,47,95} \\
+    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 0} & \bitbox[tr]{64}{}\\
     \wordbox[lr]{1}{Greyscale pixel data, 400 bytes, 1 byte per pixel.} \\
     \skippedwords \\
     \wordbox[lrb]{1}{} \\
     \wordbox[]{1}{$\vdots$} \\[1ex]
-    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 4799} & \bitbox[tr]{16}{}\\
+    \bitbox{32}{Start of chunk} & \bitbox{16}{ID 4799} & \bitbox[tr]{64}{}\\
     \wordbox[lr]{1}{Greyscale pixel data, 400 bytes, 1 byte per pixel.} \\
     \skippedwords \\
     \wordbox[lrb]{1}{} \\
+    \bitbox[lrb]{96}{End of image marker \texttt{"EOFEOFEOFEOF"}}
   \end{bytefield}
   \caption{Image chunk protocol.}
   \label{fig:image-chunk-bytefield}
@@ -1129,7 +1138,7 @@ When an error occurs causing a string of bytes to be dropped, it causes the next
 
 \paragraph{Software}
 
-A Python script was created which:
+A Python script was developed for the DAQ which:
 
 \begin{enumerate}
   \item Opens the serial port \texttt{/dev/serial0} with the settings described in table \ref{tabl:uart-settings}.
@@ -1140,26 +1149,105 @@ A Python script was created which:
 
 This Python script is managed by a \texttt{systemd} service which reboots the script if it crashes.
 
-\subsubsection{Accelerometers}
+The ground station is a laptop running Windows with an RFD900x connected to it over USB serial. There are two Python scripts on the laptop, the first saves the data from the radio to a file and prints any messages to the console.
 
+\begin{enumerate}
+  \item Opens a serial port to the RFD900x with the UART settings of the ground RFD900x.
+  \item Create and open a log file to store the received bytes from the radio.
+  \item Periodically:
+        \subitem Read the bytes in the serial buffer,
+        \subitem Save the bytes to the log file,
+        \subitem Find any start of message mark, and if encountered print all bytes until the end of message mark is received
+\end{enumerate}
+
+A second script periodically reads the latest log file and splits it into images.
+
+\begin{enumerate}
+  \item Allocate a \texttt{bytearray} for a full \SI{1600x1200}{} pixel image.
+  \item Allocate a \SI{1600x1200}{} \texttt{bytearray} where each byte is the state of each pixel (received or missing).
+  \item Read the whole file and strip all messages (bytes enclosed by the start and end of message markers).
+  \item Then find the indices of the end of image makers and split the file into several bytearrays, one for each image.
+  \item For each image bytearray:
+        \subitem Find the next start of chunk
+        \subitem Extract the chunk ID from the next two bytes.
+        \subitem Extract image bytes starting from after the chunk ID to either the next header index, or the end of file if this doesn't exist.
+        \subitem Add all bytes to the image byte array, starting at index \texttt{ID * 400} and set the state of the added pixels to received.
+        \subitem Repeat until the image array is full or there are no more bytes left in the image bytearray.
+\end{enumerate}
+
+\paragraph{Results}
+
+%TC:ignore
+TODO: This might be better placed in the drone test section, but we'll have to deal with this redundant data.
+
+TODO: Should it be hierarchical by system or by test?
+%TC:endignore
+
+This system was tested in the drone test at a distance of \SI{120}{\meter} line of sight. The image received is shown in \ref{fig:image-blocking-example} with comparison to an image received without blocking:
+
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/results/sheds.png}
+    \caption{}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/results/sheds_naive.png}
+    \caption{}
+  \end{subfigure}
+  \caption{Comparison of two image reception techniques. Image (a) used the blocking protocol with a block size of 400 pixels. Image (b) is an example of what the image would look like without the image blocking.}
+  \label{fig:image-blocking-example}
+\end{figure}
+
+\subsection{Accelerometer data acquisition system}
 \paragraph{Accelerometer PCB}
 
 The accelerometer PCB (shown in figure \ref{fig:accelerometers-pcb}) will contain both the ADXL375 and LSM6DSOX accelerometers and mount them to the chassis.
 
-To maximise the resonant frequency of the assembly, the PCB is mounted on its flat side to the chassis and is fixed with four bolts on each corner. Additionally, the dimensions of the PCB was minimised to \SI{22x22}{\milli\metre}, which is the minimum dimension that can fit all components. Maximising the resonant frequency past the sampling frequency will minimise distortion of the response.
+To maximise the resonant frequency of the assembly, the PCB is mounted on its flat side to the chassis and is fixed with four steel M3 bolts on each corner. Additionally, the dimensions of the PCB was minimised to \SI{22x22}{\milli\metre}, which is the minimum dimension that can fit all components. Maximising the resonant frequency past the sampling frequency will minimise distortion of the response. The PCB is depicted in figure \ref{fig:accelerometers-pcb}.
 
 The PCB exposes one interrupt and chip select pin for each accelerometer, an SPI connection and \SI{3.3}{\volt} power bus.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\linewidth]{images/Accelerometers_PCB.png}
+  \includegraphics[width=0.5\linewidth]{images/Accelerometers_PCB.png}
   \caption{Accelerometer PCB.}
   \label{fig:accelerometers-pcb}
 \end{figure}
 
-\subsubsection{LSM6DSOX DAQ}
-\subsubsection{ADXL375 DAQ}
-\subsubsection{}
+\paragraph{Connection to DAQ}
+
+The accelerometers are connected to the DAQ using the \texttt{SPI0} bus of the Pi Zero. The chip select (\textoverline{CS}) and interrupt (INT) pins are connected to GPIOs and are handled by software, therefore it is not necessary to only use the hardware SPI chip select/chip enable (CE) pins for all chip selects. This is depicted in figure \ref{fig:accelerometers-sch-block}. Although SPI requires more wiring, in the case of these sensors SPI has a higher clock speed compared to {\iic}. For example, the LSM6DSO has supports the {\iic} Fast Mode+ extension (FM+) which gives the {\iic} bus a maximum clock rate of \SI{1}{\mega\hertz}, but the SPI has a maximum clock speed of \SI{10}{\mega\hertz} which is higher. SPI also has higher data rate for a given frequency than {\iic} since {\iic} adds additional flow control bits such as start, stop and acknowledgement bits.
+
+This SPI bus is dedicated for only accelerometers to maximise the number of accelerometers connected, and is not shared with non-accelerometer peripherals.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.8\linewidth]{images/accelerometer_daq.svg}
+  \caption{Block diagram of accelerometers and Pi Zero data acquisition system.}
+  \label{fig:accelerometers-sch-block}
+\end{figure}
+
+\begin{figure}[H]
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/results/top_accelerometer.png}
+    \caption{Top accelerometer}
+  \end{subfigure}
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/results/bot_accelerometer.png}
+    \caption{Bottom accelerometer.}
+  \end{subfigure}
+  \caption{Mounting positions of accelerometers on the CubeSat chassis. The top and bottom accelerometer share a common $x$ axis but have opposite $y$ and $z$ axes.}
+  \label{fig:accelerometer-mounting}
+\end{figure}
+
+\paragraph{LSM6DSOX software} A C program is written to read values from the LSM6DSOX, package them into a binary flat file format and store them to disk. A C program is required since preliminary tests with a Python script with the same functionality resulted in 100\% of the CPU being used to read from one accelerometer.
+
+The
+
 \subsubsection{Downlink}
 
 % The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.

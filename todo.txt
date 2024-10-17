@@ -1,1 +1,0 @@
-- [ ] Benchmark disk write speed of Pi
