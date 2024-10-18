@@ -71,3 +71,13 @@ oct
 EOFEOFEOFEOF
 bytearray
 GPIOs
+WiringPi
+GPIO
+datapoint
+lrb
+lrt
+lr
+Greyscale
+Grayscale
+heatsink
+bytearrays

@@ -1,9 +1,10 @@
 \documentclass[a4paper,11pt]{article}
-\usepackage[style=ieee,backend=bibtex]{biblatex} 
+\usepackage[style=ieee]{biblatex} 
 \usepackage{amsmath,amsfonts}
 \usepackage{geometry}
 \usepackage{bm}
 \usepackage{bytefield}
+\usepackage{listings}
 \usepackage{longtable} % for 'longtable' environment
 \usepackage{pdflscape} % for 'landscape' environment
 \usepackage{rotating}
@@ -88,6 +89,7 @@
   \item \texttt{[ ]} Use \LaTeX template for Honours papers
   \item \texttt{[ ]} Resolve all warnings except badness warnings because I don't know how to control that
   \item \texttt{[ ]} Make BibTeX consistent
+  \item \texttt{[ ]} Bad citation format for datasheets and websites (Date is after access date).
   \item \texttt{[ ]} Check grammar and spelling
   \item \texttt{[ ]} Check presentation/typesetting
   \item \texttt{[ ]} Resolve all \texttt{TODO:} comments
@@ -322,12 +324,21 @@ One potential issue with HPRs as a qualification platform for shock is that low 
 % of any design tools employed; A discussion of the relevant code sections or
 % requirements; A framework for evaluating the success of the resulting design.
 
-\section{Project overview}
+
+\subsection{Avionics systems in high-power rockets}
+
+\subsubsection{TODO: section}
+
+% \section{Project overview}
 
 
 
 % \section{Design constraints}
-\section{Design group}
+\section{Design process}
+
+TODO: introduction to design process.
+
+\subsection{Design group}
 
 The CubeSat design group was made of Peter Tanner, Jamir Khan and Timothy Ludovico. As shown in figure \ref{fig:cubesat-responsibilities}, each person is working on a unique part of the CubeSat and requires specific information to be communicated.
 
@@ -353,15 +364,15 @@ The CubeSat design group was made of Peter Tanner, Jamir Khan and Timothy Ludovi
 
 
 
-\section{Design tools}
+\subsection{Design tools}
 
-\subsection{Altium Designer 24}
+\subsubsection{Altium Designer 24}
 
 Altium Designer is an electronics design automation (EDA) tool which is widely used in industry and has been used for design of CubeSat and space hardware \cite{10061409}. %TODO: wording (personal language?)
 The author chose to use Altium Designer over other EDA tools since they were familiar with this tool having used it in previous projects, which minimises development time.
 
 The design flow in Altium designer is as follows:
-\subsubsection{Schematic editor}
+\paragraph{Schematic editor}
 A circuit is first implemented using schematic symbol representations of components in the schematic editor. In the schematic view the connections between the components are abstracted using net labels and wires. The schematic view does not necessarily represent the physical layout of the PCB but is intended to convey the connections between components in a format that can easily be read.
 
 
@@ -376,7 +387,7 @@ A circuit is first implemented using schematic symbol representations of compone
 A root schematic contains references to other schematics which are abstracted as sheet symbols with ports. Each sheet symbol represents a particular subsystem of the DAQ. The hierarchical sheet symbol representation has several benefits, including that it facilitates reuse of designs and allows larger systems to be decomposed into multiple schematics which are easier to modify and read. This is shown in figure \ref{fig:altium-schematic-hierarchical}.
 
 
-\subsubsection{PCB editor}
+\paragraph{PCB editor}
 Each schematic symbol is a component which links the symbol to a footprint. The footprint is the physical representation of the component and contains information such as
 \begin{itemize}
   \item The land pattern, which is the layout of pads or holes required for mounting the component on the PCB,
@@ -385,7 +396,7 @@ Each schematic symbol is a component which links the symbol to a footprint. The 
 
 The PCB editor contains automated design rule check (DRC) tools which is used in the design process to reduce the likelihood of a faulty PCB. The DRC uses rules set in the project and if a rule is violated, it is reported. This feature is used for example to ensure that microwave-frequency tracks have the correct geometry for impedance matching.
 
-\subsubsection{Output jobs}
+\paragraph{Output jobs}
 Once a PCB is ready to be manufactured, an automated "outjob" ensures that the required design files are automatically generated with the right settings for manufacturing. The files generated include:
 \begin{itemize}
   \item Bill of materials
@@ -398,11 +409,11 @@ Once a PCB is ready to be manufactured, an automated "outjob" ensures that the r
 The outjob feature prevents errors such as misconfiguration of output files.
 
 
-\subsection{circuit.js}
+\subsubsection{circuit.js}
 
 Circuit.js is a simple browser-based analog circuit simulator \cite{falstad22falstad}. Circuits in this simulator can be edited and interacted with in real-time, whereas in traditional SPICE simulators the circuit cannot be edited once the simulation starts. Circuit.js uses a numerical method which is prone to error however, therefore this simulator was used for rapid, real-time prototyping of designs. After these designs were finalised they were simulated in traditional SPICE-based simulators.
 
-\subsection{LTspice}
+\subsubsection{LTspice}
 
 The simulation of components is done using LTspice, a freeware circuit simulator which uses the SPICE method
 
@@ -410,10 +421,9 @@ LTspice was used to the DC-DC boost converter for this project, which was requir
 
 Ultimately LTspice was chosen over other freeware SPICE simulators such as PSpice since LTspice contains an "alternate" solver which has less error at the trade-off of simulation time \cite{ltspice2022}. The reduced error results in the solver converging on a solution, whereas in PSpice or in LTspice normal solver mode it was not able to converge on a solution and the simulation could not be completed.
 
-\subsection{SolidWorks 2023}
+\subsubsection{SolidWorks 2023}
 SolidWorks is a mechanical CAD software which is used for creating 3d models of the electronics hardware by using the Altium Designer plugin. These 3d models are required for Jamir to complete the mechanical design of the CubeSat and to verify good mounting of the electronic hardware.
 
-\section{Design process}
 
 \subsection{Identification of constraints and requirements}
 \label{sec:constraints-and-requirements}
@@ -575,22 +585,24 @@ Three batteries were placed in parallel to form a 1S3P battery pack, this config
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|c|c|c|c|c|}
+  \begin{tabular}{|c|c|p{0.2\linewidth}|c|p{0.2\linewidth}|}
     \hline
-    \textbf{Item}                    & \textbf{Voltage (\si{\volt})} & \textbf{Unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Current (\si{\milli\ampere})} \\
+    \textbf{Item}                    & \textbf{Voltage (\si{\volt})} & \textbf{Max unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Max current (\si{\milli\ampere})} \\
     \hline
-    Payload-under-test               & 5                             & 3000 (Max.)                                & 1                 & 3000 (Max.)                           \\
-    Pi Zero                          & 5                             &                                            & 1                 &                                       \\
-    NEO-M9N                          & 3.3                           &                                            & 1                 &                                       \\
-    ZED-F9P                          & 3.3                           &                                            & 1                 &                                       \\
-    LSM6DSOX                         & 3.3                           &                                            & 2                 &                                       \\
-    ADXL375                          & 3.3                           &                                            & 2                 &                                       \\
-    % ADXL375 & 3.3 & & 1 & \\
-    E32-900M30S                      & 3.3                           &                                            & 1                 &                                       \\
+    Payload-under-test               & 5                             & 3000                                           & 1                 & 3000                                      \\
+    Pi Zero                          & 5                             & 1300 \cite{raspberry-pi-hardware-doc}          & 1                 & 1200                                      \\
+    RFD900x                          & 5                             & 1000 \cite{rfdesign2020rfd900x}                & 1                 & 1000                                      \\
+    NEO-M9N                          & 3.3                           & 100 + 50 \cite{ublox2023neo_m9n_datasheet}     & 1                 & 150                                       \\
+    % ZED-F9P                          & 3.3                           &                                                   & 1                 &                                       \\
+    LSM6DSOX                         & 3.3                           & 0.55 \cite{lsm6dso-datasheet}                  & 2                 & 1.1                                       \\
+    ADXL375                          & 3.3                           & 0.145 \cite{analog2014adxl375}                 & 2                 & 2.9                                       \\
+    % E32-900M30S                      & 3.3                           & 650                                               & 1                 & 650                                          \\
+    SP3485EN                         & 3.3                           & 2 \cite{maxlinear2021sp3485}                   & 1                 & 2                                         \\
+    XR20M1172                        & 3.3                           & 0.5 \cite{maxlinear2022xr20m1172}              & 2                 & 1                                         \\
     % TODO: RS-485, SC16I750, 
     \hline
-    \textbf{Total (\SI{5}{\volt})}   & -                             & -                                          & -                 &                                       \\
-    \textbf{Total (\SI{3.3}{\volt})} & -                             & -                                          & -                 &                                       \\
+    \textbf{Total (\SI{3.3}{\volt})} & -                             & -                                              & -                 & 157                                       \\
+    \textbf{Total (\SI{5}{\volt})}   & -                             & -                                              & -                 & 5200                                      \\
     \hline
   \end{tabular}
   \caption{Operating voltage and current consumption of devices connected to EPC.}
@@ -621,7 +633,7 @@ The POEM contains a radio downlink which allows experiments to transmit data to 
 
 % TODO: discuss multiple radio options (lora, sik, etc.)
 
-The RFD900x radio transceiver was used to emulate this POEM service. This transceiver uses the 915 MHz industrial, scientific and medical (ISM) band and transmits with a maximum power of \SI{1}{\watt} using a frequency hopping spread spectrum (FHSS) technique \cite{rfdesign2020rfd900x}. Data rates from \SI{12}{\kilo\bit\per\second} to \SI{224}{\kilo\bit\per\second} are available with the default firmware \cite{rfdesign2020rfd900x}.
+The RFD900x radio transceiver was used to emulate this POEM service. This transceiver uses the 915 MHz industrial, scientific and medical (ISM) band and transmits with a maximum power of \SI{1}{\watt} using a frequency hopping spread spectrum (FHSS) technique \cite{rfdesign2020rfd900x}. Data rates from \SI{12}{\kilo\bit\per\second} to \SI{224}{\kilo\bit\per\second} are available with the default firmware \cite{rfdesign2020rfd900x}. The RFD900x uses a UART to transmit and receive data \cite{rfdesign2020rfd900x}.
 
 The RFD900x satisfies several constraints. It reduces the time to test since it uses the ISM band, which can be used by anyone provided they follow the  Low Interference Potential Devices (LIPD) Class License legislation. The use of the FHSS allows the RFD900x to transmit at the maximum power of \SI{1}{\watt} that is allowable by the class license under the frequency hopping transmitters section \cite{australia2015radiocommunications}.
 
@@ -642,7 +654,7 @@ The DAQ system must be able to track the HPR throughout the full launch to enabl
 
 Since POEM provides the location of the CubeSat and due to the speed and altitude restriction of the NEO-M9N of \SI{500}{\metre\per\second} and \SI{80}{\kilo\metre} respectively, this receiver will not be present on the space launch and is only required for the HPR launch.
 
-A differential GNSS (DGNSS) solution was considered and tested based on the u-blox ZED-F9P, however the drone test did not require the centimetre level precision of the ZED-F9P so it is not used in the final design.
+A differential GNSS (DGNSS) solution was considered and tested based on the u-blox ZED-F9P, however the drone test did not require the centimetre level precision of the ZED-F9P, so it was not used in the final design.
 
 \paragraph{Accelerometers}
 
@@ -660,8 +672,8 @@ A block diagram of the system using the parts chosen is shown in figure \ref{fig
 \begin{figure}[H]
   \centering
   \includesvg[width=\linewidth]{images/System_block_diagram.svg}
-  \label{fig:system-block-diagram}
   \caption{Block diagram of the CubeSat, including connections to the camera payload and ground station over radio downlink.}
+  \label{fig:system-block-diagram}
 \end{figure}
 
 \subsection{Implementation of parts into design}
@@ -896,9 +908,15 @@ The high-power rocket (HPR) test flight is used as an experimental qualification
 
 \subsection{Evaluation of accelerometers}
 
-Typical parameters for the evaluation of accelerometers include
+Typical parameters for the evaluation of accelerometers include TODO:
 
-\section{First revision of test and POEM emulation electronics}
+\subsection{Evaluation of downlink}
+
+\subsection{Evaluation of GNSS tracking}
+
+\subsection{Evaluation of electrical power system}
+
+\section{First revision of test and POEM emulation electronics TODO: decide whether to keep or remove.}
 
 The POEM provides services such as tracking, telemetry and command (TT\&C), electrical power system (EPS) and on-board data handling (OBDH) to the CubeSat, therefore these systems are not integrated into the CubeSat under test and must be provided by a separate system on the HPR which emulates the POEM services. The POEM emulator consists of three PCBs: A combined EPS and OBDH board, a tracking board and a telemetry and command board. This emulation and qualification platform will be referred to as DAQ v1.
 
@@ -1037,7 +1055,7 @@ A single schematic was created for the TPS61022 based off the successful LTspice
     \includegraphics[width=\linewidth]{images/TPS61022-pcb-layout.svg.png}
     \caption{PCB layout implemented in DAQ system.}
   \end{subfigure}
-  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.)}
+  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.}
   \label{fig:TPS61022-layout}
 \end{figure}
 
@@ -1109,7 +1127,7 @@ A chunk protocol is used for the transmission of images in the final design. A p
   \label{fig:image-sheds-error-demo}
 \end{figure}
 
-A chunk protocol was effective against this type of error while being simple to implement. It involves adding a header to signify the start of a chunk, followed by the chunk number and 400 bytes of pixel data as shown in \ref{fig:image-chunk-bytefield}. A \SI{1600x1200}{} pixel image where each pixel is repesented by one byte requires 4800 chunks to be sent in this implementation. The number of bytes per chunk is a tradeoff between pixels lost per error and effective data rate.
+A chunk protocol was effective against this type of error while being simple to implement. It involves adding a header to signify the start of a chunk, followed by the chunk number and 400 bytes of pixel data as shown in \ref{fig:image-chunk-bytefield}. A \SI{1600x1200}{} pixel image where each pixel is represented by one byte requires 4800 chunks to be sent in this implementation. The number of bytes per chunk is a trade-off between pixels lost per error and effective data rate.
 
 A start of chunk marker of \texttt{\{0x00, 0xFF, 0x00, 0xFF\}} was chosen since the image data being transmitted are raw pixels, and it is unlikely for the image to contain pixels that are full or zero intensity, and even more unlikely for them to be adjacent to each other.
 
@@ -1171,7 +1189,7 @@ A second script periodically reads the latest log file and splits it into images
         \subitem Find the next start of chunk
         \subitem Extract the chunk ID from the next two bytes.
         \subitem Extract image bytes starting from after the chunk ID to either the next header index, or the end of file if this doesn't exist.
-        \subitem Add all bytes to the image byte array, starting at index \texttt{ID * 400} and set the state of the added pixels to received.
+        \subitem Add all bytes to the image byte array, starting at index \texttt{ID * 400} and set the state of the added pixels to "received".
         \subitem Repeat until the image array is full or there are no more bytes left in the image bytearray.
 \end{enumerate}
 
@@ -1246,9 +1264,64 @@ This SPI bus is dedicated for only accelerometers to maximise the number of acce
 
 \paragraph{LSM6DSOX software} A C program is written to read values from the LSM6DSOX, package them into a binary flat file format and store them to disk. A C program is required since preliminary tests with a Python script with the same functionality resulted in 100\% of the CPU being used to read from one accelerometer.
 
-The
+The \texttt{lsm6dso-pid} platform independent (PID) library was used to provide simple access to the registers of the accelerometer \cite{stmicroelectronics_lsm6dsox_pid}, in combination with WiringPi which provides bindings to GPIO, SPI and other peripherals on the Pi \cite{wiringpi-github}.
 
-\subsubsection{Downlink}
+To maximise sampling rate and minimise CPU usage, the accelerometer is operated using the FIFO and interrupt features.
+
+Samples from the accelerometer are stored in binary flat file format, consisting of the \texttt{struct datapoint} for each 3-axis sample. A header of \texttt{0x59} is used which signifies the start of a sample. The type field is set to either 1 for accelerometer samples or 2 for gyroscope samples.
+
+\begin{lstlisting}[language=C]
+struct datapoint
+{
+    char header;
+    char type;
+    float x;
+    float y;
+    float z;
+};
+\end{lstlisting}
+
+To improve reliability, the LSM6DSOX program contains a watchdog, implemented using a POSIX timer, which restarts and re-initialises the accelerometer if no samples have been received for \SI{1}{\second}. The process is managed by a \texttt{systemd} service which initialises the program on system boot and restarts the program if it crashes.
+
+The following is a description of the program TODO:
+
+\begin{enumerate}
+  \item Read the first argument, which describes the sensor that the process will manage (1 or 2), and open the appropriate SPI bus using WiringPi.
+  \item Open a new unique binary file to store the samples to.
+  \item Create a watchdog POSIX timer and debug printing POSIX timer.
+  \item Attach the FIFO read interrupt handler on the interrupt pin.
+  \item Initialise the LSM6DSOX by issuing the following commands:
+  \item Ensure the \texttt{WHO\_AM\_I} register matches the expected value,
+  \item Software reset the device,
+  \item Wait for the device to be reset,
+  \item Disable the I\textsuperscript{3}C interface,
+  \item Enable block data update,
+  \item Set the scale for the accelerometer to \SI{16}{\gacc}, the maxmium full scale possible,
+  \item Set the sampling rate to \SI{6666}{\hertz} and the batching rate to \SI{12.5}{\hertz},
+  \item Set the FIFO to continuous mode (old samples are automatically discarded),
+  \item Set FIFO watermark level to 384 samples,
+  \item Set interrupt pin 1 to pulse on FIFO watermark being reached (this results in a pulse being generated on the INT1 pin when a large amount of data is present in the FIFO to be read, resulting in the interrupt handler being triggered.),
+\end{enumerate}
+
+The interrupt handler has the following functionality and is based off sample code from the LSM6DSOX PID library \cite{stmicroelectronics_lsm6dsox_pid}:
+
+\begin{enumerate}
+  \item Immediately reset the watchdog timer to 1 second (to prevent it triggering since a read is started)
+  \item Read the number of samples in the FIFO. For each sample:
+  \item Read the sample's tag and if it is accelerometer data then read the sample from the FIFO into a 6-byte array
+  \item Convert each of the three axes (represented by two byte words) to \SI{}{\milli\gacc}.
+  \item Store the reading in a struct with the correct header and type and write to the log file.
+  \item For debug reasons, print the current sample every 3332 samples (every half second).
+\end{enumerate}
+
+\paragraph{Unpacking data for data analysis}
+
+The accelerometer binary files are read on a PC using a Python script which uses the \texttt{struct} library to unpack the file and convert it to a traditional comma-separated values (CSV) file.
+
+\subsection{GNSS tracking}
+
+\subsection{Downlink}
+
 
 % The second revision of the test and POEM emulation electronics (referred to as DAQ v2) contains several improvements and simplifications over DAQ v1.
 
@@ -1341,20 +1414,27 @@ As stated, since OpenRocket does not model the vibration environment in the rock
 \end{figure}
 
 
+\section{Testing}
 
-\section{Vibration table testing}
-% \subsection{UWA vibration table test setup}
-\subsection{AVI vibration table test setup}
+\subsection{Vibration table testing}
+% \subsubsection{UWA vibration table test setup}
+\subsubsection{AVI vibration table test setup}
 
 
 
-\section{Rocket test}
+\subsection{Rocket test}
+
+TODO: Explain setup in rocket
 
 % TODO: Put jamir flgiht data here.
 
-\section{Drone tests}
-\subsection{First test}
-\subsection{Second test}
+\subsection{Drone tests}
+\subsubsection{First test}
+\subsubsection{Second test}
+\subsubsection{Third test}
+
+\subsection{Freezer test}
+\subsection{Oven test}
 
 
 \section{Data collection and analysis}
@@ -1379,8 +1459,15 @@ The coast phase, where the rocket motor has burnt out but is still approaching a
 \subsubsection{Comparison of methods}
 The boost phase will be compared to the quasi-static acceleration tests on the shaker table. It is expected that the acceleration force on the HPR will be greater than those experienced on the launch vehicle, however the key characteristic - a peak in acceleration over a narrow frequency band - should be the same.
 
-\section{Conclusion}
+\section{Conclusions}
+
+\subsubsection{Conclusions}
+
+TODO: A data acquisition system was developed, blah blah high power rocket bad shaker table good
+
 \subsection{Future work}
+
+TODO: Blah blah do test on hpr rocket with larger motor, do test on launch vehicle
 
 Hardware changes for a future revision of the data acquisition system include:
 
