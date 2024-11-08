@@ -1,0 +1,31 @@
+
+\section{First revision of test and POEM emulation electronics TODO: decide whether to keep or remove.}
+
+The POEM provides services such as tracking, telemetry and command (TT\&C), electrical power system (EPS) and on-board data handling (OBDH) to the CubeSat, therefore these systems are not integrated into the CubeSat under test and must be provided by a separate system on the HPR which emulates the POEM services. The POEM emulator consists of three PCBs: A combined EPS and OBDH board, a tracking board and a telemetry and command board. This emulation and qualification platform will be referred to as DAQ v1.
+
+\subsection{On-board data handling (OBDH)}
+Two OBDHs are arranged in a dual redundant configuration and are linked to each other via controller area network (CAN) bus. When the hot spare detects that the primary OBDH is outputting bad data or is not responding, the secondary OBDH will take over control of the communications link. This redundancy ensures the likelihood of not obtaining experiment data for this research is minimised. In the best case, this will provide two independent data sources for research. Both OBDHs will still store data to their respective eMMC modules for post-flight analysis.
+
+\subsection{Accelerometers}
+MEMS accelerometers, which will provide the data for this analysis, are located on independent modules and on the OBDH computer. The low-cost LSM6DSO accelerometer will be used due to its low cost and acceleration range of 16-\textit{g} and bandwidth of up to $\SI{6664}{\hertz}$ \cite{lsm6dso-datasheet}, which will be used to cover the quasi-static acceleration and random vibration cases. As shown in figures \ref{fig:random} and \ref{fig:qatforces}, the \textit{g}-levels and bandwidth are relatively low and are met by the LSM6DSO.
+
+The independent accelerometer modules will contain a microcontroller, regulator and accelerometer in a small package which can be mounted at various points on the CubeSat, to measure how evenly the response is applied to the CubeSat. The microcontroller will compress the accelerometer data and send it to the OBDH over CAN bus. The OBDH will generate a clock synchronisation signal to ensure the accelerometer measurements are synchronised. The modules will be attached to the CubeSat using adhesives due to its acceptable performance at the frequencies being measured, and ease of use compared to screws.
+
+Measuring the shock response is significantly more difficult due to the high acceleration levels and the large bandwidth \cite{nasa-pyroshock}, which are not well-suited for low-cost MEMS accelerometers. Instead of measuring the full spectrum, the slope will be measured and compared using the low-cost ADXL373 accelerometer which can measure up to 400-\textit{g} at 2.56 kHz, which is enough to characterise the slope, which is the only parameter required to show that a rocket is inadequate for qualifying shock.
+
+% TODO: shock response
+
+\subsection{Electrical power system (EPS)}
+A 2S lithium-ion battery pack and two 5V boost converters will be used to power CubeSat and the emulator. Two independent EPS will be connected in an OR-ing configuration so that if one fails, the other will provide power. The CubeSat and emulator will have separate boost converters, and the power to the CubeSat is capable of delivering the full 5V @ 3A which is the specified amount of power available to the CubeSat on the POEM.
+
+\subsection{Telemetry and command}
+An RFD900x radio will be used to downlink the data from the CubeSat and the engineering sensors. This link is optimised for relatively high speed and to have the full 300 kbps capacity that the POEM can provide to the CubeSat. The experiment data required for this research will be downlinked as part of the engineering data, to ensure that data is available to continue research in case the rocket crashes and the onboard memory is destroyed.
+
+The tracking and command system will be on a separate low-bandwidth LoRa radio which is optimised for high link budget and reliability.
+
+
+\subsection{GNSS Tracking}
+
+The GNSS tracking board contains a standard precision NEO-M9N GNSS receiver and the ZED-F9P differential GNSS (DGNSS) receiver. A NEO-M9N was selected against other standard GNSS receivers due to its high maximum position, velocity and time (PVT) update rate of $\SI{25}{\hertz}$. The main purpose of the NEO-M9N is to serve as a simple backup GNSS receiver for reliable tracking purposes, since it does not require an RTK data stream.
+
+The ZED-F9P differential receiver has centimetre-level accuracy and will enable the heading of the rocket to be accurately determined, which is required for this research since the heading may change throughout the flight and this will need to be accounted for when analysing the data since there are 6 DOF, instead of just one in traditional shaker table tests.
