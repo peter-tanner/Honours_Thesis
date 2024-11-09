@@ -87,3 +87,4 @@ Radiocommunications
 Falstad
 ecad
 HASL
+datasheets

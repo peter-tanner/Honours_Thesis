@@ -1,4 +1,4 @@
-\documentclass{report}
+\documentclass[draft]{report}
 \usepackage[style=ieee,backend=bibtex]{biblatex} 
 \usepackage{amsmath,amsfonts}
 \usepackage{geometry}
@@ -42,7 +42,13 @@
 
 
 % https://tex.stackexchange.com/a/121871
-\newcommand*{\fullref}[1]{\hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
+\newcommand*{\secref}[1]{section \hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
+\newcommand*{\Secref}[1]{Section \hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
+
+% https://tex.stackexchange.com/a/12712
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 % https://tex.stackexchange.com/a/24133
 \newcommand{\textoverline}[1]{$\overline{\mbox{#1}}$}
@@ -86,12 +92,13 @@
     {\large Word count: TODO:} \\
     {\large Submitted: \today} \\[2cm]
 
-    \includesvg[width=0.5\textwidth]{images/UWA-logo-dark.svg} \\
+    \includesvg[width=0.495\textwidth]{images/UWA-logo-dark.svg} \\
 
   \end{center}
 
 \end{titlepage}
 
+% LTeX: enabled=false 
 % TODOLIST
 %TC:igDnore
 \newpage
@@ -133,7 +140,7 @@
 
 %TC:endignore
 % END TODOLIST
-
+% LTeX: enabled=true 
 
 \newpage
 
@@ -274,8 +281,8 @@ Shock is tested using a shock-generating device which is applied to the satellit
 Shock tests are compared using the shock response spectrum (SRS), which plots the maximum acceleration per frequency bin. The SRS contains an octave slope which rises to the first resonant frequency called the "knee frequency". The octave slope can be approximately 9 dB/octave to 12 dB/octave depending on distance to the source.
 
 \begin{figure}[H]
-  \includegraphics[width=0.5\textwidth]{images/pyroshock2.png}
-  \includegraphics[width=0.5\textwidth]{images/pyroshock1.png}
+  \includegraphics[width=0.495\textwidth]{images/pyroshock2.png}
+  \includegraphics[width=0.495\textwidth]{images/pyroshock1.png}
   \caption{Shock response spectrum of and time-domain shock response. Left: near-field (close to shock source). Right: far-field (distant from shock source) \cite{nasa-pyroshock}}
   \label{fig:pyroshock}
 \end{figure}
@@ -286,8 +293,8 @@ Shock tests are compared using the shock response spectrum (SRS), which plots th
 Sounding rockets are a class of suborbital rocket used between $\SI{40}{\kilo\metre}$ and $\SI{200}{\kilo\metre}$, above where weather balloons operate \cite{seibert2006history}. While sounding rockets have been used to launch many CubeSats as the primary launch vehicle for suborbital CubeSat missions, such as in the REXUS-25 mission \cite{pont2019rexus}, there has been only one published instance of sounding rockets being used as an additional qualification platform for a CubeSat \cite{slongo2019pre}. The FloripaSat-I CubeSat was tested on a VSB-30 sounding rocket \cite{slongo2019pre} to qualify the CubeSat under launch conditions. This qualification method was intended not to replace, but to complement standard vibration and shock qualification methods \cite{slongo2019pre}. The test measured these launch conditions through the MPU6050 6 DOF inertial measurement unit (IMU) \cite{slongo2019pre}.
 
 \begin{figure}[H]
-  \includegraphics[width=0.5\textwidth]{images/floripa-accel.png}
-  \includegraphics[width=0.5\textwidth]{images/floripa-rot.png}
+  \includegraphics[width=0.495\textwidth]{images/floripa-accel.png}
+  \includegraphics[width=0.495\textwidth]{images/floripa-rot.png}
   \caption{Acceleration in time domain (Left), Angular velocity in time domain (Right) during the launch of FloripaSat-I \cite{9316404}}
   \label{fig:accel-rot}
 \end{figure}
@@ -295,8 +302,8 @@ Sounding rockets are a class of suborbital rocket used between $\SI{40}{\kilo\me
 While this study does show the time-domain accelerometer and gyroscope measurements from the sounding rocket launch in figure \ref{fig:accel-rot}, it does not compare the data to other qualification tests in the FloripaSat-I campaign, such as traditional vibration and shock testing. Additionally, the launch data was not presented in the frequency domain through the boost and coast phases of the flight, meaning they could not be compared to the acceleration spectra which was shown for the shaker table testing in figure \ref{fig:shaker}.
 
 \begin{figure}[H]
-  \includegraphics[width=0.5\textwidth]{images/floripa-random-spectrum.png}
-  \includegraphics[width=0.5\textwidth]{images/floripa-sinusoid.png}
+  \includegraphics[width=0.495\textwidth]{images/floripa-random-spectrum.png}
+  \includegraphics[width=0.495\textwidth]{images/floripa-sinusoid.png}
   \caption{Random vibration (Left) and sine sweep (Right) tests on a shaker table during the qualification of FloripaSat-I \cite{9316404}}
   \label{fig:shaker}
 \end{figure}
@@ -400,22 +407,22 @@ After defining the goals for the project, a list of high-level requirements and 
 
 \begin{table}[h!]
   \centering
-  \begin{tabular}{|l|l|p{0.6\textwidth}|}
+  \begin{tabular}{|l|L{0.25\textwidth}|L{0.6\textwidth}|}
     \hline
-    \textbf{ID}                       & \textbf{Name}                  & \textbf{Description}                                                                                         \\ \hline
-    \hypertarget{req-E1}{\textbf{E1}} & Emulation power and voltage    & EPS must emulate a \SI{5}{V} bus with at least \SI{3}{A} current capacity.                                   \\ \hline
-    \hypertarget{req-E2}{\textbf{E2}} & Battery life                   & DAQ system must sustain camera payload operation for at least \SI{2}{\hour}.                                 \\ \hline
-    \hypertarget{req-P1}{\textbf{P1}} & Shock and vibration            & DAQ must pass shock, random vibration, and sine-sweep tests as described in \fullref{sec:shaker-table-test}. \\ \hline
-    \hypertarget{req-P2}{\textbf{P2}} & Hot and cold operation         & DAQ must pass temperature qualification range of \SIrange{-20}{80}{\degreeCelsius}.                          \\ \hline
-    \hypertarget{req-P1}{\textbf{P1}} & Physical dimensions            & DAQ must fit within 1 CubeSat unit.                                                                          \\ \hline
-    \hypertarget{req-R1}{\textbf{R1}} & GNSS tracking                  & Must have GNSS tracking suitable for a \SI{10000}{\feet} HPR launch.                                         \\ \hline
-    \hypertarget{req-R2}{\textbf{R2}} & Radio downlink                 & Radio link must be stable to receive one image from a \SI{10000}{\feet} HPR launch.                          \\ \hline
-    \hypertarget{req-V1}{\textbf{V1}} & Testing controlled environment & A direct comparison of the two methods requires the construction of the satellite to be controlled.          \\ \hline
-    \hypertarget{req-V2}{\textbf{V2}} & Accelerometer Sampling Rate    & Accelerometers must sample at a high frequency $>\SI{1}{\kilo\hertz}$.                                       \\ \hline
-    \hypertarget{req-V3}{\textbf{V3}} & Maximum Acceleration           & Accelerometers should have a high acceleration range $>\SI{200}{\gacc}$.                                     \\ \hline
-    \hypertarget{req-A1}{\textbf{A1}} & AURC Regulations               & Must comply with AURC 2024 rules to perform second launch on UWA Aerospace competition rocket.               \\ \hline
-    \hypertarget{req-A2}{\textbf{A2}} & Budget                         & DAQ system cost must be below \aud 1500.                                                                     \\ \hline
-    \hypertarget{req-A3}{\textbf{A3}} & Project Deadline               & System and experiments to be finalised by October 18, 2024.                                                  \\ \hline
+    \textbf{ID}                       & \textbf{Name}                  & \textbf{Description}                                                                                        \\ \hline
+    \hypertarget{req-E1}{\textbf{E1}} & Emulation power and voltage    & EPS must emulate a \SI{5}{V} bus with at least \SI{3}{A} current capacity.                                  \\ \hline
+    \hypertarget{req-E2}{\textbf{E2}} & Battery life                   & DAQ system must sustain camera payload operation for at least \SI{2}{\hour}.                                \\ \hline
+    \hypertarget{req-P1}{\textbf{P1}} & Shock and vibration            & DAQ must pass shock, random vibration, and sine-sweep tests as described in \secref{sec:shaker-table-test}. \\ \hline
+    \hypertarget{req-P2}{\textbf{P2}} & Hot and cold operation         & DAQ must pass temperature qualification range of \SIrange{-20}{80}{\degreeCelsius}.                         \\ \hline
+    \hypertarget{req-P1}{\textbf{P1}} & Physical dimensions            & DAQ must fit within 1 CubeSat unit.                                                                         \\ \hline
+    \hypertarget{req-R1}{\textbf{R1}} & GNSS tracking                  & Must have GNSS tracking suitable for a \SI{10000}{\feet} HPR launch.                                        \\ \hline
+    \hypertarget{req-R2}{\textbf{R2}} & Radio downlink                 & Radio link must be stable to receive one image from a \SI{10000}{\feet} HPR launch.                         \\ \hline
+    \hypertarget{req-V1}{\textbf{V1}} & Testing controlled environment & A direct comparison of the two methods requires the construction of the satellite to be controlled.         \\ \hline
+    \hypertarget{req-V2}{\textbf{V2}} & Vibration Sampling Rate        & DAQ must sample vibrations at a high frequency ($>\SI{1}{\kilo\hertz}$).                                    \\ \hline
+    \hypertarget{req-V3}{\textbf{V3}} & Maximum Acceleration           & DAQ must sample vibrations with a high acceleration range ($>\SI{200}{\gacc}$).                             \\ \hline
+    \hypertarget{req-A1}{\textbf{A1}} & AURC Regulations               & Must comply with AURC 2024 rules to perform second launch on UWA Aerospace competition rocket.              \\ \hline
+    \hypertarget{req-A2}{\textbf{A2}} & Budget                         & DAQ system cost must be below \aud 1500.                                                                    \\ \hline
+    \hypertarget{req-A3}{\textbf{A3}} & Project Deadline               & System and experiments to be finalised by October 18, 2024.                                                 \\ \hline
   \end{tabular}
   \caption{High-level requirements}
   \label{tabl:high-level-requirements}
@@ -436,10 +443,10 @@ POEM outputs a consistent amount of power to each CubeSat while on orbit due to 
 If this research is continued, it is possible a future version of this payload will fly with the camera payload on POEM to make a direct comparison between the vibration environment on POEM to the conditions on both a HPR and the shaker table tests. Therefore, the DAQ must go through the same qualification campaign as the camera payload.
 
 \subsubsection{Shock, random vibration, sine-sweep test pass}
-The DAQ must remain functional during the vibration environment of the rocket. This means it must pass the IIST recommended qualification procedure, which involves shock, random vibration and sine-sweep tests. These tests are described in more detail in section \fullref{sec:shaker-table-test}.
+The DAQ must remain functional during the vibration environment of the rocket. This means it must pass the IIST recommended qualification procedure, which involves shock, random vibration and sine-sweep tests. These tests are described in more detail in \secref{sec:shaker-table-test}.
 
 \subsubsection{Cold and hot temperature test pass}
-The DAQ must be able to survive at temperatures of \SIrange{-20}{80}{\degreeCelsius} as described in section \fullref{sec:htemp-test-framework} and section \fullref{sec:ltemp-test-framework}. This will restrict the components able to be used to only those with industral temperature ranges.
+The DAQ must be able to survive at temperatures of \SIrange{-20}{80}{\degreeCelsius} as described in \secref{sec:htemp-test-framework} and \secref{sec:ltemp-test-framework}. This will restrict the components able to be used to only those with industrial temperature ranges.
 
 \subsubsection{Physical dimensions}
 The DAQ must have physical dimensions that allow it to fit within the inside space of a 1U CubeSat.
@@ -450,7 +457,7 @@ The DAQ must have physical dimensions that allow it to fit within the inside spa
 One of the goals of the testing campaign is to receive one image from a drone or HPR flight, to achieve this some systems on POEM need to be implemented in some form. These systems do not need to exactly emulate the systems on POEM since this test is not going to orbit, but they must function to an altitude of at least \SI{10000}{\feet}, which was the intended height of the HPR.
 
 \subsubsection{GNSS tracking}
-A launch apogee of \SI{10000}{\feet} will result in the rocket drifting away from the launch site, potentially out of sight. Therefore a GNSS tracking solution is needed to ensure recovery of the CubeSat and rocket.
+A launch apogee of \SI{10000}{\feet} will result in the rocket drifting away from the launch site, potentially out of sight. Therefore, a GNSS tracking solution is needed to ensure recovery of the CubeSat and rocket.
 
 \subsubsection{Radio link}
 A radio link needs to be designed to allow reception of at least one image during flight. The link needs to be designed so that data loss still results in a recognisable image.
@@ -459,7 +466,7 @@ A radio link needs to be designed to allow reception of at least one image durin
 
 \subsubsection{Experiment design} To make a direct comparison between the two methods, the physical construction of the CubeSat and accelerometer placement should be controlled.
 
-\subsubsection{Sampling rate} The accelerometers used must be able to sample at twice the frequency bandwidth of the tests. This is to avoid aliasing according to the Nyquist criterion. As shown in the literature review, MEMS accelerometers struggle to sample high frequencies however characterising the knee frequency would be sufficient for the experiment, therefore an accelerometer with a range over \SI{1}{\kilo\hertz} would be appropriate.
+\subsubsection{Sampling rate} The method used to measure vibration (accelerometer or ADC) used must be able to sample at twice the frequency bandwidth of the tests. This is to avoid aliasing according to the Nyquist criterion. As shown in the literature review, MEMS accelerometers struggle to sample high frequencies however characterising the knee frequency would be sufficient for the experiment, therefore an accelerometer with a range over \SI{1}{\kilo\hertz} would be appropriate.
 
 \subsubsection{Maximum measurable acceleration} Pyroshock events and motor launch are high-\textit{g} events that require accelerometers with measurement scales above these events, otherwise they will saturate at the maximum scale.
 As shown in the literature review, MEMS accelerometers struggle to measure high acceleration ranges however characterising the knee frequency would be sufficient for the experiment, therefore an accelerometer with a range over \SI{200}{\gacc} would be appropriate.
@@ -479,7 +486,7 @@ As shown in the literature review, MEMS accelerometers struggle to measure high 
 
 \section{Selection of components and high-level system design}
 
-The high level requirements and constraints identified in section \fullref{sec:constraints-and-requirements} determines the high level design and the types of major components to realise the design. Lower level requirements and constraints were created for each class of component or subsystem, since the high-level requirements are quite general.
+The high level requirements and constraints identified in \secref{sec:constraints-and-requirements} determines the high level design and the types of major components to realise the design. Lower level requirements and constraints were created for each class of component or subsystem, since the high-level requirements are quite general.
 
 
 \subsection{High-level design}
@@ -523,7 +530,7 @@ Firstly, a power budget was created which accounts for the worst-case current co
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|c|c|p{0.2\linewidth}|c|p{0.2\linewidth}|}
+  \begin{tabular}{|c|c|L{0.2\linewidth}|c|L{0.2\linewidth}|}
     \hline
     \textbf{Item}                    & \textbf{Voltage (\si{\volt})} & \textbf{Max unit current (\si{\milli\ampere})} & \textbf{Quantity} & \textbf{Max current (\si{\milli\ampere})} \\
     \hline
@@ -532,8 +539,8 @@ Firstly, a power budget was created which accounts for the worst-case current co
     RFD900x                          & 5                             & 1000 \cite{rfdesign2020rfd900x}                & 1                 & 1000                                      \\
     NEO-M9N                          & 3.3                           & 100 + 50 \cite{ublox2023neo_m9n_datasheet}     & 1                 & 150                                       \\
     % ZED-F9P                          & 3.3                           &                                                   & 1                 &                                       \\
-    LSM6DSOX                         & 3.3                           & 0.55 \cite{lsm6dso-datasheet}                  & 2                 & 1.1                                       \\
-    ADXL375                          & 3.3                           & 0.145 \cite{analog2014adxl375}                 & 2                 & 2.9                                       \\
+    LSM6\-DSOX                       & 3.3                           & 0.55 \cite{lsm6dso-datasheet}                  & 2                 & 1.1                                       \\
+    ADXL\-375                        & 3.3                           & 0.145 \cite{analog2014adxl375}                 & 2                 & 2.9                                       \\
     % E32-900M30S                      & 3.3                           & 650                                               & 1                 & 650                                          \\
     SP3485EN                         & 3.3                           & 2 \cite{maxlinear2021sp3485}                   & 1                 & 2                                         \\
     XR20M1172                        & 3.3                           & 0.5 \cite{maxlinear2022xr20m1172}              & 2                 & 1                                         \\
@@ -553,7 +560,7 @@ Batteries were selected based on the following criteria shown in table \ref{tabl
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                               & \textbf{Description}                                                                                                                                               & \textbf{HL constraints} \\ \hline
     Stable in vacuum                            & The DAQ system will be vacuum tested, therefore the cells need to be stable under vacuum                                                                           & \hlreq{P1}              \\\hline
@@ -568,24 +575,35 @@ Batteries were selected based on the following criteria shown in table \ref{tabl
   \label{tabl:battery-requirements}
 \end{table}
 
-For the high-level design, lithium-ion batteries were selected.
+
+To create a high-level design, the battery chemistry must be selected to design other parts of the high-level design such as the charging and power conditioning electronics, since these are dependent on the nominal cell voltage. Lithium-ion (\liion) cells were selected since in general they satisfy many of the criteria.
 
 \subsection{Power electronics}
+\label{sec:hl-power-electronics}
 Power electronics are used to condition the battery voltage, since the voltage of batteries decreases as it is progressively discharged.
 
-For the high-level design, two cell configurations were considered:
+For the high-level design, two cell configurations were considered for a total of $2N$ cells:
 \begin{itemize}
-  \item 1S3P (one set of 3 batteries in parallel).
-  \item 2S2P (two sets of 2 batteries in parallel, each set connected in series).
+  \item 1S (one set of $2N$ batteries in parallel).
+  \item 2S (two sets of $N$ batteries in parallel, each set connected in series).
 \end{itemize}
+
+The two configurations are shown in figure \ref{fig:1s2s}.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/1s2s.svg}
+  \caption{(Left) 1P battery pack using $2N=4$ batteries, (Right) 2P battery pack using $2N=4$ batteries.}
+  \label{fig:1s2s}
+\end{figure}
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}|}
+  \begin{tabular}{|L{0.3\linewidth}|L{0.3\linewidth}|L{0.3\linewidth}|}
     \hline
     \textbf{Category}                            & \textbf{1S}                    & \textbf{2S}                            \\
     \hline
-    Nominal voltage                              & \SI{3.6}{\volt}                & \SI{7.2}{\volt}                        \\
+    Nominal voltage (\liion)                     & \SI{3.6}{\volt}                & \SI{7.2}{\volt}                        \\
     Power loss                                   & Higher $I^2R$ losses           & Lower $I^2R$ losses                    \\
     Components required for \SI{5}{\volt} output & Boost converter                & Buck converter and balancing circuitry \\
     Cost of system                               & Lower due to lack of balancing & Higher due to balancing circuitry      \\
@@ -595,9 +613,7 @@ For the high-level design, two cell configurations were considered:
   \label{tabl:battery-1s2s-comparison}
 \end{table}
 
-A series battery pack would make sense if the electronics operate on a higher voltage (for example, if there are motors or high-power radios). However, in this application the highest voltage used is \SI{5}{\volt} and the $I^2R$ losses between the battery and the power converters is low since they are integrated on the same board. A power system using 2S batteries results in a cost of \aud 10 for power electronics whereas a 1S system only requires \aud 2 in power electronics.
-
-Three batteries were placed in parallel to form a 1S3P battery pack, this configuration was chosen as it simplifies the charging circuitry by removing the need for cell balancing circuitry that is required for series battery packs, which reduces cost and simplifies the design. Three cells were selected since this %TODO: justify 1S3P capcity.
+A 2S battery pack would make sense if the electronics operate on a higher voltage (for example, if there are motors or high-power radios). However, in this application the highest voltage used is \SI{5}{\volt} which is not significantly higher than \SI{3.7}{\volt}. Additionally, the $I^2R$ losses between the battery and the power converters is low since they are integrated on the same board. A preliminary analysis shows that a power system using 2S batteries results in a higher cost compared to a 1S system due to the additional battery balancing electronics required. Therefore, a 1S battery pack was selected for the high-level design.
 
 Based on the high level description of the battery pack and the power budget, a boost converter and regulator would be used to condition the battery voltage. These components will have the following requirements:
 
@@ -605,7 +621,7 @@ Based on the high level description of the battery pack and the power budget, a 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                & \textbf{Description}                                                                                                                                                        & \textbf{HL constraints} \\ \hline
     Input voltage range          & It must have an input voltage range of at least $<\SI{2}{\volt}$ and $>\SI{4.4}{\volt}$ to support a \liion battery.                                                        & TODO:                   \\\hline
@@ -622,7 +638,7 @@ Based on the high level description of the battery pack and the power budget, a 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                & \textbf{Description}                                                                                                                                                  & \textbf{HL constraints} \\ \hline
     Dropout voltage              & This linear regulator will receive a constant \SI{5}{\volt}, it must have a dropout voltage lower than \SI{1.7}{\volt} so that it can power a \SI{3.3}{\volt} system. & TODO:                   \\\hline
@@ -641,15 +657,15 @@ The POEM contains a radio downlink which allows experiments to transmit data to 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
-    \textbf{Name}                & \textbf{Description}                                                                                                                                                                  & \textbf{HL constraints} \\ \hline
-    Data rate                    & Must have adequate data rate to transmit one image over the time of a \SI{10000}{\feet} HPR test flight                                                                               & TODO:                   \\\hline
-    Range                        & Must have adequate link budget to allow reception of picture data over \SI{10000}{\feet}.                                                                                             & TODO:                   \\\hline
-    Common interfaces            & Must use a non-proprietary interface, such as UART or SPI to simplify development.                                                                                                    & TODO:                   \\\hline
-    USB ground station           & Must be able to be connected to a laptop on the ground for live visualisation of picture data.                                                                                        & TODO:                   \\\hline
-    Class license operation      & Radio must be able to be legally operated using a free class license \cite{australia2015radiocommunications}, since obtaining a amateur radio license would require significant time. & TODO:                   \\\hline
-    Industrial temperature range & This is a component that must pass temperature testing.                                                                                                                               & TODO:                   \\\hline
+    \textbf{Name}                & \textbf{Description}                                                                                                                                                                   & \textbf{HL constraints} \\ \hline
+    Data rate                    & Must have adequate data rate to transmit one image over the time of a \SI{10000}{\feet} HPR test flight                                                                                & TODO:                   \\\hline
+    Range                        & Must have adequate link budget to allow reception of picture data over \SI{10000}{\feet}.                                                                                              & TODO:                   \\\hline
+    Common interfaces            & Must use a non-proprietary interface, such as UART or SPI to simplify development.                                                                                                     & TODO:                   \\\hline
+    USB ground station           & Must be able to be connected to a laptop on the ground for live visualisation of picture data.                                                                                         & TODO:                   \\\hline
+    Class license operation      & Radio must be able to be legally operated using a free class license \cite{australia2015radiocommunications}, since obtaining an amateur radio license would require significant time. & TODO:                   \\\hline
+    Industrial temperature range & This is a component that must pass temperature testing.                                                                                                                                & TODO:                   \\\hline
   \end{tabular}
   \caption{Radio downlink requirements}
   \label{tabl:radio-requirements}
@@ -664,7 +680,7 @@ CubeSats use the RS-485 physical layer specification and UART data layer specifi
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                                        & \textbf{Description}                                                                               & \textbf{HL constraints} \\ \hline
     Same data layer as POEM (UART)                       & This needs to emulate the same interfaces on POEM.                                                 & TODO:                   \\\hline
@@ -685,12 +701,12 @@ Since the DAQ needs to emulate POEM services as a constraint, payload communicat
 
 \subsection{GNSS tracking}
 
-The DAQ must be able to track the HPR throughout the full launch to enable recovery as stated in section \fullref{sec:hpr-test-req}. This will be achieved through a Global Navigation Satellite System (GNSS) receiver, which receives signals from GNSS satellites and determines the position and altitude of the receiver.
+The DAQ must be able to track the HPR throughout the full launch to enable recovery as stated in \secref{sec:hpr-test-req}. This will be achieved through a Global Navigation Satellite System (GNSS) receiver, which receives signals from GNSS satellites and determines the position and altitude of the receiver.
 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                & \textbf{Description}                                                               & \textbf{HL constraints} \\ \hline
     Metre-level precision        & Metre-level precision is adequate for tracking and recovery.                       & TODO:                   \\\hline
@@ -708,7 +724,7 @@ Micro-electromechanical systems (MEMS) based accelerometers were chosen for the 
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                        & \textbf{Description}                                                                                                                          & \textbf{HL constraints} \\ \hline
     High output data rate                & Output data rate should be over \SI{1}{\kilo\hertz} to maximise range of the shock response spectrum.                                         & TODO:                   \\\hline
@@ -718,7 +734,7 @@ Micro-electromechanical systems (MEMS) based accelerometers were chosen for the 
     Industrial temperature range         & This is a component that must pass temperature testing.                                                                                       & TODO:                   \\\hline
   \end{tabular}
   \caption{Accelerometer requirements}
-  \label{tabl:tabl:acc-requirements}
+  \label{tabl:acc-requirements}
 \end{table}
 
 
@@ -728,7 +744,7 @@ The OBDH unit acquires data from sensors and the payload and saves it to a stora
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|p{0.2\textwidth}|p{0.5\textwidth}|p{0.2\textwidth}|}
+  \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                & \textbf{Description}                                                                                                                                                                      & \textbf{HL constraints} \\ \hline
     Data storage                 & OBDH should be able to store several images for post-flight analysis if the radio downlink underperforms. It should be able to store readings read from the accelerometer at a high rate. & TODO:                   \\\hline
@@ -812,7 +828,7 @@ Ultimately LTspice was chosen over other freeware SPICE simulators such as PSpic
 
 \section{Implementation of high-level design}
 
-After the high-level design was created and components finalised, they are integrated into the design as shown in figure \ref{fig:implementation-workflow} using the design tools from \fullref{sec:design-tools}
+After the high-level design was created and components finalised, they are integrated into the design as shown in figure \ref{fig:implementation-workflow} using the design tools from \secref{sec:design-tools}
 
 \begin{figure}[H]
   \centering
@@ -836,7 +852,7 @@ There are three cases for integration of one subsystem into the design:
   \item Some subsystems have already been verified on other projects and are able to be directly applied to the DAQ system, the schematics for these designs are copied into the project.
 \end{enumerate}
 
-Once verified, a subsystem is implemented as a single schematic sheet in an Altium PCB project and connected to other schematics using the hierarchical sheet system as described in \fullref{sec:schematic-editor}.
+Once verified, a subsystem is implemented as a single schematic sheet in an Altium PCB project and connected to other schematics using the hierarchical sheet system as described in \secref{sec:schematic-editor}.
 
 \subsection{PCB setup}
 
@@ -867,7 +883,7 @@ Additional PCB rules are created where necessary, such as to enforce the geometr
 
 \subsection{Finalisation of design and manufacturing}
 
-After the PCB design is finished, an automatic design rule check (DRC) is run to find any errors that would affect manufacturing, based on the PCB rules set in \fullref{sec:pcb-layout}. The manufacturing outjob is run to generate artefacts such as Gerber files, the bill of materials for automated and manual manufacturing, and component locations for pick-and-place. These artefacts are sent to JLCPCB to design and partially assemble the PCBs. The manual manufacturing BOM is used to purchase components from component distributors.
+After the PCB design is finished, an automatic design rule check (DRC) is run to find any errors that would affect manufacturing, based on the PCB rules set in \secref{sec:pcb-layout}. The manufacturing outjob is run to generate artefacts such as Gerber files, the bill of materials for automated and manual manufacturing, and component locations for pick-and-place. These artefacts are sent to JLCPCB to design and partially assemble the PCBs. The manual manufacturing BOM is used to purchase components from component distributors.
 
 After receiving the boards from JLCPCB, some basic tests are conducted (such as ensuring that voltage domains and ground are not short-circuited). After this, additional components are manually assembled either using hot-air or a soldering iron. After soldering, the manual solder joints are inspected to ensure they are not cold joints, and the boards are again tested for short-circuits.
 
@@ -1060,11 +1076,11 @@ One of the objectives of this research is to design a platform for qualification
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{|c|c|p{0.6\linewidth}|}
+  \begin{tabular}{|c|c|L{0.6\linewidth}|}
     Data source & Data rate                           & Notes                                                                                                            \\
     \hline
-    LSM6DSOX    & $\SI{0.41}{\mega\byte\per\second}$  & $16$ byte structs are generated at $\SI{6664}{\hertz}$ for both acceleration and gyroscope data for two sensors. \\
-    ADXL375     & $\SI{0.038}{\mega\byte\per\second}$ & $20$ byte structs generated at $\SI{1}{\kilo\hertz}$ for two sensors.                                            \\
+    LSM6\-DSOX  & $\SI{0.41}{\mega\byte\per\second}$  & $16$ byte structs are generated at $\SI{6664}{\hertz}$ for both acceleration and gyroscope data for two sensors. \\
+    ADXL\-375   & $\SI{0.038}{\mega\byte\per\second}$ & $20$ byte structs generated at $\SI{1}{\kilo\hertz}$ for two sensors.                                            \\
     Camera      & $\SI{0.054}{\mega\byte\per\second}$ & $\SI{460800}{\baud}$                                                                                             \\
     TOTAL       & $\SI{0.502}{\mega\byte\per\second}$ & $60\%$ of maximum sequential write bandwidth.
   \end{tabular}
@@ -1087,7 +1103,7 @@ One of the objectives of this research is to design a platform for qualification
 
 \chapter{Final design of DAQ system}
 
-The final DAQ system design is implemented using the design process described in section \fullref{sec:design-process}.
+The final DAQ system design is implemented using the design process described in \secref{sec:design-process}.
 
 \section{Overview of PCBs}
 
@@ -1124,7 +1140,6 @@ COTS 18650 lithium-ion batteries were chosen as the energy source for the DAQ. A
   \item Low cost as they are COTS grade and are already produced at scale. % TODO: Citation
 \end{itemize}
 
-% TODO: MOVE TO FINAL DESIGN SECTION
 Manufacturers produce a variety of types of \liion batteries with different chemistries, which affect parameters including internal resistance, discharge and charging temperature range and capacity.
 
 The Samsung INR18650-25R \liion battery was chosen for the DAQ platform due to
@@ -1148,23 +1163,26 @@ The inductor selected for the converter subsystem is the ASPI-0630HI-1R0M-T15, w
 \end{figure}
 
 \begin{figure}[H]
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/TPS61022-simulation-plot.pdf}
     \caption{Startup and steady-state behaviour.}
   \end{subfigure}
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/TPS61022-simulation-plot-overshoot.pdf}
     \caption{Close-up of startup transient and steady-state behaviour.}
   \end{subfigure}
-  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.)}
+  \caption{Simulation of the TPS61022 in LTspice using component values close to the datasheet as shown in figure \ref{fig:TPS61022-schematic-ltspice}.}
   \label{fig:TPS61022-simulation-ltspice}
 \end{figure}
 
 As shown in figure \ref{fig:TPS61022-simulation-ltspice}, during startup there is a small voltage overshoot of \SI{0.06}{\volt} but this is negligible and well within the tolerance of the components. The steady-state output voltage has a mean of \SI{5.006}{\volt} and a peak to peak ripple voltage of \SI{7}{\milli\volt}, or a ripple of 0.15\%, which is more than adequate for this application since it is mainly digital logic.
 
 The simulation also shows that the power system will work up to \SI{3}{\ampere}, which is the output current required to emulate the power capabilities of POEM. Two TPS61022 boost converters will be used in the final design: one will be dedicated for the payload-under-test, and the other will power the DAQ system. This allows the payload to be able to receive the maximum current able to be provided by POEM, and also isolates failures in either system from affecting the other.
+
+\subsection{Battery pack}
+As stated in the high-level design (\Secref{sec:hl-power-electronics}), a 1S lithium-ion battery pack was selected. In the final design, three batteries were placed in parallel to form a 1S3P battery pack. Three 18650 cells were selected since this is the maximum number of cells which can fit on a \SI{80 x 80}{\milli\metre} PCB using a 3 cell 18650 battery holder.
 
 The 1S3P battery pack was mounted on the reverse side of the PCB due to the amount of space it consumes, as shown in figure \ref{fig:batteries-pcb}.
 
@@ -1190,12 +1208,12 @@ This regulator has been validated in previous boards, therefore implementing thi
 A single schematic was created for the TPS61022 based off the successful LTspice simulation and instantiated twice in the root schematic. A PCB layout based on Figure 10-1 from the datasheet was used and is shown in figure \ref{fig:TPS61022-layout} \cite{ti2021tps61022}.
 
 \begin{figure}[H]
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includesvg[width=\linewidth]{images/TPS61022-reference-layout.svg}
     \caption{Reference PCB layout \cite{ti2021tps61022}.}
   \end{subfigure}
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/TPS61022-pcb-layout.svg.png}
     \caption{PCB layout implemented in DAQ system.}
@@ -1239,7 +1257,7 @@ The SP3485EN-L/TR RS-485 transceiver is used to convert the RS-485 signalling to
 The camera payload communicates with the DAQ through UART at the transport layer. The settings in table \ref{tabl:uart-settings} were agreed upon and are used on both the payload and DAQ sides:
 \begin{table}[H]
   \centering
-  \begin{tabular}{|c|c|p{0.6\linewidth}|}
+  \begin{tabular}{|c|c|L{0.6\linewidth}|}
     \hline
     \textbf{Attribute} & \textbf{Value}    & \textbf{Note}                                                                                                                                                                                           \\
     \hline
@@ -1320,7 +1338,7 @@ The RFD900x radio transceiver was chosen to emulate the POEM radio service. This
 
 The RFD900x satisfies several constraints. It reduces the time to test since it uses the ISM band, which can be used by anyone provided they follow the  Low Interference Potential Devices (LIPD) Class License legislation. The use of the FHSS allows the RFD900x to transmit at the maximum power of \SI{1}{\watt} that is allowable by the class license under the frequency hopping transmitters section \cite{australia2015radiocommunications}.
 
-Distances of \SI{40}{\kilo\metre} line-of-sight is possible using the RFD900x \cite{rfdesign2020rfd900x}, which is far greater than the maximum distance achievable with the rocket and drone tests. The maximum drone test scheduled had a altitude of \SI{500}{\metre}, and the rocket was intended to fly to \SI{10000}{\feet} (\SI{3}{\kilo\metre}).
+Distances of \SI{40}{\kilo\metre} line-of-sight is possible using the RFD900x \cite{rfdesign2020rfd900x}, which is far greater than the maximum distance achievable with the rocket and drone tests. The maximum drone test scheduled had an altitude of \SI{500}{\metre}, and the rocket was intended to fly to \SI{10000}{\feet} (\SI{3}{\kilo\metre}).
 
 
 
@@ -1379,12 +1397,12 @@ TODO: Should it be hierarchical by system or by test?
 This system was tested in the drone test at a distance of \SI{120}{\meter} line of sight. The image received is shown in \ref{fig:image-blocking-example} with comparison to an image received without blocking:
 
 \begin{figure}[H]
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/results/sheds.png}
     \caption{}
   \end{subfigure}
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/results/sheds_naive.png}
     \caption{}
@@ -1396,17 +1414,17 @@ This system was tested in the drone test at a distance of \SI{120}{\meter} line 
 \subsection{Accelerometer data acquisition system}
 \paragraph{Accelerometer selection}
 
-Two accelerometers MEMS were chosen, the ADXL375 and LSM6DSOX.
+Two accelerometers MEMS were chosen, the ADXL\-375 and LSM6\-DSOX.
 
-The STMicroelectronics LSM6DSOX is a MEMS inertial measurement unit (IMU) which has a $\pm\SI{16}{\gacc}$ accelerometer and $\pm\SI{2000}{\milli\degree\per\second}$ gyroscope, both with a sampling rate of \SI{6666}{\kilo\hertz}. This accelerometer is used to characterise the random vibration spectrum of launch due to its high sampling rate.
+The STMicroelectronics LSM6\-DSOX is a MEMS inertial measurement unit (IMU) which has a $\pm\SI{16}{\gacc}$ accelerometer and $\pm\SI{2000}{\milli\degree\per\second}$ gyroscope, both with a sampling rate of \SI{6666}{\kilo\hertz}. This accelerometer is used to characterise the random vibration spectrum of launch due to its high sampling rate.
 
-Due to the low full-scale of the LSM6DSOX of only $\pm\SI{16}{\gacc}$, the ADXL375 was chosen to characterise the shock response of the payload to pyroshock due to its significantly higher full-scale range of $\pm\SI{200}{\gacc}$.
+Due to the low full-scale of the LSM6\-DSOX of only $\pm\SI{16}{\gacc}$, the ADXL\-375 was chosen to characterise the shock response of the payload to pyroshock due to its significantly higher full-scale range of $\pm\SI{200}{\gacc}$.
 
 Based on the accelerometer specifications, these accelerometers satisfy the requirements outlined in table \ref{tabl:acc-requirements}.
 
 \paragraph{Accelerometer PCB}
 
-The accelerometer PCB (shown in figure \ref{fig:accelerometers-pcb}) will contain both the ADXL375 and LSM6DSOX accelerometers and mount them to the chassis.
+The accelerometer PCB (shown in figure \ref{fig:accelerometers-pcb}) will contain both the ADXL\-375 and LSM6\-DSOX accelerometers and mount them to the chassis.
 
 To maximise the resonant frequency of the assembly, the PCB is mounted on its flat side to the chassis and is fixed with four steel M3 bolts on each corner. Additionally, the dimensions of the PCB was minimised to \SI{22x22}{\milli\metre}, which is the minimum dimension that can fit all components. Maximising the resonant frequency past the sampling frequency will minimise distortion of the response. The PCB is depicted in figure \ref{fig:accelerometers-pcb}.
 
@@ -1433,12 +1451,12 @@ This SPI bus is dedicated for only accelerometers to maximise the number of acce
 \end{figure}
 
 \begin{figure}[H]
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/results/top_accelerometer.png}
     \caption{Top accelerometer}
   \end{subfigure}
-  \begin{subfigure}{.5\textwidth}
+  \begin{subfigure}{0.495\textwidth}
     \centering
     \includegraphics[width=\linewidth]{images/results/bot_accelerometer.png}
     \caption{Bottom accelerometer.}
@@ -1447,7 +1465,7 @@ This SPI bus is dedicated for only accelerometers to maximise the number of acce
   \label{fig:accelerometer-mounting}
 \end{figure}
 
-\paragraph{LSM6DSOX software} A C program is written to read values from the LSM6DSOX, package them into a binary flat file format and store them to disk. A C program is required since preliminary tests with a Python script with the same functionality resulted in 100\% of the CPU being used to read from one accelerometer.
+\paragraph{LSM6\-DSOX software} A C program is written to read values from the LSM6\-DSOX, package them into a binary flat file format and store them to disk. A C program is required since preliminary tests with a Python script with the same functionality resulted in 100\% of the CPU being used to read from one accelerometer.
 
 The \texttt{lsm6dso-pid} platform independent (PID) library was used to provide simple access to the registers of the accelerometer \cite{stmicroelectronics_lsm6dsox_pid}, in combination with WiringPi which provides bindings to GPIO, SPI and other peripherals on the Pi \cite{wiringpi-github}.
 
@@ -1466,7 +1484,7 @@ struct datapoint
 };
 \end{lstlisting}
 
-To improve reliability, the LSM6DSOX program contains a watchdog, implemented using a POSIX timer, which restarts and re-initialises the accelerometer if no samples have been received for \SI{1}{\second}. The process is managed by a \texttt{systemd} service which initialises the program on system boot and restarts the program if it crashes.
+To improve reliability, the LSM6\-DSOX program contains a watchdog, implemented using a POSIX timer, which restarts and re-initialises the accelerometer if no samples have been received for \SI{1}{\second}. The process is managed by a \texttt{systemd} service which initialises the program on system boot and restarts the program if it crashes.
 
 The following is a description of the program TODO:
 
@@ -1475,20 +1493,20 @@ The following is a description of the program TODO:
   \item Open a new unique binary file to store the samples to.
   \item Create a watchdog POSIX timer and debug printing POSIX timer.
   \item Attach the FIFO read interrupt handler on the interrupt pin.
-  \item Initialise the LSM6DSOX by issuing the following commands:
+  \item Initialise the LSM6\-DSOX by issuing the following commands:
   \item Ensure the \texttt{WHO\_AM\_I} register matches the expected value,
   \item Software reset the device,
   \item Wait for the device to be reset,
   \item Disable the I\textsuperscript{3}C interface,
   \item Enable block data update,
-  \item Set the scale for the accelerometer to \SI{16}{\gacc}, the maxmium full scale possible,
+  \item Set the scale for the accelerometer to \SI{16}{\gacc}, the maximum full scale possible,
   \item Set the sampling rate to \SI{6666}{\hertz} and the batching rate to \SI{12.5}{\hertz},
   \item Set the FIFO to continuous mode (old samples are automatically discarded),
   \item Set FIFO watermark level to 384 samples,
   \item Set interrupt pin 1 to pulse on FIFO watermark being reached (this results in a pulse being generated on the INT1 pin when a large amount of data is present in the FIFO to be read, resulting in the interrupt handler being triggered.),
 \end{enumerate}
 
-The interrupt handler has the following functionality and is based off sample code from the LSM6DSOX PID library \cite{stmicroelectronics_lsm6dsox_pid}:
+The interrupt handler has the following functionality and is based off sample code from the LSM6\-DSOX PID library \cite{stmicroelectronics_lsm6dsox_pid}:
 
 \begin{enumerate}
   \item Immediately reset the watchdog timer to 1 second (to prevent it triggering since a read is started)

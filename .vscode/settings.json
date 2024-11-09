@@ -1,4 +1,17 @@
 {
   "latex-workshop.latex.build.forceRecipeUsage": false,
-  "cSpell.enabled": false
+  "cSpell.enabled": false,
+  "ltex.latex.commands": {
+    "\\label{}": "ignore",
+    "\\documentclass[]{}": "ignore",
+    "\\cite{}": "dummy",
+    "\\cite[]{}": "dummy",
+    "\\SI{}{}": "dummy",
+    "\\SIrange{}{}{}": "dummy",
+    "\\hypertarget{}{}": "dummy",
+    "\\secref{}": "dummy",
+    "\\Secref{}": "dummy",
+    "\\texttt{}":"dummy",
+    "\\iic": "dummy"
+  }
 }
