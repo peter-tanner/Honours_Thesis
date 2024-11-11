@@ -1119,7 +1119,7 @@ However, the OBDH was completely changed to use a Raspberry Pi Zero W in the sec
 
 Some systems were simplified, such as the differential GNSS not being used on the final DAQ. RS-485 was also removed for board to board communication, except between the camera payload and the DAQ, since it was unnecessary given the short distance between DAQ boards.
 
-\chapter{Final design of DAQ system}
+\chapter{Final design of DAQ}
 
 The final DAQ system design is implemented using the design process described in \secref{sec:design-process}.
 
@@ -1601,7 +1601,11 @@ Since POEM provides the location of the CubeSat and due to the speed and altitud
 
 A differential GNSS (DGNSS) solution was considered and tested based on the u-blox ZED-F9P, however the drone test did not require the centimetre level precision of the ZED-F9P, so it was not used in the final design.
 
-\section{High-Power Rocket}
+\chapter{Final experiment design for HPR evaluation}
+
+The design of the DAQ system is a precursor for the experiment to compare HPR to shaker table testing. Note that the results of the HPR and shaker table tests will also be used for evaluating the DAQ system in addition to the goal of evaluating the usefulness of HPR launches for qualifying CubeSats.
+
+\section{High-Power Rocket Flight}
 
 A custom rocket named \textit{UNO} was designed and built by another project member (Jamir Khan) from scratch, it has a height of 290 cm, diameter of $\SI{16.3}{\centi\metre}$ and a dry mass of $\SI{14.42}{\kilo\gram}$ without a motor. It was designed to fly with an M impulse class motor, however due to changes in United States export regulations it was not possible to obtain this motor in the time of this research, and therefore it was only possible to launch with a K impulse class motor which has about 1/10th of the total impulse of the N motor as shown in table \ref{tabl:impulseclasses}. All analysis following this assume a K1100T motor.
 
@@ -1642,7 +1646,7 @@ The rocket was simulated using OpenRocket \cite{openrocket,niskanen2009}, an ope
 As shown in \ref{fig:openrocket-k-launch} the rocket reaches an apogee of \SI{413}{\metre} at \SI{9.74}{\second} and the total flight time is \SI{30}{\second}.
 
 \begin{figure}[H]
-  \includesvg[width=\textwidth]{images/k-ork-vertical.svg}
+  \includesvg[width=0.8\textwidth]{images/k-ork-vertical.svg}
   \caption{Flight profile of \textit{UNO} using a K1100T motor. Simulated in OpenRocket.}
   \label{fig:openrocket-k-launch}
 \end{figure}
@@ -1653,7 +1657,7 @@ As shown in \ref{fig:openrocket-k-launch} the rocket reaches an apogee of \SI{41
 As shown in figure \ref{fig:openrocket-k-stability}, the stability is above 2.0 calibres for the coast and launch phase, which is a general rule to ensure the rocket is stable and will not veer off course \cite{canepa2005modern}. The short moment of stability below 2.0 occurs when the rocket reaches apogee, which is not an issue since the parachutes are immediately deployed at this point.
 
 \begin{figure}[H]
-  \includesvg[width=\textwidth]{images/k-ork-stability.svg}
+  \includesvg[width=0.8\textwidth]{images/k-ork-stability.svg}
   \caption{Stability of \textit{UNO} using a K1100T motor. Simulated in OpenRocket.}
   \label{fig:openrocket-k-stability}
 \end{figure}
@@ -1663,14 +1667,162 @@ As shown in figure \ref{fig:openrocket-k-stability}, the stability is above 2.0 
 As stated, since OpenRocket does not model the vibration environment in the rocket and models the rocket as one solid body, only the acceleration of the whole rocket can be modelled. Pyroshock events are not modelled by OpenRocket. The launch phase lasts only \SI{1.6}{\second} and has a high average acceleration of \SI{5.77}{\gacc}, as shown in \ref{fig:openrocket-k-acceleration}. During the coast phase, the rocket is decelerated by gravity as expected and after parachute deployment the rocket only has a small deceleration force.
 
 \begin{figure}[H]
-  \includesvg[width=\textwidth]{images/k-ork-acceleration.svg}
-  \includesvg[width=\textwidth]{images/k-ork-acceleration-launch.svg}
+  \includesvg[width=0.8\textwidth]{images/k-ork-acceleration.svg}
+  \includesvg[width=0.8\textwidth]{images/k-ork-acceleration-launch.svg}
   \caption{Acceleration of \textit{UNO} using a K1100T motor over (top) the whole flight and (bottom) the thrust phase. Simulated in OpenRocket.}
   \label{fig:openrocket-k-acceleration}
 \end{figure}
 
 
-\chapter{Final design evaluation results and experiment results}
+\subsection{HPR Experiement Setup}
+
+The CubeSat is mounted in the rocket \textit{UNO} payload bay through two wooden plates as shown in figure \ref{fig:hpr-mounting}. The rocket splits into multiple parts on the ground for assembly: the payload bay is in the middle of two parts, both have wooden bulkheads epoxied to the body. The payload assembly and the payload bay tube is placed in between the two rocket parts. The payload assembly is fixed to the top and bottom wooden bulkheads to fix it in place.
+
+\begin{figure}[H]
+  \begin{subfigure}{0.495\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/cubesat-payload-bay.jpg}
+    \caption{CubeSat mounting hardware before mounting in \textit{UNO}.}
+  \end{subfigure}
+  \begin{subfigure}{0.495\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{images/camera-holes.jpg}
+    \caption{Camera holes in the side of the rocket body.}
+  \end{subfigure}
+  \caption{CubeSat in \textit{UNO} before launch.}
+  \label{fig:hpr-mounting}
+\end{figure}
+
+After mounting the DAQ payload and setting up recovery electronics and parachutes, the K1100T motor was mounted in the motor tube. The rocket was then transported to the launch pad where it was mounted vertically on a launch rail and a motor igniter was attached.
+
+The rocket was launched remotely, and the DAQ continued to save accelerometer data during the flight. A video was taken during flight to label the response to certain flight events.
+
+Once the rocket landed, it was safed by switching off power to the recovery electronics and the DAQ. The recovered rocket was transported back for disassembly and retrieval of the CubeSat.
+
+\subsection{HPR data analysis}
+
+After the rocket landed, the accelerometer data files were extracted from the Raspberry Pi's SD card and transferred to a computer. A Python notebook was created to process the data as follows:
+
+\begin{itemize}
+  \item Unpack the binary flat file into a CSV.
+  \item Plot the CSV.
+  \item Visually identify the start of the flight which is characterised by a sustained increase acceleration for a few seconds.
+  \item Using video of the flight, identify the end of the flight and all key phases (including boost, coast and pyrotechnic events).
+  \item Separate the CSV into smaller CSVs which contain the boost and coast phases and pyroshock events.
+  \item For the boost and coast phases, which represent quasi-static acceleration and random vibration respectively, use Welch's method to obtain an estimation of the power spectral density.
+  \item For the pyroshock events, originally Welch's method would be used, however it was found that plotting the time-domain shock response was more valuable for this analysis due to frequency limitations of the both accelerometers in the DAQ and shaker table.
+\end{itemize}
+
+This process is summarised in figure \ref{fig:hpr-data-processing}.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=0.85\linewidth]{images/hpr-workflow.svg}
+  \caption{Data processing workflow for HPR accelerometer data.}
+  \label{fig:hpr-data-processing}
+\end{figure}
+
+\subsection{Shaker table experiment setup}
+
+\section{Shaker table}
+\label{sec:shaker-table-method}
+
+The shaker table tests were performed at AVI on the \DTMdate{2024-09-25} using a Brüel \& Kjær LDS V8800 electrodynamic shaker table. The CubeSat was fixed to the shaker table using three bolts which went through the bottom plate.
+
+A Brüel \& Kjær type 4533-B integrated electronics piezoelectric (IEPE) accelerometer was used as the control and data accelerometer, which were mounted to the shaker table and the payload respectively. This accelerometer has a frequency range of \SI{0.016}{\hertz} to \SI{1250}{\kilo\hertz} and a resonance frequency of \SI{36.7}{\kilo\hertz}, which is well above the range of the tests. The accelerometers were attached to mounting studs which were fixed to the CubeSat using bisphenol-A epoxy.
+
+The table was first mounted in the vertical configuration and the CubeSat was mounted axially as shown in figure \ref{fig:shaker-axis-setup}. Random, sine-sweep and shock tests were performed, then the table was rotated manually \SI{90}{\degree} and the CubeSat re-mounted to conduct the same tests in the x-axis. The CubeSat was rotated \SI{90}{\degree} to finally test the y-axis.
+
+\begin{figure}[H]
+  \begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\linewidth]{images/z-axis-setup.jpg}
+    \caption{z-axis}
+  \end{subfigure}
+  \begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\linewidth]{images/y-axis-setup.jpg}
+    \caption{y-axis}
+  \end{subfigure}
+  \begin{subfigure}{0.32\textwidth}
+    \includegraphics[width=\linewidth]{images/x-axis-setup.jpg}
+    \caption{x-axis}
+  \end{subfigure}
+  \caption{CubeSat setup in on the shaker table.}
+  \label{fig:shaker-axis-setup}
+\end{figure}
+
+\subsection{Random}
+
+The IIST recommended random vibration profile described in table \ref{tabl:random-vibration-profile-iist} is used.
+
+\subsection{Sine-sweep}
+
+The sine-sweep profile described in table \ref{tabl:sine-sweep-profile-iist} was found to not be realisable on the shaker table since the profile described requires all three axes to be simultaneously driven. To replicate shaker table test where all three axes are simultaneously driven using one axis, the single axis must be driven with 2.5 times the $g_\text{rms}$ \cite{nath2022study}. A second attempt used the single-axis modified test shown in table \ref{tabl:sine-sweep-mod1}
+
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Frequency}        & \textbf{Level}     & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
+    \SI{10}{\hertz}           & \SI{13.198}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+    \SI{12}{\hertz}           & \SI{19.006}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+    \SI{14}{\hertz}           & \SI{25.869}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+    \SIrange{16}{100}{\hertz} & \SI{32.79}{\gacc}  & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+  \end{tabular}
+  \caption{First modification of IIST 3-axis sine-sweep profile to a single axis.}
+  \label{tabl:sine-sweep-mod1}
+\end{table}
+
+Due to the low frequencies with high acceleration, this profile was not realisable by the shaker table and resulted in an alarm being raised by the machine. Through trial and error it was found the profile described in table \ref{tabl:sine-sweep-mod2} was realisable. This profile discarded the low frequencies below \SI{30}{\hertz}.
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|}
+    \hline
+    \textbf{Frequency}        & \textbf{Level}    & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
+    \SIrange{30}{100}{\hertz} & \SI{32.79}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+  \end{tabular}
+  \caption{Realisable modification of IIST 3-axis sine-sweep profile.}
+  \label{tabl:sine-sweep-mod2}
+\end{table}
+
+\subsection{Shock}
+
+Due to limitations of the shaker table, the shock time had to be reduced from \SI{10}{\milli\second} to \SI{8}{\milli\second}, which produced a shock which would over-qualify the CubeSat compared to the IIST recommended profile. The profile is shown in figure \ref{fig:shock-table-profile}
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/shock_table_profiel.svg}
+  \caption{Realised shock profile.}
+  \label{fig:shock-table-profile}
+\end{figure}
+
+\section{Evaluation of HPR as a CubeSat qualification platform}
+
+Each part of flight is compared to one type of shaker table test as shown in table \ref{tabl:compare-tests}:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{HPR flight}            & \textbf{Shaker table}                  & \textbf{Representation} \\\hline
+    Boost/launch                   & Sine-sweep (Quasi-static acceleration) & PSD                     \\\hline
+    Coast                          & Random vibration                       & PSD                     \\\hline
+    Pyroshock/parachute deployment & Shock                                  & Time domain             \\\hline
+  \end{tabular}
+  \caption{Comparisons between the two tests and their representation.}
+  \label{tabl:compare-tests}
+\end{table}
+
+Since the shaker table profiles are at or above the IIST recommended qualification level, for this research it will be assumed this is adequate to qualify for launch conditions.
+
+HPR will be a successful qualification platform if:
+\begin{itemize}
+  \item For PSD measurements the HPR PSD trace is equal to or greater than the PSD trace from the corresponding shaker table test.
+  \item For shock, the HPR pyroshock events should produce a shock response which has a half-sine profile time which is less than the shaker table response, and a peak acceleration which is greater than the shaker table response.
+\end{itemize}
+
+\chapter{DAQ evaluation and discussion}
 
 \section{Drone tests}
 \subsection{First drone test}
@@ -1796,25 +1948,6 @@ Thermal vacuum testing would be required to qualify the DAQ for space operations
 
 \section{High-power rocket test flight}
 
-The CubeSat is mounted in the rocket \textit{UNO} payload bay through two wooden plates as shown in figure \ref{fig:hpr-mounting}. The rocket splits into multiple parts on the ground for assembly: the payload bay is in the middle of two parts, both have wooden bulkheads epoxied to the body. The payload assembly and the payload bay tube is placed in between the two rocket parts. The payload assembly is fixed to the top and bottom wooden bulkheads to fix it in place.
-
-\begin{figure}[H]
-  \begin{subfigure}{0.495\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{images/cubesat-payload-bay.jpg}
-    \caption{CubeSat mounting hardware before mounting in \textit{UNO}.}
-  \end{subfigure}
-  \begin{subfigure}{0.495\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{images/camera-holes.jpg}
-    \caption{Camera holes in the side of the rocket body.}
-  \end{subfigure}
-  \caption{CubeSat in \textit{UNO} before launch.}
-  \label{fig:hpr-mounting}
-\end{figure}
-
-As stated due to motor supply issues, the only motor which was available for purchase was a K1100T motor which limited the height and acceleration of the rocket.
-
 \textit{UNO} launched with the CubeSat on board on \DTMdate{2024-09-22} at \DTMdisplaytime{12}{52}. The launch and recovery was successful and the DAQ did capture accelerometer data and periodically broadcast uptime messages to the ground station. However, an issue is that the camera payload appears to have booted in an invalid state, resulting in no image being captured or transmitted. An LED on the camera payload was found to be constantly on, which indicates power that is being received, however this LED is only meant to be monetarily on at the beginning of an image capture.
 
 Good acceleration data was captured from the LSM6DSOX accelerometer as shown in figure \ref{fig:flight-16g-time-domain}, however the ADXL375 accelerometer did not produce good data therefore its data was not used in the final analysis. As shown in figure \ref{fig:flight-200g-time-domain}, the data from the ADXL375 is not correlated with any major flight events and is highly noisy. Due to time limitations the cause of the bad data has not been determined.
@@ -1841,30 +1974,7 @@ It is speculated in post flight discussion that the camera failure was caused by
 
 \section{Shaker table}
 
-The shaker table tests were performed at AVI on the \DTMdate{2024-09-25} using a Brüel \& Kjær LDS V8800 electrodynamic shaker table. The CubeSat was fixed to the shaker table using three bolts which went through the bottom plate.
-
-A Brüel \& Kjær type 4533-B integrated electronics piezoelectric (IEPE) accelerometer was used as the control and data accelerometer, which were mounted to the shaker table and the payload respectively. This accelerometer has a frequency range of \SI{0.016}{\hertz} to \SI{1250}{\kilo\hertz} and a resonance frequency of \SI{36.7}{\kilo\hertz}, which is well above the range of the tests. The accelerometers were attached to mounting studs which were fixed to the CubeSat using bisphenol-A epoxy.
-
-The table was first mounted in the vertical configuration and the CubeSat was mounted axially as shown in figure \ref{fig:shaker-axis-setup}. Random, sine-sweep and shock tests were performed, then the table was rotated manually \SI{90}{\degree} and the CubeSat re-mounted to conduct the same tests in the x-axis. The CubeSat was rotated \SI{90}{\degree} to finally test the y-axis.
-
-\begin{figure}[H]
-  \begin{subfigure}{0.32\textwidth}
-    \includegraphics[width=\linewidth]{images/z-axis-setup.jpg}
-    \caption{z-axis}
-  \end{subfigure}
-  \begin{subfigure}{0.32\textwidth}
-    \includegraphics[width=\linewidth]{images/y-axis-setup.jpg}
-    \caption{y-axis}
-  \end{subfigure}
-  \begin{subfigure}{0.32\textwidth}
-    \includegraphics[width=\linewidth]{images/x-axis-setup.jpg}
-    \caption{x-axis}
-  \end{subfigure}
-  \caption{CubeSat setup in on the shaker table.}
-  \label{fig:shaker-axis-setup}
-\end{figure}
-
-
+The shaker table tests were performed at AVI on the \DTMdate{2024-09-25} using the procedure described in \secref{sec:shaker-table-method}.
 
 \subsection{Random}
 
@@ -1879,41 +1989,11 @@ The random vibration profile described in table \ref{tabl:random-vibration-profi
 
 \subsection{Sine-sweep}
 
-The sine-sweep profile described in table \ref{tabl:sine-sweep-profile-iist} was found to not be realisable on the shaker table since the profile described requires all three axes to be simultaneously driven. To replicate shaker table test where all three axes are simultaneously driven using one axis, the single axis must be driven with 2.5 times the $g_\text{rms}$ \cite{nath2022study}. A second attempt used the single-axis modified test shown in table \ref{tabl:sine-sweep-mod1}
-
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Frequency}        & \textbf{Level}     & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
-    \SI{10}{\hertz}           & \SI{13.198}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SI{12}{\hertz}           & \SI{19.006}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SI{14}{\hertz}           & \SI{25.869}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SIrange{16}{100}{\hertz} & \SI{32.79}{\gacc}  & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-  \end{tabular}
-  \caption{First modification of IIST 3-axis sine-sweep profile to a single axis.}
-  \label{tabl:sine-sweep-mod1}
-\end{table}
-
-Due to the low frequencies with high acceleration, this profile was not realisable by the shaker table and resulted in an alarm being raised by the machine. Through trial and error it was found the profile described in table \ref{tabl:sine-sweep-mod2} was realisable. This profile discarded the low frequencies below \SI{30}{\hertz}.
-
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Frequency}        & \textbf{Level}    & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
-    \SIrange{30}{100}{\hertz} & \SI{32.79}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-  \end{tabular}
-  \caption{Realisable modification of IIST 3-axis sine-sweep profile.}
-  \label{tabl:sine-sweep-mod2}
-\end{table}
-
 Since this profile was heavily modified from the original IIST profile, the results of this test were not factored into the final experiment.
 
 \subsection{Shock}
 
-Due to limitations of the shaker table, the shock time had to be reduced from \SI{10}{\milli\second} to \SI{8}{\milli\second}, which produced a shock which would over-qualify the CubeSat according to the IIST recommended profile. An example is shown in figure \ref{fig:shock-table-resp}
+The shock produced the response as shown in figure \ref{fig:shock-table-resp}.
 
 \begin{figure}[H]
   \centering
@@ -1935,8 +2015,11 @@ A result of the shock test is one of the 18650 batteries becoming unmounted from
 
 Typically, during shaker table tests on the ground, a CubeSat may be supported with external equipment when it is supported by services provided by the satellite bus. This test shows that the concept is viable as an alternative to external equipment, however the DAQ system needs more work to protect it from high vibration environments, including spot welding batteries to the PCB instead of relying on leaf spring terminals. In this particular test, the batteries were not a problem since the two batteries on the sides were held by a cable tie. The reboot of the computer during the random vibration test likely indicates an issue with the quality of wiring harness or some loose element short-circuiting and causing issues.
 
-\chapter{Comparison of shaker table and HPR flight}
+\chapter{Evaluation of HPR flight as a qualification platform}
 
+This chapter will answer the question of whether a HPR launch is an viable qualification platform and will evaluate the success of the experiement design.
+
+TODO:
 The system will be used for the vibration tests on a shaker table, and the rocket test. The data will be recorded as a time series on the OBDH memory. The time series data will be transformed into the frequency domain since existing studies have presented frequency domain plots to present and analyse the response of the system to a test \cite{nasa-pyroshock,nieto2019cubesat}. For the rocket test, the analysis will be split over the several phases of flight - launch, thrust, coast and parachute deployment events, since the forces involved are different in all of these phases.
 
 \section{Shock}
@@ -1997,6 +2080,7 @@ Code and material from this research is available at the following git repositor
 \begin{itemize}
   \item \url{https://git.petertanner.dev/peter/Honours-DAQ-software}
   \item \url{https://git.petertanner.dev/peter/Honours-DAQ-PCB}
+  \item \url{https://git.petertanner.dev/peter/Honours-Data-Processing}
   \item \url{https://git.petertanner.dev/peter/Honours-Thesis}
 \end{itemize}
 
