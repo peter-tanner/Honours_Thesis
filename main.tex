@@ -30,18 +30,6 @@
 \DeclareSIUnit\mmDA{mm\, DA}
 \DeclareSIUnit\octave{oct}
 
-% TOOD: FINAL MEETING QUESTIONS
-% The marking key says "Descriptions of any design tools employed", did i overdescribe what are industry standard cad tools?
-% Same question for describing the team dynamics of the overall project design team is this useuful?
-
-% penultimate meeting
-% RESULTS AND ANALYSIS
-% fridge and heater test should be in build. avi in results. experiment and results describe two experiments launch and avi
-% doesnt need to be proportional. still gets marked as a result even if not in experiments
-% put a note for chapter: data presented are characterisation results of components...
-% meetnig on monday? saturday? on teams. sunday midday?
-
-
 % https://tex.stackexchange.com/a/121871
 \newcommand*{\secref}[1]{section \hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
 \newcommand*{\Secref}[1]{Section \hyperref[{#1}]{\ref*{#1} \nameref*{#1}}}
@@ -165,15 +153,6 @@ I'd like to thank all the people and organisations who have supported me through
 \tableofcontents
 \newpage
 
-% TODO: QUESTIONS FOR SECOND MEETING
-% The marking is not based on sections right? Some of my design sections has stuff which is related to results like the actual tests used (modified from the original recommendations due to limitations of our machines), but I did not want to split this to prevent confusion.
-% It might be better to ask for two weeks in a row, i doubt they would give basically 4 weeks. not sure if i can take the risk this close to the due date.
-% What would be the best time or way to get some feedback, is it possible to have two meetings next week since it will probably be the last before submitting?
-% -> Tuesday 9, Thursday 1:30
-% -> Apart from wednesday. send a draft
-% -> list of heading right now.
-
-
 \renewcommand{\listfigurename}{
   \section*{List of Figures}
 }
@@ -227,8 +206,8 @@ There are multiple satellite qualification standards, an example is the NASA Gen
 \subsection{Vibration}
 Vibrations are experienced by satellites during transportation and loading, and most prominently during launch \cite{brown_elements_2002}. The purpose of vibration testing is to ensure that the satellite will survive transportation and launch conditions, and to find workmanship errors \cite{brown_elements_2002,gordon2015benefits}.
 
-\subsubsection{Random Vibration Vibration Test}
-In the random vibration test, a vibration profile is applied to the satellite which tests all the resonant frequencies of the satellite \cite{nieto2019cubesat}. This range includes frequencies on the order of $\SIrange{100}{1000}{\hertz}$, since higher frequencies couple to the satellite through acoustic means rather than through the structure \cite{gordon2015benefits}. An example of a random vibration profile and its response is shown in figure \ref{fig:random}.
+\subsubsection{Random Vibration Test}
+In the random vibration test, a vibration profile is applied to the satellite which tests all the resonant frequencies of the satellite \cite{nieto2019cubesat}. This range includes frequencies on the order of $\SIrange{100}{1000}{\hertz}$, since higher frequencies couple to the satellite through acoustic means rather than through the structure \cite{gordon2015benefits}. An example of a random vibration profile and its response is shown in figure \ref{fig:random}. A sine sweep vibration test is similar, but instead of the frequency being randomly sampled it is swept through sequentially from either low to high frequency or vice versa.
 
 \begin{figure}[H]
   \centering
@@ -242,7 +221,7 @@ The limitations of random vibration tests is that the shaker and table will have
 While 6 degrees of freedom (DOF) shaker tables exist which can replicate the vibrations experienced in all dimensions during launch, most satellites are still tested with single-axis shaker tables \cite{gordon2015benefits,aglietti2019spacecraft,nath2022study}. While Gordon and Kern \cite{gordon2015benefits} state that these limitations are adequately managed by testing in all three orthogonal axes separately, Aglietti and Nath \cite{nath2022study} created a model of three, two and single axis vibration tests and found that to match the 3 DOF response with a single DOF table, the satellite needed to be subjected to 2.5 times the $g_\text{rms}$ forces than in 3 DOF testing, leading to the satellite being over designed \cite{nath2022study}.
 
 \subsubsection{Quasi-Static Acceleration Test (QAT)}
-A quasi-static test replicates liftoff, where there is a combination of random vibration from engines and quasi-static acceleration from the engine and other external forces on the launch vehicle \cite{nieto2019cubesat,brown_elements_2002}, which are approximated as constant forces at selected frequencies as shown in figure \ref{fig:qatforces}. The QAT is usually compared to results from coupled loads analysis, where all forces are assumed to be applied to the satellite through the launch vehicle as shown in figure \ref{fig:cla} \cite{dickens2001coupled}.
+A quasi-static test simulates liftoff, where there is a combination of random vibration from engines and quasi-static acceleration from the engine and other external forces on the launch vehicle \cite{nieto2019cubesat,brown_elements_2002}, which are approximated as constant forces at selected frequencies as shown in figure \ref{fig:qatforces}. The QAT is usually compared to results from coupled loads analysis, where all forces are assumed to be applied to the satellite through the launch vehicle as shown in figure \ref{fig:cla} \cite{dickens2001coupled}.
 
 \begin{figure}[H]
   \centering
@@ -266,7 +245,7 @@ Shock is experienced by satellites when pyrotechnics are detonated or deflagrate
 
 Shock is tested using a shock-generating device which is applied to the satellite along all three axes \cite{nasa-gevs,nasa-pyroshock}, the shock generating device for a CubeSat can be an electrodynamic shaker table \cite{nieto2019cubesat} with a half-sine profile \cite{nieto2019cubesat}. The shock test has similar limitations as the random vibration test, since it also uses a shaker table to affect the satellite.
 
-Shock tests are compared using the shock response spectrum (SRS), which plots the maximum acceleration per frequency bin. The SRS contains an octave slope which rises to the first resonant frequency called the "knee frequency". The octave slope can be approximately \SI{9}{\decibel\per\octave} to \SI{12}{\decibel\per\octave} depending on distance to the source.
+Shock are simulated to create a shock response spectrum (SRS), which plots the maximum acceleration per frequency bin. The SRS contains an octave slope which rises to the first resonant frequency called the "knee frequency". The octave slope can be approximately \SI{9}{\decibel\per\octave} to \SI{12}{\decibel\per\octave} depending on distance to the source.
 
 \begin{figure}[H]
   \includegraphics[width=0.495\textwidth]{images/pyroshock2.png}
@@ -275,10 +254,17 @@ Shock tests are compared using the shock response spectrum (SRS), which plots th
   \label{fig:pyroshock}
 \end{figure}
 
+\subsection{Functional testing}
+
+The CubeSat's functionality is typically tested using "day-in-the-life" testing where a 24-hour period of the CubeSat's on-orbit life is tested on the ground \cite{venturini2018improving}. Simulating the on-orbit conditions is an important factor in this test, for example GPS and star field simulators are commonly used \cite{venturini2018improving}.
+
+Doyle et al. propose an extension to day-in-the-life testing called mission testing which involves simulating the long term CubeSat mission on the ground instead of one 24-hour cycle \cite{doyle2021mission}. This requires accurately simulating the on-orbit conditions of the CubeSat for an extended and uninterrupted period of time (several weeks), and must also simulate nominal and emergency events that may be encountered in orbit \cite{doyle2021mission}.
+
+On-orbit conditions that may be simulated include interacting with the CubeSat only through its radio and providing the same amount of power that would be seen in orbit.
 
 \section{Rocket Testing of CubeSats}
 \subsection{Sounding Rockets}
-Sounding rockets are a class of suborbital rocket used between $\SI{40}{\kilo\metre}$ and $\SI{200}{\kilo\metre}$, above where weather balloons operate \cite{seibert2006history}. While sounding rockets have been used to launch many CubeSats with suborbital trajectories, such as in the REXUS-25 mission \cite{pont2019rexus}, there has been only one instance of sounding rockets being used as an additional qualification platform for a CubeSat \cite{slongo2019pre}. The FloripaSat-I CubeSat was tested on a VSB-30 sounding rocket \cite{slongo2019pre} to qualify the CubeSat under launch conditions. This qualification method was intended not to replace, but to complement standard vibration and shock qualification methods \cite{slongo2019pre}. The test measured these launch conditions through the MPU6050 inertial measurement unit (IMU) \cite{slongo2019pre}.
+Sounding rockets are a class of suborbital rocket used between $\SI{40}{\kilo\metre}$ and $\SI{200}{\kilo\metre}$, above where weather balloons operate \cite{seibert2006history}. While sounding rockets have been used to launch many CubeSats with suborbital trajectories, such as in the REXUS-25 mission \cite{pont2019rexus}, there has been only one instance of sounding rockets being used as an additional qualification platform for a CubeSat \cite{slongo2019pre}. The FloripaSat-I CubeSat was tested on a VSB-30 sounding rocket \cite{slongo2019pre} to qualify the CubeSat under launch conditions. This qualification method was intended not to replace, but to complement standard vibration and shock qualification methods \cite{slongo2019pre}. The test measured these launch conditions through the micro-electromechanical systems (MEMS) based MPU6050 inertial measurement unit (IMU) \cite{slongo2019pre}.
 
 \begin{figure}[H]
   \includegraphics[width=0.495\textwidth]{images/floripa-accel.png}
@@ -328,19 +314,20 @@ One potential issue with HPRs as a qualification platform for shock is that low 
   \label{fig:lowsrs}
 \end{figure}
 
-\section{Avionics Systems}
+\subsection{Avionics Systems}
 
-High-power rockets use avionics to perform a number of roles:
+Some HPR flights use avionics systems which may contain \cite{canepa2005modern,telaak2023designing}:
 
+\begin{itemize}
+  \item Radio and GNSS receiver for tracking,
+  \item Accelerometer and barometer for measuring acceleration and altitude,
+  \item Relays or transistors for firing e-matches to deploy parachutes (known as an electronic deployment).
+\end{itemize}
 
+An example of a mature avionics system widely used in HPR is the Telemetrum \cite{telemetrum,telaak2023designing}, which contains a GNSS antenna and receiver, ISM radio, microcontroller, MEMS accelerometer, barometer and pyrotechnic channels \cite{telemetrum}.
 
-\subsection{TODO: Section}
+Most HPR avionics use MEMS accelerometers, including the MPU6050, MPU9250, ADXL375 and BMX160 \cite{telaak2023designing}. One of the most popular are the MPU6050 \cite{telaak2023designing,moschidis2022arduino}, however this accelerometer is out of production and should not be used in future designs.
 
-% \section{Project Overview}
-
-
-
-% \section{Design Constraints}
 \chapter{Design Process}
 \label{sec:design-process}
 
@@ -360,11 +347,12 @@ The ultimate goal of the CubeSat project is to launch on the POEM and receive at
 
 Before launch the CubeSat must be tested to minimise the risk of mission failure. A novel HPR testing method was planned for two launches (one private and one at the Australian Universities Rocket Competition (AURC) 2024), in addition to shaker table qualification. To pass testing, the camera payload should capture at least one image on a preliminary drone test flight, the HPR launch and during vibration testing.
 
+
 This design project will have two main goals:
 
 \begin{enumerate}
   \item Design an experiment and a data acquisition system (DAQ) to evaluate the effectiveness of the HPR testing method.
-  \item Design and build an "emulation platform" as part of the DAQ which provides the same services to the camera payload as provided by POEM. The goal of this to reduce the risk of integration failure. This emulation platform will need to emulate most of the specifications of POEM, but some systems will be designed to a minimum standard required for the tests.
+  \item Design and build an "emulation platform" as part of the DAQ which provides the same services to the camera payload as provided by POEM. While this testing campaign does not have resources for day-in-the-life or mission testing, the principle of replicating on-orbit conditions will be used in the tests to reduce the risk of integration failure. This emulation platform will need to emulate most of the specifications of POEM, but some systems will be designed to a minimum standard required for the tests.
 \end{enumerate}
 
 \section{Design Group and Scheduling}
@@ -388,20 +376,20 @@ After defining the goals for the project, a list of high-level requirements and 
   \centering
   \begin{tabular}{|l|L{0.25\textwidth}|L{0.6\textwidth}|}
     \hline
-    \textbf{ID}                       & \textbf{Name}                  & \textbf{Description}                                                                                        \\ \hline
-    \hypertarget{req-E1}{\textbf{E1}} & Emulation power and voltage    & EPS must emulate a \SI{5}{V} bus with at least \SI{3}{A} current capacity.                                  \\ \hline
-    \hypertarget{req-E2}{\textbf{E2}} & Battery life                   & DAQ must sustain camera payload operation for at least \SI{2}{\hour}.                                       \\ \hline
-    \hypertarget{req-P1}{\textbf{P1}} & Shock and vibration            & DAQ must pass shock, random vibration, and sine-sweep tests as described in \secref{sec:shaker-table-test}. \\ \hline
-    \hypertarget{req-P2}{\textbf{P2}} & Hot and cold operation         & DAQ must pass temperature qualification range of \SIrange{-20}{80}{\degreeCelsius}.                         \\ \hline
-    \hypertarget{req-P1}{\textbf{P1}} & Physical dimensions            & DAQ must fit within 1 CubeSat unit.                                                                         \\ \hline
-    \hypertarget{req-R1}{\textbf{R1}} & GNSS tracking                  & Must have GNSS tracking suitable for a \SI{10000}{\feet} HPR launch.                                        \\ \hline
-    \hypertarget{req-R2}{\textbf{R2}} & Radio downlink                 & Radio link must be stable to receive one image from a \SI{10000}{\feet} HPR launch.                         \\ \hline
-    \hypertarget{req-V1}{\textbf{V1}} & Testing controlled environment & A direct comparison of the two methods requires the construction of the satellite to be controlled.         \\ \hline
-    \hypertarget{req-V2}{\textbf{V2}} & Vibration Sampling Rate        & DAQ must sample vibrations at a high frequency ($>\SI{1}{\kilo\hertz}$).                                    \\ \hline
-    \hypertarget{req-V3}{\textbf{V3}} & Maximum Acceleration           & DAQ must sample vibrations with a high acceleration range ($>\SI{200}{\gacc}$).                             \\ \hline
-    \hypertarget{req-A1}{\textbf{A1}} & AURC Regulations               & Must comply with AURC 2024 rules to perform second launch on UWA Aerospace competition rocket.              \\ \hline
-    \hypertarget{req-A2}{\textbf{A2}} & Budget                         & DAQ cost must be below \aud 1500.                                                                           \\ \hline
-    \hypertarget{req-A3}{\textbf{A3}} & Project Deadline               & System and experiments to be finalised by October 18, 2024.                                                 \\ \hline
+    \textbf{ID}                       & \textbf{Name}                  & \textbf{Description}                                                                                \\ \hline
+    \hypertarget{req-E1}{\textbf{E1}} & Emulation power and voltage    & EPS must emulate a \SI{5}{V} bus with at least \SI{3}{A} current capacity.                          \\ \hline
+    \hypertarget{req-E2}{\textbf{E2}} & Battery life                   & DAQ must sustain camera payload operation for at least \SI{2}{\hour}.                               \\ \hline
+    \hypertarget{req-P1}{\textbf{P1}} & Shock and vibration            & DAQ must pass shock and random vibration tests as described in \secref{sec:shaker-table-test}.      \\ \hline
+    \hypertarget{req-P2}{\textbf{P2}} & Hot and cold operation         & DAQ must pass temperature qualification range of \SIrange{-20}{80}{\degreeCelsius}.                 \\ \hline
+    \hypertarget{req-P1}{\textbf{P1}} & Physical dimensions            & DAQ must fit within 1 CubeSat unit.                                                                 \\ \hline
+    \hypertarget{req-R1}{\textbf{R1}} & GNSS tracking                  & Must have GNSS tracking suitable for a \SI{10000}{\feet} HPR launch.                                \\ \hline
+    \hypertarget{req-R2}{\textbf{R2}} & Radio downlink                 & Radio link must be stable to receive one image from a \SI{10000}{\feet} HPR launch.                 \\ \hline
+    \hypertarget{req-V1}{\textbf{V1}} & Testing controlled environment & A direct comparison of the two methods requires the construction of the satellite to be controlled. \\ \hline
+    \hypertarget{req-V2}{\textbf{V2}} & Vibration Sampling Rate        & DAQ must sample vibrations at a high frequency ($>\SI{1}{\kilo\hertz}$).                            \\ \hline
+    \hypertarget{req-V3}{\textbf{V3}} & Maximum Acceleration           & DAQ must sample vibrations with a high acceleration range ($>\SI{200}{\gacc}$).                     \\ \hline
+    \hypertarget{req-A1}{\textbf{A1}} & AURC Regulations               & Must comply with AURC 2024 rules to perform second launch on UWA Aerospace competition rocket.      \\ \hline
+    \hypertarget{req-A2}{\textbf{A2}} & Budget                         & DAQ cost must be below \aud 1500.                                                                   \\ \hline
+    \hypertarget{req-A3}{\textbf{A3}} & Project Deadline               & System and experiments to be finalised by October 18, 2024.                                         \\ \hline
   \end{tabular}
   \caption{High-level requirements}
   \label{tabl:high-level-requirements}
@@ -421,8 +409,8 @@ POEM outputs a consistent amount of power to each CubeSat while on orbit due to 
 \label{sec:environmental-requirements}
 If this research is continued, it is possible a future version of this payload will fly with the camera payload on POEM to make a direct comparison between the vibration environment on POEM to the conditions on both a HPR and the shaker table tests. Therefore, the DAQ must go through the same qualification campaign as the camera payload.
 
-\subsubsection{Shock, Random Vibration, Sine-Sweep Test Pass}
-The DAQ must remain functional during the vibration environment of the rocket. This means it must pass the IIST recommended qualification procedure, which involves shock, random vibration and sine-sweep tests. These tests are described in more detail in \secref{sec:shaker-table-test}.
+\subsubsection{Shock and Random Vibration Test Pass}
+The DAQ must remain functional during the vibration environment of the rocket. This means it must pass the IIST recommended qualification procedure, which involves shock and random vibration tests. These tests are described in more detail in \secref{sec:shaker-table-test}.
 
 \subsubsection{Cold and Hot Temperature Test Pass}
 The DAQ must be able to survive at temperatures of \SIrange{-20}{80}{\degreeCelsius} as described in \secref{sec:htemp-test-framework} and \secref{sec:ltemp-test-framework}. This will restrict the components able to be used to only those with industrial temperature ranges.
@@ -696,7 +684,7 @@ The DAQ had to track the HPR throughout the full launch to enable recovery as st
 
 \subsection{Accelerometers}
 
-Micro-electromechanical systems (MEMS) based accelerometers were chosen for the DAQ due to their low cost and low power consumption compared to traditional piezoelectric accelerometers.
+MEMS accelerometers were chosen for the DAQ due to their low cost and low power consumption compared to traditional piezoelectric accelerometers.
 
 \begin{table}[H]
   \centering
@@ -931,7 +919,7 @@ A failure of this test occurs when the DAQ loses radio connection or transmits c
 \subsection{Shaker Table Test}
 \label{sec:shaker-table-test}
 
-IIST recommended that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration, sine-sweep and half-sine shock tests.
+IIST recommended that the CubeSat be mechanically qualified using a single-axis electrodynamic shaker table using random vibration and half-sine shock tests.
 
 \subsubsection{Random Vibration}
 
@@ -964,25 +952,25 @@ The IIST recommended random vibration test profile was used without modification
 
 A failure of this test occurs when the DAQ loses radio connection or transmits corrupted data for more than one minute, or if the system is not functional after the test.
 
-\subsubsection{Sine-Sweep}
+% \subsubsection{Sine-Sweep}
 
-The CubeSat was fixed rigidly to an electrodynamic shaker table, then the table was programmed with the IIST recommended sine-sweep profile specified in table \ref{tabl:sine-sweep-profile-iist}. Frequencies between \SI{10}{\hertz} and \SI{100}{\hertz} were swept at a rate of \SI{4}{\octave\per\minute} and was repeated for all three axes.
+% The CubeSat was fixed rigidly to an electrodynamic shaker table, then the table was programmed with the IIST recommended sine-sweep profile specified in table \ref{tabl:sine-sweep-profile-iist}. Frequencies between \SI{10}{\hertz} and \SI{100}{\hertz} were swept at a rate of \SI{4}{\octave\per\minute} and was repeated for all three axes.
 
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    \multicolumn{2}{|c|}{\textbf{Longitudinal}} & \multicolumn{2}{c|}{\textbf{Lateral}} & \multirow{2}{*}{\textbf{Sweep Rate}} & \multirow{2}{*}{\textbf{Axis}}                                           \\ \cline{1-4}
-    \textbf{Frequency}                          & \textbf{Level}                        & \textbf{Frequency}                   & \textbf{Level}                 &                            &            \\ \hline
-    \SIrange{10}{16}{\hertz}                    & \SI{20}{\mmDA}                        & \SIrange{10}{16}{\hertz}             & \SI{12}{\mmDA}                 & \SI{4}{\octave\per\minute} & Three axes \\ \hline
-    \SIrange{16}{100}{\hertz}                   & \SI{10}{\gacc}                        & \SIrange{16}{100}{\hertz}            & \SI{6}{\gacc}                  & \SI{4}{\octave\per\minute} & Three axes \\ \hline
-  \end{tabular}
-  \caption{IIST recommended sine-sweep profile.}
-  \label{tabl:sine-sweep-profile-iist}
-\end{table}
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{|c|c|c|c|c|c|}
+%     \hline
+%     \multicolumn{2}{|c|}{\textbf{Longitudinal}} & \multicolumn{2}{c|}{\textbf{Lateral}} & \multirow{2}{*}{\textbf{Sweep Rate}} & \multirow{2}{*}{\textbf{Axis}}                                           \\ \cline{1-4}
+%     \textbf{Frequency}                          & \textbf{Level}                        & \textbf{Frequency}                   & \textbf{Level}                 &                            &            \\ \hline
+%     \SIrange{10}{16}{\hertz}                    & \SI{20}{\mmDA}                        & \SIrange{10}{16}{\hertz}             & \SI{12}{\mmDA}                 & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+%     \SIrange{16}{100}{\hertz}                   & \SI{10}{\gacc}                        & \SIrange{16}{100}{\hertz}            & \SI{6}{\gacc}                  & \SI{4}{\octave\per\minute} & Three axes \\ \hline
+%   \end{tabular}
+%   \caption{IIST recommended sine-sweep profile.}
+%   \label{tabl:sine-sweep-profile-iist}
+% \end{table}
 
-A failure of this test occurs when the DAQ loses radio connection or transmits corrupted data for more than one minute, or if the system is not functional after the test.
+% A failure of this test occurs when the DAQ loses radio connection or transmits corrupted data for more than one minute, or if the system is not functional after the test.
 
 \subsubsection{Shock}
 
@@ -1689,7 +1677,7 @@ The shaker table tests were performed at AVI on the \DTMdate{2024-09-25} using a
 
 A Brüel \& Kjær type 4533-B integrated electronics piezoelectric (IEPE) accelerometer was used as the control and data accelerometer, which were mounted to the shaker table and the payload respectively. This accelerometer has a frequency range of \SI{0.016}{\hertz} to \SI{1250}{\kilo\hertz} and a resonance frequency of \SI{36.7}{\kilo\hertz}, which is well above the range of the tests. The accelerometers were attached to mounting studs which were fixed to the CubeSat using bisphenol-A epoxy.
 
-The table was first mounted in the vertical configuration and the CubeSat was mounted axially as shown in figure \ref{fig:shaker-axis-setup}. Random, sine-sweep and shock tests were performed, then the table was rotated manually \SI{90}{\degree} and the CubeSat re-mounted to conduct the same tests in the x-axis. The CubeSat was rotated \SI{90}{\degree} to finally test the y-axis.
+The table was first mounted in the vertical configuration and the CubeSat was mounted axially as shown in figure \ref{fig:shaker-axis-setup}. Random and shock tests were performed, then the table was rotated manually \SI{90}{\degree} and the CubeSat re-mounted to conduct the same tests in the x-axis. The CubeSat was rotated \SI{90}{\degree} to finally test the y-axis.
 
 \begin{figure}[H]
   \begin{subfigure}{0.32\textwidth}
@@ -1712,37 +1700,41 @@ The table was first mounted in the vertical configuration and the CubeSat was mo
 
 The IIST recommended random vibration profile described in table \ref{tabl:random-vibration-profile-iist} was used.
 
-\subsection{Sine-Sweep}
+% \subsection{Sine-Sweep}
 
-The sine-sweep profile described in table \ref{tabl:sine-sweep-profile-iist} was found to not be realisable on the shaker table since the profile described requires all three axes to be simultaneously driven. To replicate shaker table test where all three axes are simultaneously driven using one axis, the single axis must be driven with 2.5 times the $g_\text{rms}$ \cite{nath2022study}. A second attempt used the single-axis modified test shown in table \ref{tabl:sine-sweep-mod1}
+% The sine-sweep profile described in table \ref{tabl:sine-sweep-profile-iist} was found to not be realisable on the shaker table since the profile described requires all three axes to be simultaneously driven. To replicate shaker table test where all three axes are simultaneously driven using one axis, the single axis must be driven with 2.5 times the $g_\text{rms}$ \cite{nath2022study}. A second attempt used the single-axis modified test shown in table \ref{tabl:sine-sweep-mod1}
 
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Frequency}        & \textbf{Level}     & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
-    \SI{10}{\hertz}           & \SI{13.198}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SI{12}{\hertz}           & \SI{19.006}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SI{14}{\hertz}           & \SI{25.869}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-    \SIrange{16}{100}{\hertz} & \SI{32.79}{\gacc}  & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-  \end{tabular}
-  \caption{First modification of IIST 3-axis sine-sweep profile to a single axis.}
-  \label{tabl:sine-sweep-mod1}
-\end{table}
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{|c|c|c|c|}
+%     \hline
+%     \textbf{Frequency}        & \textbf{Level}     & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
+%     \SI{10}{\hertz}           & \SI{13.198}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+%     \SI{12}{\hertz}           & \SI{19.006}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+%     \SI{14}{\hertz}           & \SI{25.869}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+%     \SIrange{16}{100}{\hertz} & \SI{32.79}{\gacc}  & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+%   \end{tabular}
+%   \caption{First modification of IIST 3-axis sine-sweep profile to a single axis.}
+%   \label{tabl:sine-sweep-mod1}
+% \end{table}
 
-Due to the low frequencies with high acceleration, this profile was not realisable by the shaker table and resulted in an alarm being raised by the machine. Through trial and error it was found the profile described in table \ref{tabl:sine-sweep-mod2} was realisable. This profile discarded the low frequencies below \SI{30}{\hertz}.
+% Due to the low frequencies with high acceleration, this profile was not realisable by the shaker table and resulted in an alarm being raised by the machine. Through trial and error it was found the profile described in table \ref{tabl:sine-sweep-mod2} was realisable. This profile discarded the low frequencies below \SI{30}{\hertz}.
 
-\begin{table}[H]
-  \centering
-  \begin{tabular}{|c|c|c|c|}
-    \hline
-    \textbf{Frequency}        & \textbf{Level}    & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
-    \SIrange{30}{100}{\hertz} & \SI{32.79}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
-  \end{tabular}
-  \caption{Realisable modification of IIST 3-axis sine-sweep profile.}
-  \label{tabl:sine-sweep-mod2}
-\end{table}
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{|c|c|c|c|}
+%     \hline
+%     \textbf{Frequency}        & \textbf{Level}    & \textbf{Sweep Rate}        & \textbf{Axis} \\\hline
+%     \SIrange{30}{100}{\hertz} & \SI{20}{\gacc} & \SI{4}{\octave\per\minute} & Longitudinal  \\\hline
+%   \end{tabular}
+%   \caption{Realisable modification of IIST 3-axis sine-sweep profile.}
+%   \label{tabl:sine-sweep-mod2}
+% \end{table}
+
+\subsection{Quasi-static Acceleration Test}
+
+A QAT was not specified by IIST, therefore one was created which has a profile of \SI{18.9}{\gacc} from \SIrange{30}{35}{\hertz}. However, this test was not realisable with the type of shaker table after testing. Since IIST did not specify this test, it was excluded from testing. For later analysis, the boost phase would be compared to random vibration.
 
 \subsection{Shock}
 
@@ -1763,10 +1755,10 @@ Each part of flight is compared to one type of shaker table test as shown in tab
   \centering
   \begin{tabular}{|c|c|c|}
     \hline
-    \textbf{HPR flight}            & \textbf{Shaker table}                  & \textbf{Representation} \\\hline
-    Boost/launch                   & Sine-sweep (Quasi-static acceleration) & PSD                     \\\hline
-    Coast                          & Random vibration                       & PSD                     \\\hline
-    Pyroshock/parachute deployment & Shock                                  & Time domain             \\\hline
+    \textbf{HPR flight}            & \textbf{Shaker table} & \textbf{Representation} \\\hline
+    Boost/launch                   & Random vibration      & PSD                     \\\hline
+    Coast                          & Random vibration      & PSD                     \\\hline
+    Pyroshock/parachute deployment & Shock                 & SRS, Time domain        \\\hline
   \end{tabular}
   \caption{Comparisons between the two tests and their representation.}
   \label{tabl:compare-tests}
@@ -1941,15 +1933,18 @@ The random vibration profile described in table \ref{tabl:random-vibration-profi
 \begin{figure}[H]
   \centering
   \includesvg[width=\linewidth]{images/random_table.svg}
-  \caption{Response of payload from shaker table.}
+  \caption{Response of payload from shaker table as recorded by DAQ and IEPE accelerometers.}
   \label{fig:random-table-resp}
 \end{figure}
 
-\subsection{Sine-Sweep}
+A time-domain sample of the acceleration recorded by the DAQ is shown in figure \ref{fig:noisy-daq}.
 
-Since this profile was heavily modified from the original IIST profile, the results of this test were not factored into the final experiment.
-
-Only
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/table_acceleration_16g_acc.svg}
+  \caption{Noisy accelerometer from the DAQ.}
+  \label{fig:noisy-daq}
+\end{figure}
 
 \subsection{Shock}
 
@@ -1957,8 +1952,8 @@ The shock produced the response as shown in figure \ref{fig:shock-table-resp}.
 
 \begin{figure}[H]
   \centering
-  \includesvg[width=\linewidth]{images/shock_table.svg}
-  \caption{Response of \SI{8}{\milli\second} \SI{50}{\gacc} half-sine shock.}
+  \includesvg[width=\linewidth]{images/shock_full.svg}
+  \caption{Response of \SI{8}{\milli\second} \SI{50}{\gacc} half-sine shock. The two discontinuities in the shaker table response are a result of the table moving to ensure it stays within the maximum displacement limit.}
   \label{fig:shock-table-resp}
 \end{figure}
 
@@ -1975,69 +1970,92 @@ A result of the shock test is one of the 18650 batteries becoming unmounted from
 
 Typically, during shaker table tests on the ground, a CubeSat may be supported with external equipment when it is supported by services provided by the satellite bus. This test shows that the concept is viable as an alternative to external equipment, however the DAQ needs more work to protect it from high vibration environments, including spot welding batteries to the PCB instead of relying on leaf spring terminals. In this particular test, the batteries were not a problem since the two batteries on the sides were held by a cable tie. The reboot of the computer during the random vibration test likely indicates an issue with the quality of wiring harness or some loose element short-circuiting and causing issues.
 
+As shown in figures \ref{fig:random-table-resp} and \ref{fig:noisy-daq}, the MEMS accelerometers did not perform well at recording the response. The recorded PSD is almost white noise and was not useful for analysis. Therefore, for the rest of this analysis the IEPE accelerometer data will be used.
+
 \chapter{Evaluation of HPR Flight as a Qualification Platform}
 
 This chapter will answer if a HPR launch is a viable qualification platform and will evaluate the success of the experiment design.
 
-TODO:
-The system will be used for the vibration tests on a shaker table, and the rocket test. The data will be recorded as a time series on the OBDH memory. The time series data will be transformed into the frequency domain since existing studies have presented frequency domain plots to present and analyse the response of the system to a test \cite{nasa-pyroshock,nieto2019cubesat}. For the rocket test, the analysis will be split over the several phases of flight - launch, thrust, coast and parachute deployment events, since the forces involved are different in all of these phases.
-
-\section{Shock}
-In the launch and parachute deployments, where pyrotechnics are ignited, an analysis of the shock response spectrum will be performed. This will involve creating the shock response spectrum for the rocket test and shaker table tests, then comparing the slope up to ~1 kHz. If the rocket test SRS slope is on the same order of magnitude as the gradient found in \cite{wang2023numerical} for other low explosives, and it is less than the slope of the SRS from the shaker table tests, then this will show that rocket testing is not an adequate qualification method for shock.
-\subsection{Vibration Table Results}
-\subsection{HPR Results}
-\subsection{Comparison of Methods}
+% The system will be used for the vibration tests on a shaker table, and the rocket test. The data will be recorded as a time series on the OBDH memory. The time series data will be transformed into the frequency domain since existing studies have presented frequency domain plots to present and analyse the response of the system to a test \cite{nasa-pyroshock,nieto2019cubesat}. For the rocket test, the analysis will be split over the several phases of flight - launch, thrust, coast and parachute deployment events, since the forces involved are different in all of these phases.
 
 \section{Random}
-The coast phase, where the rocket motor has burnt out but is still approaching apogee, will be compared to the random vibration test. The random response spectrum will be compared to the spectrum of the rocket test to check how uniformly distributed the rocket test is.
-\subsection{Vibration Table Results}
-\subsection{HPR Results}
-\subsection{Comparison of Methods}
 
-\section{Quasi-Static Acceleration}
-The boost phase will be compared to the quasi-static acceleration tests on the shaker table. It is expected that the acceleration force on the HPR will be greater than those experienced on the launch vehicle, however the key characteristic - a peak in acceleration over a narrow frequency band - should be the same.
-\subsection{Vibration Table Results}
-\subsection{HPR Results}
-\subsection{Comparison of Methods}
+The coast and launch phases were compared to the random vibration shaker table test through a PSD, the results are shown in figure \ref{fig:random-psd-result}.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/random.svg}
+  \caption{Comparison of shaker table and HPR responses. Shaker table response was captured using IEPE accelerometers, the HPR responses were captured using DAQ accelerometers.}
+  \label{fig:random-psd-result}
+\end{figure}
+
+\section{Shock}
+
+The half-sine shock test on the shaker table was compared to one parachute deployment event, where a pyrotechnic shock occurred. The two shock responses are shown in figure \ref{fig:shock-resp-result}.
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/shock.svg}
+  \caption{Shock response of pyroshock and half-sine profile. The two discontinuities in the shaker table response are a result of the table moving to ensure it stays within the maximum displacement limit.}
+  \label{fig:shock-resp-result}
+\end{figure}
+
+The SRS was created using the time-domain data in figure \ref{fig:shock-resp-result}, using a damping factor of $Q=10$. As shown in \ref{fig:srs}, the SRS of the rocket consistently has a lower peak acceleration than the SRS of the half-sine shock for all frequencies between \SIrange{10}{10000}{\hertz}
+
+\begin{figure}[H]
+  \centering
+  \includesvg[width=\linewidth]{images/srs.svg}
+  \caption{Shock response of pyroshock and half-sine shock.}
+  \label{fig:srs}
+\end{figure}
 
 \section{Discussion}
 
-From these results, it is possible to conclude that HPR are not comparable to shaker table testing in all three categories.
+The experiment was successful in showing that HPR was not a suitable vibration qualification procedure for a CubeSat using a K1100T motor. The pyroshock events generated on the HPR flight had lower peak accelerations (Consistently 1 order of magnitude less) across the spectrum compared to the qualification response from the IIST profile. The random vibration response from both the launch and coast phases were consistently below both the shaker table response, and the qualification profile.
 
-TODO:
+This experiment design was adequate for this case, since the goal was to answer a simple yes or no question about if HPRs are suitable for qualification. However, future tests may require a more comprehensive comparison since it is possible that with a different HPR motor or components that there are portions of the test which meet the qualification level. This type of comparison may include determining what frequencies the HPR test are effective at comparing, or using coherence to compare the PSDs numerically.
 
 % TODO: 10%
 \chapter{Conclusions and Future Work}
 
-\section{Conclusions}
-
-This work developed a novel data acquisition and emulation platform for the POEM intended to be used in tests on a HPR or drone qualification platform. The DAQ was used to evaluate whether the HPR is a viable alternative to shaker tables as a vibration qualification platform. The vibration profile from the HPR launch, captured using the DAQ, was compared to the profile from the shaker table test. While the shaker table performed at, or above, the IIST recommended qualification level for POEM for all tests except the quasi-static acceleration test, the HPR launch produced a vibration profile that was consistently below the qualification level, therefore the conclusion is that HPR launches using a K1100T motor or lower are not a good vibration qualification platform.
-
-Since HPR testing was a novel qualification method, there were few designs on how a CubeSat should be supported during the launch. Traditionally, a satellite bus would be emulated using heavy ground equipment such as power supplies and computers. This work developed a novel emulation platform which emulated the final satellite bus the CubeSat will use, at specifications required for HPR flight. While HPR launches below a K1100T motor are not an ideal qualification platform, the drone tests were especially useful for qualifying the camera hardware. This emulation platform has a future in drone testing since the mass restrictions of the HPR launch also apply to the drone.
-
 \section{Future Work}
 
-This work showed that K impulse class motors are inadequate for vibration qualification, however this HPR launch was intended to use a M impulse class motor, which has a higher total impulse.
+While this design was successful in showing the inadequacy of HPR launches for qualification, another question is whether current shaker table tests are over-qualifying CubeSats. A useful extension of this work would be to put the DAQ on the PSLV POEM and measure the real vibration environment during launch. This would allow direct comparison between both HPR and shaker table testing to the real conditions.
 
-TODO: Blah blah do test on hpr rocket with largser motor, do test on launch vehicle
-
-Hardware changes for a future revision of the data acquisition system include:
+However, to launch the DAQ on POEM a future design would need to be created which would incorporate all the learnings from this design including:
 
 \begin{itemize}
-  \item Use Raspberry Pi Zero 2W instead of Zero W since it has more cores.
-  \item Machine a heatsink to connect all chips on the Pi Zero module to the chassis or heatsink to ensure better thermal performance \cite{guertin2022raspberry}.
-  \item Power switch should be through a resistor to prevent case where battery short circuit causes wire fire.
-  \item Batteries should be spot welded to tabs that are soldered fixed to the PCB to make pack resistant to random vibration.
-  \item Investigate the use of fault-tolerant compression algorithms for the downlink. % TODO: is this in my scope or the camera scope???
+  \item Machine a heatsink to connect all chips on the Pi Zero module to the chassis or heatsink to ensure better thermal performance in vacuum \cite{guertin2022raspberry}.
+  \item Batteries should be spot welded to tabs that are soldered fixed to the PCB to make pack resistant to random vibration rather than using the current leaf springs.
+  \item Use IEPE accelerometers and integrate an analog front end for the accelerometers on the DAQ instead of using MEMS accelerometers, since this work has shown MEMS accelerometers to underperform for vibration analysis.
+  \item Investigate the use of a real-time operating system instead of Raspbian.
+  \item Implement a watchdog to increase reliability.
 \end{itemize}
+
+To qualify the future design, the testing campaign would need to repeated. While the fridge and oven tests were found to be useful preliminary tests for partially qualifying the temperature range of components, a final test should be performed using a thermal vacuum chamber.
+
+Other design improvements that would be useful for future HPR launches include:
+\begin{itemize}
+  \item Use of error correcting codes such as LDPC codes with interleaving and compression to provide higher downlink speeds and reduced error rates, which would be good since drone and HPR tests are relatively short \cite{sonali2021capacity}.
+  \item Implement a watchdog to reset the payload-under-test if it fails, to get more value out of the tests.
+  \item Use two independent power supplies in an OR-ing configuration to implement power supply redundancy.
+\end{itemize}
+
+This work was limited by motor sourcing issues, therefore the experiment should be repeated for more significant M impulse class motors, which have ten times the total impulse and may be able to provide the random vibration environment seen in shaker table testing.
+
+The experiment developed in this work could only answer if HPR launches were useful for qualification or not, but it could not say to what degree they differ from shaker table testing (and potentially the real POEM launch). An experiment which quantifies the difference will have to be developed in the future.
+
+\section{Conclusions}
+
+This work developed a novel data acquisition and emulation platform for the POEM intended to be used in tests on a HPR or drone qualification platform and an experiment to evaluate the usefulness of HPR launches as a CubeSat qualification method. The DAQ was used to evaluate whether the HPR is a viable alternative to shaker tables as a vibration qualification platform. The vibration profile from the HPR launch, captured using the DAQ, was compared to the profile from the shaker table test. While the shaker table performed at, or above, the IIST recommended qualification level for POEM for all tests except the quasi-static acceleration test, the HPR launch produced a vibration profile that was consistently below the qualification level, therefore the conclusion is that HPR launches using a K1100T motor or lower are not a good vibration qualification platform. While the motor may be able to be changed in future flights to produce a stronger random vibration spectrum that may meet the qualification level, it is unlikely that HPR launches will ever be a substitute for shock testing since a larger launch does not use significantly larger black powder charges.
+
+Since HPR testing was a novel qualification method, there were few designs on how a CubeSat should be supported during the launch. Traditionally, a satellite bus would be emulated using heavy ground equipment such as power supplies and computers. This work developed a novel test platform which emulated the final satellite bus the CubeSat will use, at specifications required for HPR flight. While HPR launches below a K1100T motor are not an ideal qualification platform, the drone tests were especially useful for qualifying the camera hardware. This emulation platform has a future in drone testing of CubeSats with optical payloads, since the mass restrictions of the HPR launch also apply to the drone.
 
 \newpage
 
-\section{References}
-
-\printbibliography[heading=none]
-
 \section{Appendix}
+
+\subsection{Code}
 
 Code and material from this research is available at the following git repositories:
 
@@ -2047,5 +2065,9 @@ Code and material from this research is available at the following git repositor
   \item \url{https://git.petertanner.dev/peter/Honours-Data-Processing}
   \item \url{https://git.petertanner.dev/peter/Honours-Thesis}
 \end{itemize}
+
+\subsection{References}
+
+\printbibliography[heading=none]
 
 \end{document}

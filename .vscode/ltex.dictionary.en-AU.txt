@@ -96,3 +96,5 @@ interleaver
 Brüel
 IEPE
 safed
+PSDs
+Telemetrum
