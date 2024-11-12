@@ -60,80 +60,33 @@
 
     % Title
     % \vspace*{3cm}
-    {\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[3cm]
-
+    {\LARGE\bfseries Design of an Experiment to Evaluate High-Power Rockets as a CubeSat Qualification Platform} \\[2cm]
 
 
     % Author's name
-    {\Large Author: Peter Tanner} \\[1cm]
+    {\LARGE\bfseries Peter Tanner} \\[1cm]
 
     % Supervisor's name
-    {\Large Supervisor: Dilusha Silva} \\[2cm] % \\[3cm]
+    {\Large Supervisor: Dr Dilusha Silva} \\[2cm]
 
     % Degree text
-    {\large ATTENTION: THIS IS A DRAFT VERSION. TODO: CHECK CHECKLIST BEFORE SUBMITTING }
-    {\large \textit{This thesis is presented in partial fulfilment of the requirements for the degree of Bachelor of Philosophy
-      (Honours) at the University of Western Australia}} \\[1cm]
+    {\large \textit{This thesis is presented in partial fulfilment of the requirements for the degree of Bachelor of Philosophy (Honours) at the University of Western Australia}} \\[1cm]
 
     % Faculty information
-    {\large Faculty of Engineering and Mathematical Sciences} \\[3cm]
+    {\large Faculty of Engineering and Mathematical Sciences} \\[0.2cm]
+    {\large The University of Western Australia} \\[1cm]
 
-    {\large Word count: TODO:} \\
-    {\large Submitted: \today} \\[2cm]
+    {\large Word count: 17517} \\[0.2cm]
+    {\large \today} \\[2cm]
 
-    \includesvg[width=0.495\textwidth]{images/UWA-logo-dark.svg} \\
+    \includesvg[width=0.5\textwidth]{images/UWA-logo-dark.svg} \\
 
   \end{center}
 
 \end{titlepage}
 
-% LTeX: enabled=false 
-% TODOLIST
-%TC:igDnore
-\newpage
-\section{TODO: (!! REMOVE BEFORE FINAL RELEASE !!)}
-\begin{itemize}
-  \item \texttt{[ ]} Add schematics and PCB gerbers to appendix using \texttt{pdfpages}
-  \item \texttt{[ ]} Add links to source repository \url{https://git.petertanner.dev/hpr-evaluation/}
-  \item \texttt{[ ]} Use \LaTeX template for Honours papers
-  \item \texttt{[ ]} Resolve all warnings except badness warnings because I don't know how to control that
-  \item \texttt{[ ]} Make BibTeX consistent
-  \item \texttt{[ ]} Bad citation format for datasheets and websites (Date is after access date).
-  \item \texttt{[ ]} Check grammar and spelling
-  \item \texttt{[ ]} Check presentation/typesetting
-  \item \texttt{[ ]} Resolve all \texttt{TODO:} comments
-  \item \texttt{[ ]} ADD ENGINEERING COVERSHEET WITH HONORS DECLARATION.
-  \item \texttt{[ ]} Finish all items on this checklist
-\end{itemize}
-
-
-\paragraph{Wts}
-\begin{itemize}
-  \item PROJECT BODY (ASSUME EXPERIMENTAL PROJECT)
-        \subitem 20\% INTRODUCTION AND LITERATURE REVIEW
-        \subitem 15\% EXPERIMENTAL DESIGN
-        \subitem 35\% RESULTS AND DISCUSSION
-  \item 10\% CONCLUSION AND FUTURE WORK
-  \item 10\% SCOPE
-  \item 10\% PRESENTATION (SHOULD BE GUARANTEED...)
-\end{itemize}
-
-\paragraph{USING FORMULA \texttt{WC * SECTION/80\%}}
-\begin{itemize}
-  \item INTRODUCTION AND LITERATURE REVIEW: 3000 TO 4500 WORDS
-  \item EXPERIMENTAL DESIGN: 2250 TO 3375
-  \item RESULTS AND DISCUSSION: 5250 TO 7875
-  \item CONCLUSION AND FUTURE WORK: 1500 TO 2250
-\end{itemize}
-
-
-%TC:endignore
-% END TODOLIST
-% LTeX: enabled=true 
-
 \newpage
 
-% TODO: SCOPE
 \section*{Abstract}
 
 The CubeSat is a type of small satellite created to reduce the cost of access to space for universities due to its standardised $\SI{10x10x10}{\centi\metre}$ form factor. The total number of CubeSats launched into space is growing exponentially due to their low cost, doubling every $\SI{2.5}{\year}$, however the mission success rate has stalled at 75\% since 2018 \cite{welle2020overview,bouwmeester2022improving}.
@@ -145,9 +98,7 @@ This paper outlines the design of a data acquisition system (DAQ) to measure vib
 
 \section*{Acknowledgements}
 
-I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). Dr. Priyadarshnam Hari and the Indian Institute of Space Science and Technology for providing their launch expertise and opportunity to launch on POEM. International Space Centre for supporting this project with funding.
-
-% TODO: ACKNOWLEDGE ALTIUM DESIGNER?
+I'd like to thank all the people and organisations who have supported me throughout this project. Dilusha Silva for being a wonderful mentor and for coordinating the project. Michal Zawierta for his expertise flying drones for the drone tests of the CubeSat. Jamir Khan for being a wonderful friend and engineer who worked on the mechanical side of this project, including construction of the high-power rocket, and for putting up with all my delays. Timothy Ludovico for designing the camera payload and being all around wonderful to work with. Jeremy Marelich and AVI for providing their shaker table facilities and conducting the tests. UWA Aerospace for being a wonderful institution who has been with me from first year through my growth as an engineer and has supported me through this project. Space Angel for creating this project and providing expertise and connections to the Indian Institute of Space Science and Technology (IIST). Dr. Priyadarshnam Hari and the Indian Institute of Space Science and Technology for providing their launch expertise and opportunity to launch on POEM. International Space Centre for funding and supporting this project.
 
 \newpage
 \tableofcontents
@@ -289,7 +240,7 @@ While sounding rockets have a significantly lower cost compared to an orbital la
 
 The typical phases of a HPR launch are \cite{canepa2005modern}:
 
-\begin{itemize} % TODO: FIND SOURCES FOR THIS SECTION
+\begin{itemize}
   \item Boost phase: The HPR is being powered by a solid rocket motor. In most HPR launches, this phase only lasts several seconds.
   \item Coast phase: After motor burnout, the rocket follows a ballistic trajectory to its apogee.
   \item Apogee: This is the maximum altitude the rocket will reach. At apogee the drogue parachute is deployed, which limits the rocket's descent velocity.
@@ -379,6 +330,7 @@ After defining the goals for the project, a list of high-level requirements and 
     \textbf{ID}                       & \textbf{Name}                  & \textbf{Description}                                                                                \\ \hline
     \hypertarget{req-E1}{\textbf{E1}} & Emulation power and voltage    & EPS must emulate a \SI{5}{V} bus with at least \SI{3}{A} current capacity.                          \\ \hline
     \hypertarget{req-E2}{\textbf{E2}} & Battery life                   & DAQ must sustain camera payload operation for at least \SI{2}{\hour}.                               \\ \hline
+    \hypertarget{req-E3}{\textbf{E3}} & Emulation                      & System needs to emulate POEM interfaces and processes.                                              \\ \hline
     \hypertarget{req-P1}{\textbf{P1}} & Shock and vibration            & DAQ must pass shock and random vibration tests as described in \secref{sec:shaker-table-test}.      \\ \hline
     \hypertarget{req-P2}{\textbf{P2}} & Hot and cold operation         & DAQ must pass temperature qualification range of \SIrange{-20}{80}{\degreeCelsius}.                 \\ \hline
     \hypertarget{req-P1}{\textbf{P1}} & Physical dimensions            & DAQ must fit within 1 CubeSat unit.                                                                 \\ \hline
@@ -534,13 +486,13 @@ Batteries were selected based on the following criteria shown in table \ref{tabl
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                                        & \textbf{Description}                                                                                                                                               & \textbf{HL constraints} \\ \hline
-    \textbf{Stable in vacuum}                            & The DAQ will be vacuum tested, therefore the cells need to be stable under vacuum                                                                                  & \hlreq{P1}              \\\hline
-    \textbf{Wide temperature range}                      & Batteries must survive temperature testing                                                                                                                         &                         \\\hline
-    \textbf{Low cost}                                    & Due to limited budget, space qualified batteries would be cost prohibitive                                                                                         &                         \\\hline
-    \textbf{High energy density and specific energy}     & The system needs to support the payload for at least \SI{2}{\hour} at the worst-case power budget without recharging                                               &                         \\\hline
-    \textbf{Reasonable power density and specific power} & The overall system needs to be able to provide at least \SI{3}{\ampere} of current in a small space/mass, so the batteries should have similar current capacities. &                         \\\hline
-    \textbf{Must not be a lithium-polymer battery}       & This is an AURC rule.                                                                                                                                              &                         \\\hline
-    \textbf{Space heritage}                              & Ideally the batteries would be used in space to maximise the chance of passing vacuum and temperature testing.                                                     &                         \\\hline
+    \textbf{Stable in vacuum}                            & The DAQ will be vacuum tested, therefore the cells need to be stable under vacuum                                                                                  & P1                      \\\hline
+    \textbf{Wide temperature range}                      & Batteries must survive temperature testing                                                                                                                         & P2                      \\\hline
+    \textbf{Low cost}                                    & Due to limited budget, space qualified batteries would be cost prohibitive                                                                                         & A2                      \\\hline
+    \textbf{High energy density and specific energy}     & The system needs to support the payload for at least \SI{2}{\hour} at the worst-case power budget without recharging                                               & E1, E2                  \\\hline
+    \textbf{Reasonable power density and specific power} & The overall system needs to be able to provide at least \SI{3}{\ampere} of current in a small space/mass, so the batteries should have similar current capacities. & E1, E2                  \\\hline
+    \textbf{Must not be a lithium-polymer battery}       & This is an AURC rule.                                                                                                                                              & A1                      \\\hline
+    \textbf{Space heritage}                              & Ideally the batteries would be used in space to maximise the chance of passing vacuum and temperature testing.                                                     & P2                      \\\hline
   \end{tabular}
   \caption{Battery cell requirements}
   \label{tabl:battery-requirements}
@@ -590,11 +542,11 @@ Based on the high-level description of the battery pack and the power budget, a 
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                         & \textbf{Description}                                                                                                                                                        & \textbf{HL constraints} \\ \hline
-    \textbf{Input voltage range}          & It must have an input voltage range of at least $<\SI{2}{\volt}$ and $>\SI{4.4}{\volt}$ to support a \liion battery.                                                        & TODO:                   \\\hline
-    \textbf{Output voltage range}         & It must be able to output \SI{5}{\volt}.                                                                                                                                    & TODO:                   \\\hline
-    \textbf{Output current range}         & It must be able to output at least \SI{3}{\ampere}.                                                                                                                         & TODO:                   \\\hline
-    \textbf{High efficiency}              & A lower efficiency converter would require more batteries and therefore more space and mass to meet the battery life requirement compared to a higher efficiency converter. & TODO:                   \\\hline
-    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                     & TODO:                   \\\hline
+    \textbf{Input voltage range}          & It must have an input voltage range of at least $<\SI{2}{\volt}$ and $>\SI{4.4}{\volt}$ to support a \liion battery.                                                        & Battery choice          \\\hline
+    \textbf{Output voltage range}         & It must be able to output \SI{5}{\volt}.                                                                                                                                    & E1                      \\\hline
+    \textbf{Output current range}         & It must be able to output at least \SI{3}{\ampere}.                                                                                                                         & E1                      \\\hline
+    \textbf{High efficiency}              & A lower efficiency converter would require more batteries and therefore more space and mass to meet the battery life requirement compared to a higher efficiency converter. & E2                      \\\hline
+    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                     & P2                      \\\hline
   \end{tabular}
   \caption{Boost converter requirements}
   \label{tabl:boost-requirements}
@@ -607,9 +559,9 @@ Based on the high-level description of the battery pack and the power budget, a 
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                         & \textbf{Description}                                                                                                                                                  & \textbf{HL constraints} \\ \hline
-    \textbf{Dropout voltage}              & This linear regulator will receive a constant \SI{5}{\volt}, it must have a dropout voltage lower than \SI{1.7}{\volt} so that it can power a \SI{3.3}{\volt} system. & TODO:                   \\\hline
-    \textbf{Output voltage range}         & It must be able to output \SI{3.3}{\volt}.                                                                                                                            & TODO:                   \\\hline
-    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                               & TODO:                   \\\hline
+    \textbf{Dropout voltage}              & This linear regulator will receive a constant \SI{5}{\volt}, it must have a dropout voltage lower than \SI{1.7}{\volt} so that it can power a \SI{3.3}{\volt} system. & E1                      \\\hline
+    \textbf{Output voltage range}         & It must be able to output \SI{3.3}{\volt}.                                                                                                                            & E1                      \\\hline
+    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                               & P2                      \\\hline
   \end{tabular}
   \caption{Linear regulator requirements}
   \label{tabl:ldo-requirements}
@@ -626,12 +578,12 @@ The POEM contains a radio downlink which allows experiments to transmit data to 
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                         & \textbf{Description}                                                                                                                                                                   & \textbf{HL constraints} \\ \hline
-    \textbf{Data rate}                    & Must have adequate data rate to transmit one image over the time of a \SI{10000}{\feet} HPR test flight                                                                                & TODO:                   \\\hline
-    \textbf{Range}                        & Must have adequate link budget to allow reception of picture data over \SI{10000}{\feet}.                                                                                              & TODO:                   \\\hline
-    \textbf{Common interfaces}            & Must use a non-proprietary interface, such as UART or SPI to simplify development.                                                                                                     & TODO:                   \\\hline
-    \textbf{USB ground station}           & Must be able to be connected to a laptop on the ground for live visualisation of picture data.                                                                                         & TODO:                   \\\hline
-    \textbf{Class license operation}      & Radio must be able to be legally operated using a free class license \cite{australia2015radiocommunications}, since obtaining an amateur radio license would require significant time. & TODO:                   \\\hline
-    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                                & TODO:                   \\\hline
+    \textbf{Data rate}                    & Must have adequate data rate to transmit one image over the time of a \SI{10000}{\feet} HPR test flight                                                                                & R2                      \\\hline
+    \textbf{Range}                        & Must have adequate link budget to allow reception of picture data over \SI{10000}{\feet}.                                                                                              & R2                      \\\hline
+    \textbf{Common interfaces}            & Must use a non-proprietary interface, such as UART or SPI to simplify development.                                                                                                     & OBDH requirements       \\\hline
+    \textbf{USB ground station}           & Must be able to be connected to a laptop on the ground for live visualisation of picture data.                                                                                         & R2                      \\\hline
+    \textbf{Class license operation}      & Radio must be able to be legally operated using a free class license \cite{australia2015radiocommunications}, since obtaining an amateur radio license would require significant time. & A3, A2                  \\\hline
+    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                                & P2                      \\\hline
   \end{tabular}
   \caption{Radio downlink requirements}
   \label{tabl:radio-requirements}
@@ -649,11 +601,11 @@ CubeSats use the RS-485 physical layer specification and UART data layer specifi
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                                                 & \textbf{Description}                                                                               & \textbf{HL constraints} \\ \hline
-    \textbf{Same data layer as POEM (UART)}                       & This needs to emulate the same interfaces on POEM.                                                 & TODO:                   \\\hline
-    \textbf{Same physical layer as POEM (RS-485)}                 & This needs to emulate the same interfaces on POEM.                                                 & TODO:                   \\\hline
-    \textbf{Locking connectors}                                   & Locking connectors must be used between the payload and DAQ due to the high vibration environment. & TODO:                   \\\hline
-    \textbf{Data rate of \SI{5}{\kilo\bit\per\second} or greater} & This needs to emulate the same interfaces on POEM.                                                 & TODO:                   \\\hline
-    \textbf{Industrial temperature range}                         & The RS-485 transceiver is a component that must pass temperature testing.                          & TODO:                   \\\hline
+    \textbf{Same data layer as POEM (UART)}                       & This needs to emulate the same interfaces on POEM.                                                 & E3                      \\\hline
+    \textbf{Same physical layer as POEM (RS-485)}                 & This needs to emulate the same interfaces on POEM.                                                 & E3                      \\\hline
+    \textbf{Locking connectors}                                   & Locking connectors must be used between the payload and DAQ due to the high vibration environment. & A1                      \\\hline
+    \textbf{Data rate of \SI{5}{\kilo\bit\per\second} or greater} & This needs to emulate the same interfaces on POEM.                                                 & E3                      \\\hline
+    \textbf{Industrial temperature range}                         & The RS-485 transceiver is a component that must pass temperature testing.                          & P2                      \\\hline
   \end{tabular}
   \caption{Payload communications requirements}
   \label{tabl:comms-requirements}
@@ -673,9 +625,9 @@ The DAQ had to track the HPR throughout the full launch to enable recovery as st
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                         & \textbf{Description}                                                               & \textbf{HL constraints} \\ \hline
-    \textbf{Metre-level precision}        & Metre-level precision is adequate for tracking and recovery.                       & TODO:                   \\\hline
-    \textbf{Common interfaces}            & Must use a non-proprietary interface, such as UART or SPI to simplify development. & TODO:                   \\\hline
-    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                            & TODO:                   \\\hline
+    \textbf{Metre-level precision}        & Metre-level precision is adequate for tracking and recovery.                       & A1, R1                  \\\hline
+    \textbf{Common interfaces}            & Must use a non-proprietary interface, such as UART or SPI to simplify development. & ODBH requirements       \\\hline
+    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                            & P2                      \\\hline
   \end{tabular}
   \caption{GNSS tracking requirements}
   \label{tabl:gnss-requirements}
@@ -691,11 +643,11 @@ MEMS accelerometers were chosen for the DAQ due to their low cost and low power 
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                                 & \textbf{Description}                                                                                                                          & \textbf{HL constraints} \\ \hline
-    \textbf{High output data rate}                & Output data rate should be over \SI{1}{\kilo\hertz} to maximise range of the shock response spectrum.                                         & TODO:                   \\\hline
-    \textbf{High acceleration range}              & Maximum measurable acceleration should be over \SI{200}{\gacc} to maximise range of the shock response spectrum.                              & TODO:                   \\\hline
-    \textbf{SPI with FIFO and hardware interrupt} & To reduce load on the processor SPI should be used over other interfaces (such as \iic), and a FIFO queue with interrupt should be available. & TODO:                   \\\hline
-    \textbf{PCB with adequate mounting points}    & The accelerometers need to be mounted to a PCB with a strong mounting point to maximise the resonant frequency.                               & TODO:                   \\\hline
-    \textbf{Industrial temperature range}         & This is a component that must pass temperature testing.                                                                                       & TODO:                   \\\hline
+    \textbf{High output data rate}                & Output data rate should be over \SI{1}{\kilo\hertz} to maximise range of the shock response spectrum.                                         & V2                      \\\hline
+    \textbf{High acceleration range}              & Maximum measurable acceleration should be over \SI{200}{\gacc} to maximise range of the shock response spectrum.                              & V3                      \\\hline
+    \textbf{SPI with FIFO and hardware interrupt} & To reduce load on the processor SPI should be used over other interfaces (such as \iic), and a FIFO queue with interrupt should be available. & ODBH requirements       \\\hline
+    \textbf{PCB with adequate mounting points}    & The accelerometers need to be mounted to a PCB with a strong mounting point to maximise the resonant frequency.                               & V2                      \\\hline
+    \textbf{Industrial temperature range}         & This is a component that must pass temperature testing.                                                                                       & P2                      \\\hline
   \end{tabular}
   \caption{Accelerometer requirements}
   \label{tabl:acc-requirements}
@@ -711,10 +663,10 @@ The OBDH unit acquired data from sensors and the payload and saved it to a stora
   \begin{tabular}{|L{0.2\textwidth}|L{0.495\textwidth}|L{0.2\textwidth}|}
     \hline
     \textbf{Name}                         & \textbf{Description}                                                                                                                                                                      & \textbf{HL constraints} \\ \hline
-    \textbf{Data storage}                 & OBDH should be able to store several images for post-flight analysis if the radio downlink underperforms. It should be able to store readings read from the accelerometer at a high rate. & TODO:                   \\\hline
-    \textbf{SPI and UART interfaces}      & These interfaces are requirements for the GNSS receiver, payload under test and the accelerometers.                                                                                       & TODO:                   \\\hline
-    \textbf{Adequate processor speed}     & The OBDH must not "drop" image frames or data samples due to inadequate processing speed.                                                                                                 & TODO:                   \\\hline
-    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                                   & TODO:                   \\\hline
+    \textbf{Data storage}                 & OBDH should be able to store several images for post-flight analysis if the radio downlink underperforms. It should be able to store readings read from the accelerometer at a high rate. & V2                      \\\hline
+    \textbf{SPI and UART interfaces}      & These interfaces are requirements for the GNSS receiver, payload under test and the accelerometers.                                                                                       & V2, R2, R1, E3          \\\hline
+    \textbf{Adequate processor speed}     & The OBDH must not "drop" image frames or data samples due to inadequate processing speed.                                                                                                 & V2                      \\\hline
+    \textbf{Industrial temperature range} & This is a component that must pass temperature testing.                                                                                                                                   & P2                      \\\hline
   \end{tabular}
   \caption{OBDH requirements}
   \label{tabl:obdh-requirements}
@@ -788,13 +740,10 @@ After the high-level design was created and components finalised, they were inte
 
 \begin{figure}[H]
   \centering
-  \includesvg[width=0.9\textwidth]{images/ecad_workflow.svg}
-  \caption{Workflow for integrating a design into a PCB.}
+  \includesvg[width=0.98\textwidth]{images/ecad_workflow.svg}
+  \caption{Workflow for integrating a subsystem into a PCB project.}
   \label{fig:implementation-workflow}
 \end{figure}
-
-%TODO: change diagram to say subsystem instead of design.
-%TODO: diagram is missing circuit.js
 
 \subsection{Design Verification and Schematic Capture}
 
@@ -833,15 +782,13 @@ Once a subsystem was finished in schematic capture, the components were routed i
   \item Placing decoupling capacitors close to the part's power pins
 \end{itemize}
 
-%TODO: include annotated image example .
-
 Additional PCB rules are created where necessary, such as to enforce the geometry of RF tracks or clearance rules.
 
 \subsection{Finalisation of Design and Manufacturing}
 
 After the PCB design was finished, an automatic design rule check (DRC) was run to find any errors that would affect manufacturing, based on the PCB rules set in \secref{sec:pcb-layout}. The manufacturing outjob was run to generate artefacts such as Gerber files, the bill of materials for automated and manual manufacturing, and component locations for pick-and-place. These artefacts were sent to JLCPCB to design and partially assemble the PCBs. The manual manufacturing BOM was used to purchase components from component distributors.
 
-After the boards were received some basic tests are conducted (such as ensuring that voltage domains and ground are not short-circuited). After this, additional components were manually assembled either using hot-air or a soldering iron. After soldering, the manual solder joints were inspected to ensure they are not cold joints, and the boards were again tested for short-circuits.
+After the boards were received some basic tests are conducted (such as ensuring that voltage domains and ground are not short-circuited). Additional components were then manually assembled either using hot-air or a soldering iron. After soldering, the manual solder joints were inspected to ensure they are not cold joints, and the boards were again tested for short-circuits.
 
 \subsection{Software Design Process}
 
@@ -923,7 +870,7 @@ IIST recommended that the CubeSat be mechanically qualified using a single-axis 
 
 \subsubsection{Random Vibration}
 
-In the random vibration test, the CubeSat was fixed rigidly to an electrodynamic shaker table, then the table was programmed with the IIST recommended vibration profile specified in table \ref{tabl:random-vibration-profile-iist}. The vibration test occured for \SI{60}{\second} per axis and was repeated for all three axes.
+In the random vibration test, the CubeSat was fixed rigidly to an electrodynamic shaker table, then the table was programmed with the IIST recommended vibration profile specified in table \ref{tabl:random-vibration-profile-iist}. The vibration test occurred for \SI{60}{\second} per axis and was repeated for all three axes.
 
 \begin{table}[t]
   \centering
@@ -1209,7 +1156,7 @@ The simulation also showed that the power system would work up to \SI{3}{\ampere
 
 \subsection{Internal \SI{3.3}{\volt} Power Conditioning}
 
-The DAQ internally used \SI{3.3}{\volt} for some components, however this system only uses a maximum of \SI{157}{\milli\ampere} therefore efficiency is a lower factor and a linear regulator was chosen. This solution resulted in a power loss of \SI{270}{\milli\watt}, which was considered insignificant compared to the maximum power output of the \SI{5}{\volt} system (\SI{26}{\watt}). %TODO:
+The DAQ internally used \SI{3.3}{\volt} for some components, however this system only uses a maximum of \SI{157}{\milli\ampere} therefore efficiency is a lower factor and a linear regulator was chosen. This solution resulted in a power loss of \SI{270}{\milli\watt}, which was considered insignificant compared to the maximum power output of the \SI{5}{\volt} system (\SI{26}{\watt}).
 
 An Advanced Monolithic Systems AMS1117-3.3 linear regulator was chosen due to its cheap pricing on JLCPCB of only \aud 0.20 and since it has been used in past designs with success. It has a high dropout voltage of \SI{1.1}{\volt}, which was acceptable for the \SI{5}{\volt} input \cite{ams2007ams1117}. The AMS1117 had an operating temperature range of \SIrange{-40}{125}{\degreeCelsius} which was adequate for thermal qualification \cite{ams2007ams1117}.
 
@@ -1257,11 +1204,10 @@ The \SI{3.3}{\volt} regulator was implemented from the reference design. The two
 \section{Onboard Data Handling (OBDH)}
 
 A first revision of the DAQ used an STM32L476 microcontroller, which had similar peripherals, including UART, {\iic} and SPI, however as a microcontroller it did not have an operating system, nor significant storage. Storage was provided in the form of a \SI{4}{\giga\byte} embedded multimedia card (eMMC) chip, which was chosen since it is directly soldered to the PCB and was more resistant to vibration than a micro SD card connector.
-% TODO: talk about other cubesats using the stm32 platform?
 
 Due to the issues encountered with the first revision and due to the time constraints, the second revision uses a Raspberry Pi Zero W v1.3 (referred to as "Pi Zero"). This was a development board which integrates the BCM2835 Broadcom system on chip (SoC), \SI{512}{\mega\byte} of RAM and contained a micro-SD card slot, USB interface and peripherals such as UART, {\iic} and SPI \cite{upton2016raspberry}. This board was chosen due to its small form-factor compared to larger Raspberry Pis, simplicity of integration compared to the Raspberry Pi compute modules and low cost. The Raspberry Pi platform has been used in low-cost low Earth orbit (LEO) CubeSat applications \cite{guertin2022raspberry}. It was predicted that in polar orbits that the Pi Zero has a lifespan of 5 years \cite{guertin2022raspberry}, which was adequate for this project since the POEM would cease to maintain its orbit after several months. The thermal performance of a Raspberry Pi Zero W was adequate for space applications \cite{guertin2022raspberry}. While a Raspberry Pi Zero 2W was initially selected, which would have had higher performance compared to the Zero v1.3, it was not possible to acquire one due to supply chain issues.
 
-Typically, a Raspberry Pi runs the Raspbian operating system (OS), which is a Debian fork \cite{upton2016raspberry}. Compared to developing for a microcontroller, an OS is easier to develop for as it allows the use of standard Linux utilities for interacting with the system, including \texttt{ssh} for remote control, and having each DAQ task in a separate process with separated memory makes debugging easier. This ease of development was required to meet the time constraint of the project. %TODO: Citation`'
+Typically, a Raspberry Pi runs the Raspbian operating system (OS), which is a Debian fork \cite{upton2016raspberry}. Compared to developing for a microcontroller, an OS is easier to develop for as it allows the use of standard Linux utilities for interacting with the system, including \texttt{ssh} for remote control, and having each DAQ task in a separate process with separated memory makes debugging easier. This ease of development was required to meet the time constraint of the project.
 
 Due to limitations of the BCM2835 SoC only one hardware UART was available \cite{upton2016raspberry}, but more are required for receiving data from GNSS receivers. Receiving data through a software implementation of UART is not ideal since it uses a large amount of CPU resources and is prone to missing bits especially on the non realtime OS of the Raspberry Pi which severely limits its usable baud rate. The XR20M1172 dual hardware UART to add more UART ports to the Raspberry Pi through the SPI bus. This UART has a 64-byte first-in first-out (FIFO) buffer and interrupts, which eliminates the need for expensive polling, and has a maximum data rate of \SI{16}{\mega\bit\per\second} \cite{maxlinear2022xr20m1172}, which was more than adequate for GNSS data which has a maximum baud rate of only \SI{38400}{\baud}. This UART has a temperature range of \SIrange{-40}{85}{\degreeCelsius}, allowing it to survive temperature testing.
 
@@ -2015,7 +1961,6 @@ The experiment was successful in showing that HPR was not a suitable vibration q
 
 This experiment design was adequate for this case, since the goal was to answer a simple yes or no question about if HPRs are suitable for qualification. However, future tests may require a more comprehensive comparison since it is possible that with a different HPR motor or components that there are portions of the test which meet the qualification level. This type of comparison may include determining what frequencies the HPR test are effective at comparing, or using coherence to compare the PSDs numerically.
 
-% TODO: 10%
 \chapter{Conclusions and Future Work}
 
 \section{Future Work}
@@ -2069,5 +2014,9 @@ Code and material from this research is available at the following git repositor
 \subsection{References}
 
 \printbibliography[heading=none]
+
+\subsection{Schematics}
+
+\centering{\Large \textbf{See next page.}}
 
 \end{document}
